@@ -2,10 +2,10 @@
 详细变量脚本内有说明 
 首先需要获取登录凭证：    
 ```
-docker exec -it qinglong bash # 进入容器    
-cd /ql/scripts # 必须进入这个目录    
-python3 /ql/scripts/detg_code.py # 脚本在哪儿，就怎么写    
-Please enter your phone (or bot token）# 这个时候输入手机号获取验证码，【验证码在tg内查看！】 例如： +86188788878888    
+docker exec -it qinglong bash     # 进入容器    
+cd /ql/scripts      # 必须进入这个目录    
+python3 /ql/scripts/detg_code.py      # 脚本在哪儿，就怎么写    
+Please enter your phone (or bot token）      # 这个时候输入手机号获取验证码，【验证码在tg内查看！】 例如： +86188788878888    
 #接着输入验证码  
 ```
 登录完成会生成一个凭证 anon.session ,这个凭证必须在/ql/scripts，因为青龙运行脚本默认这个目录，不然读不到登录凭证。      
