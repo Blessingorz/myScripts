@@ -1,5 +1,4 @@
 ### tg相关脚本   
-详细变量脚本内有说明 
 首先需要获取登录凭证：    
 ```
 docker exec -it qinglong bash     # 进入容器    
@@ -17,6 +16,7 @@ Please enter your phone (or bot token）      # 这个时候输入手机号获�
 export tg_api_id="12345"    
 export tg_api_hash="0123456789abcdef0123456789abcdef"  
 ```
+详细变量脚本内有说明    
 #### 获取api_id
 申请api_id、api_hash： [点我申请](https://my.telegram.org/auth?to=apps)       
 不懂如何申请的自行谷歌     
