@@ -1,6 +1,6 @@
 # 脚本为tg 定时发送消息，第一次请在命令行运行 cd /ql/scripts && python3 tg_send_messages.py 登陆tg获取密钥,验证码在tg内查看
 
-# 脚本内填写 申请的TG API ID, 申请的TG API hash
+# 脚本内填写 
 # 向群't.me/iKuuuu_VPN' 发送 '长大了就不要笑得那么开心', 向机器人'@JD_ShareCode_Bot' 发送 '/help'。
 tg_api_id = '12345'
 tg_api_hash = '0123456789abcdef0123456789abcdef'
