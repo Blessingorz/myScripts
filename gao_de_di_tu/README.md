@@ -13,4 +13,5 @@ export wy_xdgy="你的cookie1&你的cookie2"
 搜索'sns.amap.com',复制cookie,填入环境变量中   
 ### 小黄鸟
 HttpCanary ：[点我](https://www.sogou.com/web?ie=UTF-8&query=%E5%B0%8F%E9%BB%84%E9%B8%9F)
-
+### 通知推送
+[点我查看](https://github.com/wuye999/myScripts/blob/main/send.md)
