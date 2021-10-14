@@ -4,7 +4,7 @@
 详细介绍请查看脚本内说明    
 ```
 9 9 * * * jd_sign_miandan.py    # 签到免单  
-9 9 * * * jd_7dayClockin.py   # 7天签到一元购
+9 9 * * * jd_7dayClockin.py   # 7天签到一元购   
 5 */8 * * * ql_bendi4.py    # wskey转pt_key    
 ```
 ### 环境变量
