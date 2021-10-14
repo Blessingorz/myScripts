@@ -1,5 +1,5 @@
 ### 通知环境变量
-在填写    
+在环境变量中填写    
 #### 1. Server酱
 https://sct.ftqq.com    
 填写 SCHKEY 值或 SendKey 值     
