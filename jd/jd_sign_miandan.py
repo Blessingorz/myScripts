@@ -65,7 +65,7 @@ def sign_merch(cookie):
     for n in range(3):
         a=0
         try:
-            time.sleep(0.5)
+            time.sleep(2)
             res = requests.get(url=url, headers=headers, timeout=2,verify=False).json()
             a=1
             break
@@ -118,7 +118,7 @@ def sign_in(cookie,a):
     for n in range(3):
         a=0
         try:
-            time.sleep(0.5)
+            time.sleep(1)
             res = requests.post(url=url, headers=headers, data=data, timeout=2,verify=False).json()
             a=1
             break
