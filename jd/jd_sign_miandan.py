@@ -23,7 +23,6 @@ def ua_random():
 def gettimestamp():
     return str(int(time.time() * 1000))
 
-
 ## 获取cooie
 class Judge_env(object):
     ## 判断运行环境
@@ -40,10 +39,25 @@ class Judge_env(object):
     ## 批量提取pin,输出ckkk,path,pin_list
     def main_run(self):
         self.getcodefile()
-        cookie_list=os.environ["JD_COOKIE"].split('&')       # 获取cookie_list的合集
+        if '/jd' in os.path.abspath(os.path.dirname(__file__)):
+            cookie_list=v4_cookie(self)
+        else:
+            cookie_list=os.environ["JD_COOKIE"].split('&')       # 获取cookie_list的合集
         if len(cookie_list)<1:
             print('请填写环境变量JD_COOKIE\n')    
         return cookie_list
+
+    def v4_cookie(self):
+        a=[]
+        b=re.compile(r'Cookie'+'.*?=\"(.*?)\"', re.I)
+        with open('/jd/config/config.sh', 'r') as f:
+            for line in f.readlines():
+                try:
+                    regular=b.match(line).group(1)
+                    a.append(regular)
+                except:
+                    pass
+        return a
 
 # 获取商品id
 def sign_merch(cookie):
@@ -199,23 +213,16 @@ class msg(object):
         if a == 0:
             a += 1
         try:
-            url = 'https://ghproxy.com/https://raw.githubusercontent.com/wuye999/jd/main/sendNotify.py'
+            url = 'https://ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
             response = requests.get(url)
-            if 'curtinlv' in response.text:
-                with open('sendNotify.py', "w+", encoding="utf-8") as f:
-                    f.write(response.text)
-            else:
-                if a < 5:
-                    a += 1
-                    return self.getsendNotify(a)
-                else:
-                    pass
+            with open('sendNotify.py', "w+", encoding="utf-8") as f:
+                f.write(response.text)
+            return
         except:
-            if a < 5:
-                a += 1
-                return self.getsendNotify(a)
-            else:
-                pass
+            pass
+        if a < 5:
+            a += 1
+            return self.getsendNotify(a)
     def main(self):
         global send
         cur_path = os.path.abspath('.')
@@ -223,18 +230,14 @@ class msg(object):
         if os.path.exists(cur_path + "/sendNotify.py"):
             try:
                 from sendNotify import send
+                return
             except:
-                self.getsendNotify()
-                try:
-                    from sendNotify import send
-                except:
-                    print("加载通知服务失败~")
-        else:
-            self.getsendNotify()
-            try:
-                from sendNotify import send
-            except:
-                print("加载通知服务失败~")       
+                pass
+        self.getsendNotify()
+        try:
+            from sendNotify import send
+        except:
+            print("加载通知服务失败~")      
 msg("").main()  # 初始化通知服务
 
 
