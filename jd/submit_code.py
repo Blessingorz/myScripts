@@ -1,6 +1,6 @@
-# 在tg bot提交助力码后，要使用作者的脚本才能激活。
-# 运行本脚本后即可激活已提交的助力码，无需运行作者的脚本。
-# 暂支持 he1pu, helloworld ，PasserbyBot。
+# 在tg bot提交助力码后，要使用作者的脚本才能激活
+# 运行本脚本后即可激活已提交的助力码，无需运行作者的脚本
+# 暂支持 he1pu, helloworld ，PasserbyBot, ddo 
 
 import sys
 import os
@@ -284,10 +284,15 @@ class Bulk_request(object):
             value=a.group(2)
             pin=a.group(3)    
         elif 'helloworld_' in self.biaozhi:
-            a=re.match(r'.*?sert\/(.*?)\?.*=(.*?)\&.*?=(.*?)\&.*?=(.*?)\&(.*)',url)
+            a=re.match(r'.*?sert\/(.*?)\?.*?=(.*?)\&.*?=(.*?)\&.*?=(.*?)\&(.*)',url)
             code=a.group(2) 
             value=a.group(1) 
             pin=a.group(5)
+        elif 'ddo' in self.biaozhi:
+            a=re.match(r'.*?upload\/(.*?)\?.*?=(.*)',url)
+            code=a.group(2) 
+            value=a.group(1) 
+            pin=''
         return code,value,pin
 
     # 单个url进行请求得出结果
@@ -342,6 +347,22 @@ class Bulk_request(object):
                 state=0
             else:
                 self.log.append(f'{self.biaozhi}_{self.value}: 服务器连接错误')
+                state=1
+        elif biaozhi=='ddo':
+            if 'OK' in res:
+                self.log.append(f'{self.biaozhi}_{self.value}: 提交成功\n')
+                state=0
+            elif 'error' in res:
+                self.log.append(f'{self.biaozhi}_{self.value}: 助力码格式错误，乱玩API是要被打屁屁的')
+                state=1
+            elif 'full' in res:
+                self.log.append(f'{self.biaozhi}_{self.value}: 车位已满，请等待下一班次\n')
+                state=0
+            elif 'exist' in res:
+                self.log.append(f'{self.biaozhi}_{self.value}: 助力码已经提交过了\n')
+                state=0
+            else:
+                self.log.append(f'{self.biaozhi}_{self.value}: 未知错误')
                 state=1
         else:
             self.log.append(res+'\n')
@@ -410,6 +431,16 @@ def helloworld_x(decode, *, pin=0, farm_code=0, bean_code=0, value=0):
     else:
         return r
 
+def ddo(decode, *, value=0):
+    name_value_dict={'Cfd':'cfd'}
+    biaozhi='ddo'
+    r=f'http://transfer.nz.lu/upload/{value}?code={decode}'
+    if value==0:
+        return name_value_dict, biaozhi
+    else:
+        return r    
+
+
 def main_run(data_pack):
     url_list,biaozhi=Composite_urls(data_pack).main_run()
     Bulk_request(url_list, biaozhi).main_run()
@@ -438,8 +469,9 @@ if __name__=='__main__':
     pool.apply_async(func=main_run,args=(passerbyBot,))   ## 创建passerbyBot激活任务
     pool.apply_async(func=main_run,args=(he1pu,))   ## 创建he1pu提交任务
     pool.apply_async(func=main_run,args=(helloworld,))  ## 创建helloworld激活任务
-    pool.apply_async(func=he1pu_x_main_run,args=(he1pu_x,))  ## 创建he1pu_cfd活任务
-    pool.apply_async(func=helloworld_x_main_run,args=(helloworld_x,))  ## 创建helloworld_cfd激活任务
+    pool.apply_async(func=main_run,args=(ddo,))   ## 创建ddo提交任务
+    pool.apply_async(func=he1pu_x_main_run,args=(he1pu_x,))  ## 创建he1pu_x活任务
+    pool.apply_async(func=helloworld_x_main_run,args=(helloworld_x,))  ## 创建helloworld_x激活任务
     pool.close()
     pool.join()
 
