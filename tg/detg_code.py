@@ -1,6 +1,8 @@
 # 脚本为tg 定时发送消息，第一次请在命令行运行 python3 /目录/xxxxxx.py 登陆tg获取密钥,验证码在tg内查看
+# 脚本为读取每种助力码前五个，自动提交到tg机器人上
+# 目前支持的机器人有 JD_ShareCode_Bot, @passerbybbot, @LvanLamCommitCodeBot, @JDShareCodebot
 
-# 优先使用环境变量
+# 脚本内或环境变量填写 优先使用环境变量
 tg_api_id = '12345'    # 申请的TG API ID
 tg_api_hash = '0123456789abcdef0123456789abcdef'    # 申请的TG API hash
 # export tg_api_id="12345"    
@@ -216,6 +218,14 @@ def LvanLamCommitCodeBot(tg_codes,*,value=0):
     else:
         return tg_information
 
+def JDShareCodebot(tg_codes,*,value=0):
+    biaozhi='@JDShareCodebot'
+    name_value_dict={'Fruit':'/farm','Bean':'/bean','Pet':'/pet','DreamFactory':'/jxfactory','JdFactory':'/ddfactory','Health':'/health'}
+    tg_information=f'{biaozhi}<<<{value} {tg_codes}'
+    if value==0:
+        return name_value_dict,biaozhi
+    else:
+        return tg_information
 
 # 主函数
 def main_run(data_pack):
@@ -257,6 +267,7 @@ if __name__=='__main__':
     main_run(JD_ShareCode_Bot)    # 向@JD_ShareCode_Bot发送消息
     main_run(passerbybbot)    # 向@passerbybbot发送消息
     main_run(LvanLamCommitCodeBot)    # 向@LvanLamCommitCodeBot发送消息
+    main_run(JDShareCodebot)    # 向@JDShareCodebot发送消息
     print('\nwuye9999')
 
 
