@@ -6,7 +6,7 @@ import json
 import sys
 requests.packages.urllib3.disable_warnings()
 
-# 脚本作用为循环请求某个api,使用的是京东cookie
+# 京喜财富岛抢100
 # 环境变量优先于脚本内部变量,不填的项默认脚本内部变量
 wuye9999_cycless = '1'          # 重复请求次数
 wuye9999_ask_sleep = '0.5'      # 请求间隔为0.05秒
