@@ -7,6 +7,7 @@ import os
 import functools
 import time
 import re
+import hashlib
 from  multiprocessing import Pool
 try:
     import requests
@@ -172,7 +173,8 @@ class Get_env(object):
 class Composite_urls(object):
     def __init__(self, data_pack):
         self.data_pack=data_pack
-        self.name_value_dict,self.biaozhi = data_pack(0)
+        global requisition
+        self.name_value_dict,self.biaozhi,requisition = data_pack(0)
         self.import_prefix=codes.codes
     
     ## 根据助力码和self.value通过data_pack组合出url_list,输出结果
@@ -190,7 +192,7 @@ class Composite_urls(object):
         return url_list,self.biaozhi
 
 # He1pu_cfd的url合集
-class He1pu_x_urls(Composite_urls):
+class He1pu_pin_urls(Composite_urls):
     ## 根据助力码和self.value通过data_pack组合出url_list,输出结果
     def main_run(self):
         url_list=[]
@@ -249,27 +251,28 @@ class Bulk_request(object):
     ##批量请求流程
     def main_run(self):
         for url in self.url_list:
-            self.g = 1
+            self.g = 0
             self.log=[]
             self.request_process(url)
+            a=''
+            for i in self.log:
+                a=a+'\n'+i
+            print(a)
 
     ## 单个url请求，判断结果，是否重试的流程
     def request_process(self,url):  
         code,self.value,pin=self.regular_extract(url)
-        self.log.append(f'{self.biaozhi}_{self.value}: 开始上报 {code} {pin}')
+        if self.g == 0:
+            self.log.append(f'{self.biaozhi}_{self.value}: 开始上报 {code} {pin}')
         res=self.single_request(url)
         state=self.processing_request_result(res)
         self.judge_Retry(state,url) 
-        a=''
-        for i in self.log:
-            a=a+'\n'+i
-        print(a)
         # sys.stdout.flush()
 
     # 正则提取信息
     def regular_extract(self,url):
         if self.biaozhi=='he1pu' or self.biaozhi=='helloworld':
-            a=re.match(r'.*?=(.*?)\&.*?=(.*)',url)
+            a=re.match(r'.*?=(.*?)&.*?=(.*)',url)
             code=a.group(1)
             value=a.group(2)
             pin=''
@@ -278,28 +281,37 @@ class Bulk_request(object):
             code=a.group(2)
             value=a.group(1)
             pin='' 
-        elif 'he1pu_' in self.biaozhi:
-            a=re.match(r'.*?=(.*?)\&.*?=(.*?)\&(.*)',url)
+        elif 'he1pu_pin' in self.biaozhi:
+            a=re.match(r'.*?=(.*?)&.*?=(.*?)&(.*)',url)
             code=a.group(1)
             value=a.group(2)
             pin=a.group(3)    
-        elif 'helloworld_' in self.biaozhi:
-            a=re.match(r'.*?sert\/(.*?)\?.*?=(.*?)\&.*?=(.*?)\&.*?=(.*?)\&(.*)',url)
+        elif 'helloworld_pin' in self.biaozhi:
+            a=re.match(r'.*?autoInsert/(.*)\?.*?=(.*?)&.*?=(.*)',url)
+            code=a.group(2)
+            value=a.group(1)
+            pin=a.group(3) 
+        elif 'helloworld_x' in self.biaozhi:
+            
+            a=re.match(r'.*?autoInsert/(.*?)\?.*?=(.*?)&.*?=(.*?)&.*?=(.*?)&(.*)',url)
             code=a.group(2) 
             value=a.group(1) 
             pin=a.group(5)
         elif 'ddo' in self.biaozhi:
-            a=re.match(r'.*?upload\/(.*?)\?.*?=(.*)',url)
+            a=re.match(r'.*?upload/(.*?)\?.*?=(.*?)&(.*)',url)
             code=a.group(2) 
             value=a.group(1) 
-            pin=''
+            pin=a.group(3)
         return code,value,pin
 
     # 单个url进行请求得出结果
     def single_request(self,url):
         time.sleep(0.5)
         try:
-            res = requests.get(url, timeout=1)
+            if requisition=='get':
+                res = requests.get(url, timeout=2)
+            else:
+                res = requests.post(url, timeout=2)
             return res.text
         except:
             res='Sever ERROR'
@@ -307,9 +319,10 @@ class Bulk_request(object):
 
     # 判断请求结果
     def processing_request_result(self,res):
+        state=0
         biaozhi=self.biaozhi.split('_')[0]
         if 'Sever ERROR' in res:
-            self.log.append(f'{self.biaozhi}_{self.value}: 连接超时')
+            self.log.append(f'{self.biaozhi}_{self.value}: 连接超时🌚')
             state=1
             return state
         if biaozhi == 'he1pu':
@@ -318,20 +331,16 @@ class Bulk_request(object):
                 state=1
             elif '\"code\":300' in res:
                 self.log.append(f'{self.biaozhi}_{self.value}: 重复提交\n')
-                state=0
             elif '\"code\":200' in res:
-                self.log.append(f'{self.biaozhi}_{self.value}: 提交成功\n')
-                state=0
+                self.log.append(f'{self.biaozhi}_{self.value}: 提交成功✅\n')
             else:
                 self.log.append(f'{self.biaozhi}_{self.value}: 服务器连接错误')
                 state=1
         elif biaozhi=='helloworld':
             if '1' in res or '200' in res:
-                self.log.append(f'{self.biaozhi}_{self.value}: 激活成功\n')
-                state=0
+                self.log.append(f'{self.biaozhi}_{self.value}: 激活成功✅\n')
             elif '0' in res:
                 self.log.append(f'{self.biaozhi}_{self.value}: 请在tg机器人处提交助力码后再激活\n')
-                state=0
             else:
                 self.log.append(f'{self.biaozhi}_{self.value}: 服务器连接错误')
                 state=1
@@ -340,54 +349,55 @@ class Bulk_request(object):
                 self.log.append(f'{self.biaozhi}_{self.value}: 提交类型无效')
                 state=1
             elif '激活成功' in res:
-                self.log.append(f'{self.biaozhi}_{self.value}: 激活成功\n')
-                state=0
+                self.log.append(f'{self.biaozhi}_{self.value}: 激活成功✅\n')
             elif '激活失败' in res:
                 self.log.append(f'{self.biaozhi}_{self.value}: 请在tg机器人处提交助力码后再激活\n')
-                state=0
             else:
                 self.log.append(f'{self.biaozhi}_{self.value}: 服务器连接错误')
                 state=1
         elif biaozhi=='ddo':
             if 'OK' in res:
-                self.log.append(f'{self.biaozhi}_{self.value}: 提交成功\n')
-                state=0
+                self.log.append(f'{self.biaozhi}_{self.value}: 提交成功✅\n')
             elif 'error' in res:
                 self.log.append(f'{self.biaozhi}_{self.value}: 助力码格式错误，乱玩API是要被打屁屁的')
                 state=1
             elif 'full' in res:
                 self.log.append(f'{self.biaozhi}_{self.value}: 车位已满，请等待下一班次\n')
-                state=0
             elif 'exist' in res:
                 self.log.append(f'{self.biaozhi}_{self.value}: 助力码已经提交过了\n')
-                state=0
+            elif 'not in whitelist' in res:
+                self.log.append(f'{self.biaozhi}_{self.value}: 提交助力码失败，此用户不在白名单中\n')
             else:
                 self.log.append(f'{self.biaozhi}_{self.value}: 未知错误')
                 state=1
         else:
             self.log.append(res+'\n')
-            state=0
         return state  
 
     # 根据判断过的请求结果判断是否需要重新请求
     def judge_Retry(self,state,url):
         if state == 1:
-            if self.g == 3:
+            if self.g >= 3:
                 self.log.append(f'{self.biaozhi}_{self.value}: 放弃挣扎')
                 return
             self.g += 1
-            self.log.append(f'{self.biaozhi}_{self.value}: 第 {self.g} 次尝试提交')
+            self.log.append(f'{self.biaozhi}_{self.value}: 第{self.g}次重试中🌐...')
             time.sleep(0.5)
             return self.request_process(url)
 
+
+
+def get_md5(s):
+    return hashlib.md5(str(s).encode('utf-8')).hexdigest()
 
 ## he1pu数据
 def he1pu(decode, *, value=0):
     name_value_dict={'Fruit':'farm','Bean':'bean','Pet':'pet','DreamFactory':'jxfactory','JdFactory':'ddfactory','Sgmh':'sgmh','Health':'health'}
     biaozhi = 'he1pu'
+    requisition='get'
     r=f'http://www.helpu.cf/jdcodes/submit.php?code={decode}&type={value}'
     if decode==0:
-        return name_value_dict, biaozhi
+        return name_value_dict, biaozhi, requisition
     else:
         return r  
 
@@ -395,9 +405,10 @@ def he1pu(decode, *, value=0):
 def helloworld(decode, *, value=0):
     name_value_dict={'Fruit':'farm','Bean':'bean','Pet':'pet','DreamFactory':'jxfactory','JdFactory':'ddfactory','Sgmh':'sgmh','Health':'health'}
     biaozhi='helloworld'
+    requisition='get'
     r=f'https://api.jdsharecode.xyz/api/runTimes?sharecode={decode}&activityId={value}'
     if decode==0:
-        return name_value_dict, biaozhi
+        return name_value_dict, biaozhi, requisition
     else:
         return r        
 
@@ -405,38 +416,55 @@ def helloworld(decode, *, value=0):
 def passerbyBot(decode, *, value=0):
     name_value_dict={'Fruit':'FruitCode','JdFactory':'FactoryCode', 'Cfd':'CfdCode'}
     biaozhi='passerbyBot'
+    requisition='get'
     r=f'http://51.15.187.136:8080/activeJd{value}?code={decode}'
     if decode==0:
-        return name_value_dict, biaozhi
+        return name_value_dict, biaozhi, requisition
     else:
         return r 
 
-## he1pu_x数据
-def he1pu_x(decode, *, pin=0, value=0):
-    name_value_dict={'Cfd':'jxcfd','5G超级盲盒':'mohe','京喜财富岛合珍珠':'jxcfdm'}
-    biaozhi = 'he1pu_x'
+## he1pu_pin数据
+def he1pu_pin(decode, *, pin=0, value=0):
+    name_value_dict={'Cfd':'jxcfd','5G超级盲盒':'mohe','京喜财富岛合珍珠':'jxcfdm','88红包':'jxlhb'}
+    biaozhi = 'he1pu_pin'
+    requisition='get'
     r=f'http://www.helpu.cf/jdcodes/submit.php?code={decode}&type={value}&user={pin}'
     if value==0:
-        return name_value_dict, biaozhi
+        return name_value_dict, biaozhi, requisition
+    else:
+        return r
+
+## helloworld_pin数据
+def helloworld_pin(decode, *, pin=0, value=0):
+    name_value_dict={'全民开红包':'redPacket'}
+    biaozhi = 'helloworld_pin'
+    requisition='get'
+    pin=get_md5(pin)
+    r=f'https://api.jdsharecode.xyz/api/autoInsert/{value}?sharecode={decode}&pin={pin}'
+    if value==0:
+        return name_value_dict, biaozhi, requisition
     else:
         return r
 
 ## helloworld_x数据
 def helloworld_x(decode, *, pin=0, farm_code=0, bean_code=0, value=0):
-    name_value_dict={'Cfd':'jxcfd','京喜牧场':'jxmc'}
+    name_value_dict={'Cfd':'jxcfd','京喜牧场':'jxmc','京喜牧场红包码':'jxmchb','88红包':'hb88'}
     biaozhi='helloworld_x'
+    requisition='get'
+    pin=get_md5(pin)
     r=f'https://api.jdsharecode.xyz/api/autoInsert/{value}?sharecode={decode}&bean={bean_code}&farm={farm_code}&pin={pin}'
     if value==0:
-        return name_value_dict, biaozhi
+        return name_value_dict, biaozhi, requisition
     else:
         return r
 
-def ddo(decode, *, value=0):
+def ddo(decode, *, pin=0, value=0):
     name_value_dict={'Cfd':'cfd'}
     biaozhi='ddo'
-    r=f'http://transfer.nz.lu/upload/{value}?code={decode}'
+    requisition='post'
+    r=f'http://transfer.nz.lu/upload/{value}?code={decode}&ptpin={pin}'
     if value==0:
-        return name_value_dict, biaozhi
+        return name_value_dict, biaozhi, requisition
     else:
         return r    
 
@@ -451,8 +479,8 @@ def helloworld_x_main_run(data_pack):
     Bulk_request(url_list, biaozhi).main_run()
 
 ## he1pu master函数
-def he1pu_x_main_run(data_pack):
-    url_list,biaozhi=He1pu_x_urls(data_pack).main_run()
+def he1pu_pin_main_run(data_pack):
+    url_list,biaozhi=He1pu_pin_urls(data_pack).main_run()
     Bulk_request(url_list, biaozhi).main_run()
 
 if __name__=='__main__':
@@ -460,17 +488,36 @@ if __name__=='__main__':
     name_list,match_list,path_list=Import_files(path).path_list()
     codes=Match_cus()
     codes.set_var(name_list,match_list,path_list,ckkk)
-    name_list=['5G超级盲盒', '京喜牧场']
-    match_list=[r'.*?5G超级盲盒好友互助码\】(.*)',r'.*?互助码\：(.*)']
-    path_list=['/ql/log/shufflewzc_faker2_jd_mohe', '/ql/log/shufflewzc_faker2_jd_jxmc']
+    name_list=[
+        '5G超级盲盒',
+        '京喜牧场',
+        '京喜牧场红包码',
+        '88红包',
+        '全民开红包'    
+    ]
+    match_list=[
+        r'.*?5G超级盲盒好友互助码\】(.*)',
+        r'.*?互助码\：(.*)',
+        r'红包邀请码:(.*)',
+        r'获取助力码成功：(.*)',
+        r'当前待拆红包ID:(.*?)，进度.*'
+    ]
+    path_list=[
+        '/ql/log/shufflewzc_faker2_jd_mohe',
+        '/ql/log/shufflewzc_faker2_jd_jxmc',
+        '/ql/log/shufflewzc_faker2_jd_jxmc',
+        '/ql/log/shufflewzc_faker2_jd_jxlhb',
+        '/ql/log/shufflewzc_faker2_jd_redPacket'
+    ]
     codes.set_var(name_list,match_list,path_list,ckkk)
     codes.codes['京喜财富岛合珍珠']=codes.codes['Cfd']
     pool = Pool(3)
+    pool.apply_async(func=he1pu_pin_main_run,args=(ddo,))   ## 创建ddo提交任务
     pool.apply_async(func=main_run,args=(passerbyBot,))   ## 创建passerbyBot激活任务
     pool.apply_async(func=main_run,args=(he1pu,))   ## 创建he1pu提交任务
     pool.apply_async(func=main_run,args=(helloworld,))  ## 创建helloworld激活任务
-    pool.apply_async(func=main_run,args=(ddo,))   ## 创建ddo提交任务
-    pool.apply_async(func=he1pu_x_main_run,args=(he1pu_x,))  ## 创建he1pu_x活任务
+    pool.apply_async(func=he1pu_pin_main_run,args=(he1pu_pin,))  ## 创建he1pu_pin活任务
+    pool.apply_async(func=he1pu_pin_main_run,args=(helloworld_pin,))  ## 创建helloworld_pin激活任务
     pool.apply_async(func=helloworld_x_main_run,args=(helloworld_x,))  ## 创建helloworld_x激活任务
     pool.close()
     pool.join()
@@ -479,7 +526,9 @@ if __name__=='__main__':
     # main_run(passerbyBot)
     # main_run(he1pu)
     # main_run(helloworld)
-    # he1pu_x_main_run(he1pu_x)
+    # he1pu_pin_main_run(ddo)
+    # he1pu_pin_main_run(he1pu_pin)
+    # he1pu_pin_main_run(helloworld_pin)
     # helloworld_x_main_run(helloworld_x)
     # 测试
     # print(codes.codes)
