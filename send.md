@@ -37,13 +37,13 @@ export DD_BOT_TOKEN=""
 export DD_BOT_SECRET=""     
 
 #### 5. qq机器人·   
-qq机器人的QQ_SKEY
-export QQ_SKEY="" 
-qq机器人的QQ_MODE
-export QQ_MODE=""               
+qq机器人的QQ_SKEY                    
+export QQ_SKEY=""                
+qq机器人的QQ_MODE                    
+export QQ_MODE=""                                  
 
 #### 6. 企业微信应用消息推送的值，文档：https://work.weixin.qq.com/api/doc/90000/90135/90236         
-依次填上corpid的值,corpsecret的值,touser的值,agentid,media_id的值，注意用,号隔开，例如："wwcff56746d9adwers,B-791548lnzXBE6_BWfxdf3kSTMJr9vFEPKAbh6WERQ,mingcheng,1000001,2COXgjH2UIfERF2zxrtUOKgQ9XklUqMdGSWLBoW_lSDAdafat"           
+依次填上corpid的值,corpsecret的值,touser的值,agentid,media_id的值，注意用,号隔开，例如："wwcff56746d9adwers,B-791548lnzXBE6_BWfxdf3kSTMJr9vFEPKAbh6WERQ,mingcheng,1000001,2COXgjH2UIfERF2zxrtUOKgQ9XklUqMdGSWLBoW_lSDAdafat"                       
 export QYWX_AM=""              
 
 #### 7. Push Plus
