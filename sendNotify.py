@@ -16,80 +16,80 @@ import urllib.parse
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
-# 通知服务
-BARK = ''                   # bark服务,自行搜索; secrets可填;
-SCKEY = ''                  # Server酱的SCKEY; secrets可填
-TG_BOT_TOKEN = ''           # tg机器人的TG_BOT_TOKEN; secrets可填1407203283:AAG9rt-6RDaaX0HBLZQq0laNOh898iFYaRQ
-TG_USER_ID = ''             # tg机器人的TG_USER_ID; secrets可填 1434078534
-TG_API_HOST=''              # tg 代理api
-TG_PROXY_IP = ''            # tg机器人的TG_PROXY_IP; secrets可填
-TG_PROXY_PORT = ''          # tg机器人的TG_PROXY_PORT; secrets可填
-DD_BOT_ACCESS_TOKEN = ''    # 钉钉机器人的DD_BOT_ACCESS_TOKEN; secrets可填
-DD_BOT_SECRET = ''          # 钉钉机器人的DD_BOT_SECRET; secrets可填
-QQ_SKEY = ''                # qq机器人的QQ_SKEY; secrets可填
-QQ_MODE = ''                # qq机器人的QQ_MODE; secrets可填
-QYWX_AM = ''                # 企业微信
-PUSH_PLUS_TOKEN = ''        # 微信推送Plus+
+def initialize(d):
+    # 通知服务
+    global notify_mode,message_info,BARK,PUSH_KEY,TG_BOT_TOKEN,TG_USER_ID,TG_API_HOST,TG_PROXY_HOST,TG_PROXY_PORT,DD_BOT_TOKEN,DD_BOT_SECRET,Q_SKEY,QQ_MODE,QYWX_AM,PUSH_PLUS_TOKEN
+    notify_mode = []
+    message_info = ''''''
+    BARK=d['BARK']                          # bark服务,自行搜索; secrets可填;
+    PUSH_KEY=d['PUSH_KEY']                  # Server酱的PUSH_KEY; secrets可填
+    TG_BOT_TOKEN=d['TG_BOT_TOKEN']          # tg机器人的TG_BOT_TOKEN; secrets可填1407203283:AAG9rt-6RDaaX0HBLZQq0laNOh898iFYaRQ
+    TG_USER_ID=d['TG_USER_ID']              # tg机器人的TG_USER_ID; secrets可填 1434078534
+    TG_API_HOST=d['TG_API_HOST']            # tg 代理api
+    TG_PROXY_HOST=d['TG_PROXY_HOST']        # tg机器人的TG_PROXY_HOST; secrets可填
+    TG_PROXY_PORT=d['TG_PROXY_PORT']        # tg机器人的TG_PROXY_PORT; secrets可填
+    DD_BOT_TOKEN=d['DD_BOT_TOKEN']          # 钉钉机器人的DD_BOT_TOKEN; secrets可填
+    DD_BOT_SECRET=d['DD_BOT_SECRET']        # 钉钉机器人的DD_BOT_SECRET; secrets可填
+    QQ_SKEY=d['QQ_SKEY']                    # qq机器人的QQ_SKEY; secrets可填
+    QQ_MODE=d['QQ_MODE']                    # qq机器人的QQ_MODE; secrets可填
+    QYWX_AM=d['QYWX_AM']                    # 企业微信
+    PUSH_PLUS_TOKEN=d['PUSH_PLUS_TOKEN']    # 微信推送Plus+
 
-notify_mode = []
+    # GitHub action运行需要填写对应的secrets
+    if "BARK" in os.environ and os.environ["BARK"]:
+        BARK = os.environ["BARK"]
+    if "PUSH_KEY" in os.environ and os.environ["PUSH_KEY"]:
+        PUSH_KEY = os.environ["PUSH_KEY"]
+    if "TG_BOT_TOKEN" in os.environ and os.environ["TG_BOT_TOKEN"] and "TG_USER_ID" in os.environ and os.environ["TG_USER_ID"]:
+        TG_BOT_TOKEN = os.environ["TG_BOT_TOKEN"]
+        TG_USER_ID = os.environ["TG_USER_ID"]
+    if "TG_API_HOST" in os.environ and os.environ["TG_API_HOST"]:
+        TG_API_HOST = os.environ["TG_API_HOST"]
+    if "DD_BOT_TOKEN" in os.environ and os.environ["DD_BOT_TOKEN"] and "DD_BOT_SECRET" in os.environ and os.environ["DD_BOT_SECRET"]:
+        DD_BOT_TOKEN = os.environ["DD_BOT_TOKEN"]
+        DD_BOT_SECRET = os.environ["DD_BOT_SECRET"]
+    if "QQ_SKEY" in os.environ and os.environ["QQ_SKEY"] and "QQ_MODE" in os.environ and os.environ["QQ_MODE"]:
+        QQ_SKEY = os.environ["QQ_SKEY"]
+        QQ_MODE = os.environ["QQ_MODE"]
+    # 获取pushplus+ PUSH_PLUS_TOKEN
+    if "PUSH_PLUS_TOKEN" in os.environ:
+        if len(os.environ["PUSH_PLUS_TOKEN"]) > 1:
+            PUSH_PLUS_TOKEN = os.environ["PUSH_PLUS_TOKEN"]
+            # print("已获取并使用Env环境 PUSH_PLUS_TOKEN")
+    # 获取企业微信应用推送 QYWX_AM
+    if "QYWX_AM" in os.environ:
+        if len(os.environ["QYWX_AM"]) > 1:
+            QYWX_AM = os.environ["QYWX_AM"]
+            # print("已获取并使用Env环境 QYWX_AM")
 
-message_info = ''''''
+    if BARK:
+        notify_mode.append('bark')
+        # print("BARK 推送打开")
+    if PUSH_KEY:
+        notify_mode.append('sc_key')
+        # print("Server酱 推送打开")
+    if TG_BOT_TOKEN and TG_USER_ID:
+        notify_mode.append('telegram_bot')
+        # print("Telegram 推送打开")
+    if DD_BOT_TOKEN and DD_BOT_SECRET:
+        notify_mode.append('dingding_bot')
+        # print("钉钉机器人 推送打开")
+    if QQ_SKEY and QQ_MODE:
+        notify_mode.append('coolpush_bot')
+        # print("QQ机器人 推送打开")
 
-# GitHub action运行需要填写对应的secrets
-if "BARK" in os.environ and os.environ["BARK"]:
-    BARK = os.environ["BARK"]
-if "SCKEY" in os.environ and os.environ["SCKEY"]:
-    SCKEY = os.environ["SCKEY"]
-if "TG_BOT_TOKEN" in os.environ and os.environ["TG_BOT_TOKEN"] and "TG_USER_ID" in os.environ and os.environ["TG_USER_ID"]:
-    TG_BOT_TOKEN = os.environ["TG_BOT_TOKEN"]
-    TG_USER_ID = os.environ["TG_USER_ID"]
-if "TG_API_HOST" in os.environ and os.environ["TG_API_HOST"]:
-    TG_API_HOST = os.environ["TG_API_HOST"]
-if "DD_BOT_ACCESS_TOKEN" in os.environ and os.environ["DD_BOT_ACCESS_TOKEN"] and "DD_BOT_SECRET" in os.environ and os.environ["DD_BOT_SECRET"]:
-    DD_BOT_ACCESS_TOKEN = os.environ["DD_BOT_ACCESS_TOKEN"]
-    DD_BOT_SECRET = os.environ["DD_BOT_SECRET"]
-if "QQ_SKEY" in os.environ and os.environ["QQ_SKEY"] and "QQ_MODE" in os.environ and os.environ["QQ_MODE"]:
-    QQ_SKEY = os.environ["QQ_SKEY"]
-    QQ_MODE = os.environ["QQ_MODE"]
-# 获取pushplus+ PUSH_PLUS_TOKEN
-if "PUSH_PLUS_TOKEN" in os.environ:
-    if len(os.environ["PUSH_PLUS_TOKEN"]) > 1:
-        PUSH_PLUS_TOKEN = os.environ["PUSH_PLUS_TOKEN"]
-        # print("已获取并使用Env环境 PUSH_PLUS_TOKEN")
-# 获取企业微信应用推送 QYWX_AM
-if "QYWX_AM" in os.environ:
-    if len(os.environ["QYWX_AM"]) > 1:
-        QYWX_AM = os.environ["QYWX_AM"]
-        # print("已获取并使用Env环境 QYWX_AM")
-
-if BARK:
-    notify_mode.append('bark')
-    # print("BARK 推送打开")
-if SCKEY:
-    notify_mode.append('sc_key')
-    # print("Server酱 推送打开")
-if TG_BOT_TOKEN and TG_USER_ID:
-    notify_mode.append('telegram_bot')
-    # print("Telegram 推送打开")
-if DD_BOT_ACCESS_TOKEN and DD_BOT_SECRET:
-    notify_mode.append('dingding_bot')
-    # print("钉钉机器人 推送打开")
-if QQ_SKEY and QQ_MODE:
-    notify_mode.append('coolpush_bot')
-    # print("QQ机器人 推送打开")
-
-if PUSH_PLUS_TOKEN:
-    notify_mode.append('pushplus_bot')
-    # print("微信推送Plus机器人 推送打开")
-if QYWX_AM:
-    notify_mode.append('wecom_app')
-    # print("企业微信机器人 推送打开")
+    if PUSH_PLUS_TOKEN:
+        notify_mode.append('pushplus_bot')
+        # print("微信推送Plus机器人 推送打开")
+    if QYWX_AM:
+        notify_mode.append('wecom_app')
+        # print("企业微信机器人 推送打开")
 
 
-def message(str_msg):
+def msg(str_msg):
     global message_info
     print(str_msg)
-    message_info = "{}\n{}".format(message_info, str_msg)
+    message_info = f"{message_info}\n{str_msg}"
     sys.stdout.flush()
 
 def bark(title, content):
@@ -110,15 +110,15 @@ def bark(title, content):
 
 def serverJ(title, content):
     print("\n")
-    if not SCKEY:
-        print("server酱服务的SCKEY未设置!!\n取消推送")
+    if not PUSH_KEY:
+        print("server酱服务的PUSH_KEY未设置!!\n取消推送")
         return
     print("serverJ服务启动")
     data = {
         "text": title,
         "desp": content.replace("\n", "\n\n")
     }
-    response = requests.post(f"https://sc.ftqq.com/{SCKEY}.send", data=data).json()
+    response = requests.post(f"https://sc.ftqq.com/{PUSH_KEY}.send", data=data).json()
     if response['errno'] == 0:
         print('推送成功！')
     else:
@@ -145,8 +145,8 @@ def telegram_bot(title, content):
         headers = {'Content-Type': 'application/x-www-form-urlencoded'}
         payload = {'chat_id': str(TG_USER_ID), 'text': f'{title}\n\n{content}', 'disable_web_page_preview': 'true'}
         proxies = None
-        if TG_PROXY_IP and TG_PROXY_PORT:
-            proxyStr = "http://{}:{}".format(TG_PROXY_IP, TG_PROXY_PORT)
+        if TG_PROXY_HOST and TG_PROXY_PORT:
+            proxyStr = "http://{}:{}".format(TG_PROXY_HOST, TG_PROXY_PORT)
             proxies = {"http": proxyStr, "https": proxyStr}
         try:
             response = requests.post(url=url, headers=headers, params=payload, proxies=proxies).json()
@@ -167,7 +167,7 @@ def dingding_bot(title, content):
     hmac_code = hmac.new(secret_enc, string_to_sign_enc, digestmod=hashlib.sha256).digest()
     sign = urllib.parse.quote_plus(base64.b64encode(hmac_code))  # 签名
     print('开始使用 钉钉机器人 推送消息...', end='')
-    url = f'https://oapi.dingtalk.com/robot/send?access_token={DD_BOT_ACCESS_TOKEN}&timestamp={timestamp}&sign={sign}'
+    url = f'https://oapi.dingtalk.com/robot/send?access_token={DD_BOT_TOKEN}&timestamp={timestamp}&sign={sign}'
     headers = {'Content-Type': 'application/json;charset=utf-8'}
     data = {
         'msgtype': 'text',
@@ -318,13 +318,13 @@ def send(title, content):
                 print('未启用 bark')
             continue
         if i == 'sc_key':
-            if SCKEY:
+            if PUSH_KEY:
                 serverJ(title=title, content=content)
             else:
                 print('未启用 Server酱')
             continue
         elif i == 'dingding_bot':
-            if DD_BOT_ACCESS_TOKEN and DD_BOT_SECRET:
+            if DD_BOT_TOKEN and DD_BOT_SECRET:
                 dingding_bot(title=title, content=content)
             else:
                 print('未启用 钉钉机器人')
