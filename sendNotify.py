@@ -302,13 +302,14 @@ class WeCom:
         respone = respone.json()
         return respone["errmsg"]
 
-def send(title, content=message_info):
+def send(title):
     """
     使用 bark, telegram bot, dingding bot, serverJ 发送手机推送
     :param title:
     :param content:
     :return:
     """
+    content=message_info
     content += '\n\n项目地址By: https://github.com/wuye999/myScripts'
     for i in notify_mode:
         if i == 'bark':
