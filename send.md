@@ -6,8 +6,8 @@ https://sct.ftqq.com
 export PUSH_KEY=""    
 
 #### 2. BARK
-bark服务,自行搜索
-export BARK=""           
+bark服务,自行搜索                                 
+export BARK=""                    
 
 #### 3. Telegram            
 填写自己申请@BotFather的Token，如10xxx4:AAFcqxxxxgER5uw         
