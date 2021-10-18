@@ -38,19 +38,7 @@ import datetime
 
 ## 获取通知服务
 class Msg(object):
-    def __init__(self):
-        global msg_info
-        msg_info=''
-
-    def msg(self,m):
-        global msg_info
-        print(m)
-        msg_info = f'{msg_info}\n{m}'
-        sys.stdout.flush()
-
-    def getsendNotify(self, a=0):
-        if a == 0:
-            a += 1
+    def getsendNotify(self, a=1):
         try:
             url = 'https://ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
             response = requests.get(url)
@@ -64,23 +52,27 @@ class Msg(object):
             return self.getsendNotify(a)
 
     def main(self):
-        global send
+        global send,msg,initialize
         cur_path = os.path.abspath('.')
         sys.path.append(cur_path)
-        if os.path.exists(cur_path + "/sendNotify.py"):
+        for n in range(3):
+            if os.path.exists(cur_path + "/sendNotify.py"):
+                try:
+                    from sendNotify import send,msg,initialize
+                    break
+                except:
+                    self.getsendNotify()
+            else:
+                self.getsendNotify()
+        l=['BARK','PUSH_KEY','TG_BOT_TOKEN','TG_USER_ID','TG_API_HOST','TG_PROXY_HOST','TG_PROXY_PORT','DD_BOT_TOKEN','DD_BOT_SECRET','QQ_SKEY','Q_SKEY','QQ_MODE','QYWX_AM','PUSH_PLUS_TOKEN']
+        d={}
+        for a in l:
             try:
-                from sendNotify import send
-                return
+                d[a]=eval(a)
             except:
-                pass
-        self.getsendNotify()
-        try:
-            from sendNotify import send
-        except:
-            print("加载通知服务失败~")      
-M=Msg()
-M.main()  # 初始化通知服务
-msg=M.msg   
+                d[a]=''
+        initialize(d)           
+Msg().main()   # 初始化通知服务  
 
 
 # 读取环境变量
@@ -205,6 +197,7 @@ def myredbean(token):
             msg("%s,原因:输入token失效或错误 请继续运行程序并输入，脚本将在运行一遍后自动删除异常配置文件!!\n"%(result2["msg"]))
         else:
             msg("请求接口失效或参数异常，建议🙏重置参数!\n")
+            send('### 美团 ###')   # 启用通知服务
             sys.exit(0)
     except urllib.error.URLError as e:
         if hasattr(e,"code"):
@@ -244,13 +237,16 @@ def getbatchId(token):
                 return result2["data"]["batchId"]
             else:
                 msg("获取batchId失败👀，当前非限时抢红包时间段,无法进行下一步，但已为您签到完毕🙏!\n")
+                send('### 美团 ###')   # 启用通知服务
                 sys.exit(0)
 
         elif (result2["code"]==1):
             msg("%s,接口需提交的token参数已改变👀,请修改后重新运行一遍脚本！\n"%(result2["msg"]))
+            send('### 美团 ###')   # 启用通知服务
             sys.exit(0)
         else:
             msg("获取batchId错误👀，请检查网络，否则为接口失效！\n")
+            send('### 美团 ###')   # 启用通知服务
             sys.exit(0)
         
 
@@ -808,5 +804,5 @@ def main():
     
 if __name__ == "__main__":
     main()
-    send('### 美团 ###', msg_info)   # 启用通知服务
+    send('### 美团 ###')   # 启用通知服务
     
