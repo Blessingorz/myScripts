@@ -133,59 +133,42 @@ def getUserInfo(cookie_list):
     return a
 
 ## 获取通知服务
-class msg(object):
-    def __init__(self, m):
-        self.str_msg = m
-        self.message()
-    def message(self):
-        global msg_info
-        print(self.str_msg)
+class Msg(object):
+    def getsendNotify(self, a=1):
         try:
-            msg_info = f'{msg_info}\n{self.str_msg}'
-        except:
-            msg_info = f'{self.str_msg}'
-        sys.stdout.flush()
-    def getsendNotify(self, a=0):
-        if a == 0:
-            a += 1
-        try:
-            url = 'https://ghproxy.com/https://raw.githubusercontent.com/wuye999/jd/main/sendNotify.py'
+            url = 'https://ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
             response = requests.get(url)
-            if 'curtinlv' in response.text:
-                with open('sendNotify.py', "w+", encoding="utf-8") as f:
-                    f.write(response.text)
-            else:
-                if a < 5:
-                    a += 1
-                    return self.getsendNotify(a)
-                else:
-                    pass
+            with open('sendNotify.py', "w+", encoding="utf-8") as f:
+                f.write(response.text)
+            return
         except:
-            if a < 5:
-                a += 1
-                return self.getsendNotify(a)
-            else:
-                pass
+            pass
+        if a < 5:
+            a += 1
+            return self.getsendNotify(a)
+
     def main(self):
-        global send
+        global send,msg,initialize
         cur_path = os.path.abspath('.')
         sys.path.append(cur_path)
-        if os.path.exists(cur_path + "/sendNotify.py"):
-            try:
-                from sendNotify import send
-            except:
-                self.getsendNotify()
+        for n in range(3):
+            if os.path.exists(cur_path + "/sendNotify.py"):
                 try:
-                    from sendNotify import send
+                    from sendNotify import send,msg,initialize
+                    break
                 except:
-                    print("加载通知服务失败~")
-        else:
-            self.getsendNotify()
+                    self.getsendNotify()
+            else:
+                self.getsendNotify()
+        l=['BARK','PUSH_KEY','TG_BOT_TOKEN','TG_USER_ID','TG_API_HOST','TG_PROXY_HOST','TG_PROXY_PORT','DD_BOT_TOKEN','DD_BOT_SECRET','QQ_SKEY','Q_SKEY','QQ_MODE','QYWX_AM','PUSH_PLUS_TOKEN']
+        d={}
+        for a in l:
             try:
-                from sendNotify import send
+                d[a]=eval(a)
             except:
-                print("加载通知服务失败~")
-msg("").main()  # 初始化通知服务
+                d[a]=''
+        initialize(d)   # 初始化        
+Msg().main()   # 初始化通知服务 
 
 
 if __name__ == '__main__':
@@ -194,5 +177,5 @@ if __name__ == '__main__':
     path,cookie_list,pin_list,ckkk=Judge_env().main_run()
     cookie_list=getUserInfo(cookie_list)
     list(map(ask_api,cookie_list))
-    send('### 7天签到 ###', msg_info)   # 启用通知服务
+    send('### 7天签到 ###')   # 启用通知服务
 
