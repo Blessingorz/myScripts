@@ -76,15 +76,15 @@ def sign_merch(cookie):
         'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
         'cookie': cookie
     }
-    for n in range(3):
+    for n in range(5):
         a=0
         try:
             time.sleep(2)
-            res = requests.get(url=url, headers=headers, timeout=2,verify=False).json()
+            res = requests.get(url=url, headers=headers, timeout=10,verify=False).json()
             a=1
             break
         except:
-            print('请求失败，正在重试🌍...')
+            print('请求失败，正在重试🌐...')
     if a!=1:
         msg('❗任务失败...')
         return False
@@ -137,7 +137,7 @@ def sign_in(cookie,a):
             a=1
             break
         except:
-            msg('请求失败，正在重试🌍...')
+            msg('请求失败，正在重试🌐...')
     if a!=1:
         msg('❗任务失败...')
         return False
