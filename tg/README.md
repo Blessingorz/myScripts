@@ -24,5 +24,4 @@ export tg_api_hash="0123456789abcdef0123456789abcdef"
 #### 获取api_id
 申请api_id、api_hash： [点我申请](https://my.telegram.org/auth?to=apps)       
 不懂如何申请的自行谷歌     
-### 通知推送
-[点我查看](https://github.com/wuye999/myScripts/blob/main/send.md)
+
