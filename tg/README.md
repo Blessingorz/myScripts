@@ -1,9 +1,9 @@
 ### tg相关脚本   
-首先需要获取登录凭证：    
+青龙获取登录凭证：    
 ```
-docker exec -it qinglong bash     # 进入容器    
-cd /ql/scripts      # 必须进入这个目录    
-python3 /ql/scripts/detg_code.py      # 脚本在哪儿，就怎么写    
+docker exec -it qinglong bash                # 进入容器    
+cd /ql/scripts                               # 必须进入这个目录    
+python3 /ql/scripts/detg_code.py             # 脚本在哪儿，就怎么写    
 Please enter your phone (or bot token）      # 这个时候输入手机号获取验证码，【验证码在tg内查看！】 例如： +86188788878888    
 ```
 接着输入验证码     
@@ -12,7 +12,7 @@ Please enter your phone (or bot token）      # 这个时候输入手机号获�
 接下来可以添加定时了。需要科学上网。
 ### 脚本
 ```
-* * * * * tg_send_messages.py   # 定时发送消息
+* * * * * tg_send_messages.py               # tg定时发送消息
 ```
 ### 环境变量
 详细变量脚本内有说明  
