@@ -6,12 +6,8 @@ https://sct.ftqq.com
 export PUSH_KEY=""    
 
 #### 2. BARK
-填写app提供的设备码，例如：https://api.day.app/123 那么此处的设备码就是123      
-export BARK_PUSH=""     
-填写推送声音设置，例如choo，具体值请在bark-推送铃声-查看所有铃声        
-export BARK_SOUND=""        
-填写推送消息分组，默认为"QingLong"      
-export BARK_GROUP=""        
+bark服务,自行搜索
+export BARK=""           
 
 #### 3. Telegram            
 填写自己申请@BotFather的Token，如10xxx4:AAFcqxxxxgER5uw         
@@ -40,34 +36,18 @@ export TG_API_HOST=""
 export DD_BOT_TOKEN=""      
 export DD_BOT_SECRET=""     
 
-#### 5. 企业微信机器人      
-官方说明文档：https://work.weixin.qq.com/api/doc/90000/90136/91770      
-填写密钥，企业微信推送 webhook 后面的 key       
-export QYWX_KEY=""      
+#### 5. qq机器人·   
+qq机器人的QQ_SKEY
+export QQ_SKEY="" 
+qq机器人的QQ_MODE
+export QQ_MODE=""               
 
-#### 8. 企业微信应用消息推送的值，文档：https://work.weixin.qq.com/api/doc/90000/90135/90236         
+#### 6. 企业微信应用消息推送的值，文档：https://work.weixin.qq.com/api/doc/90000/90135/90236         
 依次填上corpid的值,corpsecret的值,touser的值,agentid,media_id的值，注意用,号隔开，例如："wwcff56746d9adwers,B-791548lnzXBE6_BWfxdf3kSTMJr9vFEPKAbh6WERQ,mingcheng,1000001,2COXgjH2UIfERF2zxrtUOKgQ9XklUqMdGSWLBoW_lSDAdafat"           
-export QYWX_AM=""           
+export QYWX_AM=""              
 
-#### 7. iGot聚合
-参考文档：https://wahao.github.io/Bark-MP-helper        
-填写iGot的推送key，支持多方式推送，确保消息可达     
-export IGOT_PUSH_KEY=""     
-
-#### 8. Push Plus
+#### 7. Push Plus
 官方网站：http://www.pushplus.plus      
 填写您的Token，微信扫码登录后一对一推送或一对多推送下面的token，只填 PUSH_PLUS_TOKEN 默认为一对一推送       
 export PUSH_PLUS_TOKEN=""       
-一对一多推送（选填）        
-填写您的一对多推送的 "群组编码" ，（一对多推送下面->您的群组(如无则新建)->群组编码）        
-1. 需订阅者扫描二维码 2、如果您是创建群组所属人，也需点击“查看二维码”扫描绑定，否则不能接受群组消息推送     
-export PUSH_PLUS_USER=""        
-
-#### 9. go-cqhttp
-gobot_url 推送到个人QQ: http://127.0.0.1/send_private_msg  群：http://127.0.0.1/send_group_msg      
-gobot_token 填写在go-cqhttp文件设置的访问密钥       
-gobot_qq 如果GOBOT_URL设置 /send_private_msg 则需要填入 user_id=个人QQ 相反如果是 /send_group_msg 则需要填入 group_id=QQ群      
-go-cqhttp相关API https://docs.go-cqhttp.org/api     
-export GOBOT_URL=""     
-export GOBOT_TOKEN=""       
-export GOBOT_QQ=""      
+           
