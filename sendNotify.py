@@ -16,7 +16,6 @@ import urllib.parse
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
-message_info = ''''''
 def initialize(d):
     # 通知服务
     global notify_mode,message_info,BARK,PUSH_KEY,TG_BOT_TOKEN,TG_USER_ID,TG_API_HOST,TG_PROXY_HOST,TG_PROXY_PORT,DD_BOT_TOKEN,DD_BOT_SECRET,Q_SKEY,QQ_MODE,QYWX_AM,PUSH_PLUS_TOKEN
