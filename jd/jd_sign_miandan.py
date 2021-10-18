@@ -198,19 +198,7 @@ def doTask(cookie):
 
 ## 获取通知服务
 class Msg(object):
-    def __init__(self):
-        global msg_info
-        msg_info=''
-
-    def msg(self,m):
-        global msg_info
-        print(m)
-        msg_info = f'{msg_info}\n{m}'
-        sys.stdout.flush()
-
-    def getsendNotify(self, a=0):
-        if a == 0:
-            a += 1
+    def getsendNotify(self, a=1):
         try:
             url = 'https://ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
             response = requests.get(url)
@@ -224,24 +212,27 @@ class Msg(object):
             return self.getsendNotify(a)
 
     def main(self):
-        global send
+        global send,msg
         cur_path = os.path.abspath('.')
         sys.path.append(cur_path)
-        if os.path.exists(cur_path + "/sendNotify.py"):
+        for n in range(3):
+            if os.path.exists(cur_path + "/sendNotify.py"):
+                try:
+                    from sendNotify import send,msg,initialize
+                    break
+                except:
+                    self.getsendNotify()
+            else:
+                self.getsendNotify()
+        l=['BARK','PUSH_KEY','TG_BOT_TOKEN','TG_USER_ID','TG_API_HOST','TG_PROXY_HOST','TG_PROXY_PORT','DD_BOT_TOKEN','DD_BOT_SECRET','QQ_SKEY','Q_SKEY','QQ_MODE','QYWX_AM','PUSH_PLUS_TOKEN']
+        d={}
+        for a in l:
             try:
-                from sendNotify import send
-                return
+                d[a]=eval(a)
             except:
-                pass
-        self.getsendNotify()
-        try:
-            from sendNotify import send
-        except:
-            print("加载通知服务失败~")      
-M=Msg()
-M.main()  # 初始化通知服务
-msg=M.msg   
-
+                d[a]=''
+        initialize(d)           
+M=Msg().main()   # 初始化通知服务
 
 if __name__ == '__main__':
     msg('🔔签到免单，开始！\n')
@@ -253,5 +244,5 @@ if __name__ == '__main__':
         pin=cookie_match.match(cookie).group(2)
         msg(f'******开始【账号 {e}】 {pin} *********\n')
         doTask(cookie)
-    send('### 签到免单 ###', msg_info)   # 启用通知服务
+    send('### 签到免单 ###')   # 启用通知服务
 
