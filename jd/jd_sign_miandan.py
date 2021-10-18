@@ -40,7 +40,7 @@ class Judge_env(object):
     def main_run(self):
         self.getcodefile()
         if '/jd' in os.path.abspath(os.path.dirname(__file__)):
-            cookie_list=v4_cookie(self)
+            cookie_list=self.v4_cookie()
         else:
             cookie_list=os.environ["JD_COOKIE"].split('&')       # 获取cookie_list的合集
         if len(cookie_list)<1:
@@ -156,7 +156,7 @@ def getUserInfo(cookie):
     try:
         pin=re.match(r'pt_key=(.+);pt_pin=(.+);', cookie).group(2)
     except:
-        msg('有一个cookie 格式出错')
+        msg('有一个cookie 格式出错\n')
         return False
     time.sleep(0.2)
     url = 'https://me-api.jd.com/user_new/info/GetJDUserInfoUnion?orgFlag=JD_PinGou_New&callSource=mainorder&channel=4&isHomewhite=0&sceneval=2&sceneval=2&callback='
@@ -179,9 +179,9 @@ def getUserInfo(cookie):
             nickname = resp['data']['userInfo']['baseInfo']['nickname']  # 账号名
             return True
         else:
-            msg(f"账号 {pin} Cookie 已失效！请重新获取。")
+            msg(f"账号 {pin} Cookie 已失效！请重新获取。\n")
     except Exception:
-        msg(f"账号 {pin} Cookie 已失效！请重新获取。")
+        msg(f"账号 {pin} Cookie 已失效！请重新获取。\n")
     return False
 
 
@@ -197,18 +197,17 @@ def doTask(cookie):
 
 
 ## 获取通知服务
-class msg(object):
-    def __init__(self, m):
-        self.str_msg = m
-        self.message()
-    def message(self):
+class Msg(object):
+    def __init__(self):
         global msg_info
-        print(self.str_msg)
-        try:
-            msg_info = f'{msg_info}\n{self.str_msg}'
-        except:
-            msg_info = f'{self.str_msg}'
+        msg_info=''
+
+    def msg(self,m):
+        global msg_info
+        print(m)
+        msg_info = f'{msg_info}\n{m}'
         sys.stdout.flush()
+
     def getsendNotify(self, a=0):
         if a == 0:
             a += 1
@@ -223,6 +222,7 @@ class msg(object):
         if a < 5:
             a += 1
             return self.getsendNotify(a)
+
     def main(self):
         global send
         cur_path = os.path.abspath('.')
@@ -238,7 +238,9 @@ class msg(object):
             from sendNotify import send
         except:
             print("加载通知服务失败~")      
-msg("").main()  # 初始化通知服务
+M=Msg()
+M.main()  # 初始化通知服务
+msg=M.msg   
 
 
 if __name__ == '__main__':
