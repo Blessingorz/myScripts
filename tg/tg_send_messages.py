@@ -13,7 +13,7 @@ tg_send_messages_2='@JD_ShareCode_Bot<<</help'
 # export tg_api_hash="0123456789abcdef0123456789abcdef"  
 # export tg_send_messages_1="@iKuuuu_VPN<<<长大了就不要笑得那么开心"
 # export tg_send_messages_2="@JD_ShareCode_Bot<<</help"
-# export tg_send_messages_n="'@某用户<<<需要发送的消息"    #按顺序填写，最多999条
+# export tg_send_messages_n="@某用户<<<需要发送的消息"    #按顺序填写，最多999条
 
 import os
 import re
