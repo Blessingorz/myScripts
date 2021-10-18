@@ -222,10 +222,10 @@ def wecom_app(title, content):
             print("QYWX_AM 并未设置！！\n取消推送")
             return
         QYWX_AM_AY = re.split(',', QYWX_AM)
-        print("企业微信应用服务启动")
         if 4 < len(QYWX_AM_AY) > 5:
             print("QYWX_AM 设置错误！！\n取消推送")
             return
+        print("企业微信应用服务启动")
         corpid = QYWX_AM_AY[0]
         corpsecret = QYWX_AM_AY[1]
         touser = QYWX_AM_AY[2]
