@@ -212,7 +212,7 @@ class Msg(object):
             return self.getsendNotify(a)
 
     def main(self):
-        global send,msg
+        global send,msg,initialize
         cur_path = os.path.abspath('.')
         sys.path.append(cur_path)
         for n in range(3):
@@ -231,8 +231,8 @@ class Msg(object):
                 d[a]=eval(a)
             except:
                 d[a]=''
-        initialize(d)           
-M=Msg().main()   # 初始化通知服务
+        initialize(d)   # 初始化        
+Msg().main()   # 初始化通知服务 
 
 if __name__ == '__main__':
     msg('🔔签到免单，开始！\n')
