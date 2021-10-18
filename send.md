@@ -1,5 +1,5 @@
 ### 通知环境变量
-在环境变量中填写    
+在脚本内或环境变量中填写，如果是脚本内，需要去掉export 后填写                         
 #### 1. Server酱
 https://sct.ftqq.com    
 填写 SCHKEY 值或 SendKey 值     
