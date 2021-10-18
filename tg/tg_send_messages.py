@@ -6,12 +6,14 @@ tg_api_id = '12345'
 tg_api_hash = '0123456789abcdef0123456789abcdef'
 tg_send_messages_1='@iKuuuu_VPN<<<早'
 tg_send_messages_2='@JD_ShareCode_Bot<<</help' 
+# tg_send_messages_n='@某用户<<<需要发送的消息'       #按顺序填写，最多999条
 
 # 环境变量填写 ,会优先读取环境变量。
 # export tg_api_id="12345"    
 # export tg_api_hash="0123456789abcdef0123456789abcdef"  
 # export tg_send_messages_1="@iKuuuu_VPN<<<长大了就不要笑得那么开心"
 # export tg_send_messages_2="@JD_ShareCode_Bot<<</help"
+# export tg_send_messages_n="'@某用户<<<需要发送的消息"    #按顺序填写，最多999条
 
 import os
 import re
