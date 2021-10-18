@@ -43,6 +43,6 @@ USER_AGENTS = [
 ]
 
 def jdUA():
-    USER_AGENTS = USER_AGENTS[random.randint(0, len(USER_AGENTS) - 1)]
-    return USER_AGENTS
+    ua = USER_AGENTS[random.randint(0, len(USER_AGENTS) - 1)]
+    return ua
 
