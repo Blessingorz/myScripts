@@ -173,8 +173,7 @@ class Get_env(object):
 class Composite_urls(object):
     def __init__(self, data_pack):
         self.data_pack=data_pack
-        global requisition
-        self.name_value_dict,self.biaozhi,requisition = data_pack(0)
+        self.name_value_dict,self.biaozhi = data_pack(0)
         self.import_prefix=codes.codes
     
     ## 根据助力码和self.value通过data_pack组合出url_list,输出结果
@@ -386,7 +385,6 @@ class Bulk_request(object):
             return self.request_process(url)
 
 
-
 def get_md5(s):
     return hashlib.md5(str(s).encode('utf-8')).hexdigest()
 
@@ -394,10 +392,11 @@ def get_md5(s):
 def he1pu(decode, *, value=0):
     name_value_dict={'Fruit':'farm','Bean':'bean','Pet':'pet','DreamFactory':'jxfactory','JdFactory':'ddfactory','Sgmh':'sgmh','Health':'health'}
     biaozhi = 'he1pu'
+    global requisition
     requisition='get'
     r=f'http://www.helpu.cf/jdcodes/submit.php?code={decode}&type={value}'
     if decode==0:
-        return name_value_dict, biaozhi, requisition
+        return name_value_dict, biaozhi
     else:
         return r  
 
@@ -405,10 +404,11 @@ def he1pu(decode, *, value=0):
 def helloworld(decode, *, value=0):
     name_value_dict={'Fruit':'farm','Bean':'bean','Pet':'pet','DreamFactory':'jxfactory','JdFactory':'ddfactory','Sgmh':'sgmh','Health':'health'}
     biaozhi='helloworld'
+    global requisition
     requisition='get'
     r=f'https://api.jdsharecode.xyz/api/runTimes?sharecode={decode}&activityId={value}'
     if decode==0:
-        return name_value_dict, biaozhi, requisition
+        return name_value_dict, biaozhi
     else:
         return r        
 
@@ -416,10 +416,11 @@ def helloworld(decode, *, value=0):
 def passerbyBot(decode, *, value=0):
     name_value_dict={'Fruit':'FruitCode','JdFactory':'FactoryCode', 'Cfd':'CfdCode'}
     biaozhi='passerbyBot'
+    global requisition
     requisition='get'
     r=f'http://51.15.187.136:8080/activeJd{value}?code={decode}'
     if decode==0:
-        return name_value_dict, biaozhi, requisition
+        return name_value_dict, biaozhi
     else:
         return r 
 
@@ -427,10 +428,11 @@ def passerbyBot(decode, *, value=0):
 def he1pu_pin(decode, *, pin=0, value=0):
     name_value_dict={'Cfd':'jxcfd','5G超级盲盒':'mohe','京喜财富岛合珍珠':'jxcfdm','88红包':'jxlhb'}
     biaozhi = 'he1pu_pin'
+    global requisition
     requisition='get'
     r=f'http://www.helpu.cf/jdcodes/submit.php?code={decode}&type={value}&user={pin}'
     if value==0:
-        return name_value_dict, biaozhi, requisition
+        return name_value_dict, biaozhi
     else:
         return r
 
@@ -438,11 +440,12 @@ def he1pu_pin(decode, *, pin=0, value=0):
 def helloworld_pin(decode, *, pin=0, value=0):
     name_value_dict={'全民开红包':'redPacket'}
     biaozhi = 'helloworld_pin'
+    global requisition
     requisition='get'
     pin=get_md5(pin)
     r=f'https://api.jdsharecode.xyz/api/autoInsert/{value}?sharecode={decode}&pin={pin}'
     if value==0:
-        return name_value_dict, biaozhi, requisition
+        return name_value_dict, biaozhi
     else:
         return r
 
@@ -450,21 +453,23 @@ def helloworld_pin(decode, *, pin=0, value=0):
 def helloworld_x(decode, *, pin=0, farm_code=0, bean_code=0, value=0):
     name_value_dict={'Cfd':'jxcfd','京喜牧场':'jxmc','京喜牧场红包码':'jxmchb','88红包':'hb88'}
     biaozhi='helloworld_x'
+    global requisition
     requisition='get'
     pin=get_md5(pin)
     r=f'https://api.jdsharecode.xyz/api/autoInsert/{value}?sharecode={decode}&bean={bean_code}&farm={farm_code}&pin={pin}'
     if value==0:
-        return name_value_dict, biaozhi, requisition
+        return name_value_dict, biaozhi
     else:
         return r
 
 def ddo(decode, *, pin=0, value=0):
     name_value_dict={'Cfd':'cfd'}
     biaozhi='ddo'
+    global requisition
     requisition='post'
     r=f'http://transfer.nz.lu/upload/{value}?code={decode}&ptpin={pin}'
     if value==0:
-        return name_value_dict, biaozhi, requisition
+        return name_value_dict, biaozhi
     else:
         return r    
 
