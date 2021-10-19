@@ -40,7 +40,7 @@ class Judge_env(object):
             cookie_list=os.environ["JD_COOKIE"].split('&')       # 获取cookie_list的合集
         else:
             cookie_list=Get_env().get_env_nofixed('Cookie')     # 获取cookie_list的合集
-        pin_list=[re.match(r'pt_key=(.+);pt_pin=(.+);', cookie).group(2) for cookie in cookie_list]  # 提取cookie中的pin
+        pin_list=[re.findall(r'pt_key=(.+);pt_pin=(.+);', cookie)[0][1] for cookie in cookie_list]  # 提取cookie中的pin
         ckkk=len(cookie_list)      
         return path,cookie_list,pin_list,ckkk
 
