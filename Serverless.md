@@ -6,8 +6,9 @@
 提交方法： 在线编辑        
 执行方法： index.main_handler        
 ![image](https://user-images.githubusercontent.com/79479594/137999218-9978d63e-2d98-4dd7-8aaa-8636837fc0a4.png)
-然后复制Serverless.py中所有代码，填入index.py       
-[Serverless.py](https://github.com/wuye999/myScripts/blob/main/Serverless.py)           
+然后复制Serverless.py中所有代码            
+填入index.py        
+[点我查看Serverless.py](https://github.com/wuye999/myScripts/blob/main/Serverless.py)           
 ![image](https://user-images.githubusercontent.com/79479594/137999805-84d2c251-3e80-46be-92e1-97870b027e88.png)
 #### 环境变量
 点击高级配置，将执行时间改成900         
