@@ -28,6 +28,8 @@ meituan_exchangeCoinNumber=""        # propId对应某类必中符所需的豆�
 # 通知推送服务环境变量请查看：https://github.com/wuye999/myScripts/blob/main/send.md
 # 填写在脚本内则去掉export 
 
+import sys
+sys.path.append('../../tmp')
 from typing import Text
 import urllib.request
 import ssl
@@ -35,7 +37,6 @@ import json
 import os
 import re
 import time
-import sys
 import datetime
 
 
@@ -44,7 +45,7 @@ class Msg(object):
     def getsendNotify(self, a=1):
         try:
             url = 'https://ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
-            response = requests.get(url)
+            response = requests.get(url,timeout=3)
             with open('sendNotify.py', "w+", encoding="utf-8") as f:
                 f.write(response.text)
             return
@@ -56,16 +57,12 @@ class Msg(object):
 
     def main(self):
         global send,msg,initialize
-        cur_path = os.path.abspath('.')
-        sys.path.append(cur_path)
+        sys.path.append(os.path.abspath('.'))
         for n in range(3):
-            if os.path.exists(cur_path + "/sendNotify.py"):
-                try:
-                    from sendNotify import send,msg,initialize
-                    break
-                except:
-                    self.getsendNotify()
-            else:
+            try:
+                from sendNotify import send,msg,initialize
+                break
+            except:
                 self.getsendNotify()
         l=['BARK','PUSH_KEY','TG_BOT_TOKEN','TG_USER_ID','TG_API_HOST','TG_PROXY_HOST','TG_PROXY_PORT','DD_BOT_TOKEN','DD_BOT_SECRET','QQ_SKEY','Q_SKEY','QQ_MODE','QYWX_AM','PUSH_PLUS_TOKEN']
         d={}
@@ -787,10 +784,6 @@ def main():
                             msg("*👴尽力了，等到红包池要关闭了都未等到任意大额红包被抢完，开始保底10元，注意查收！*\n")
                         queryredpool(token)  
 
-
-
-
-    
     if n_time < d_time7  :
         propIdforuse =1      
     drawlottery(batchId,token,propIdforuse)
@@ -804,8 +797,10 @@ def main():
     querymyProps(token)
     myRedBeanRecords(token)
     sys.stdout = temp
+    send('### 美团 ###')   # 启用通知服务
+
     
 if __name__ == "__main__":
     main()
-    send('### 美团 ###')   # 启用通知服务
+    
     
