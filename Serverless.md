@@ -13,7 +13,8 @@
 #### 环境变量
 点击高级配置，将执行时间改成900         
 ![image](https://user-images.githubusercontent.com/79479594/138000046-57536607-7dd8-4303-aa14-46ec9954d7b1.png)
-填写环境变量script_add ，script_update         
+填写环境变量script_add ，script_update                   
+script_add一定要加https://ghproxy.com/                     
 ```
 | key               | value                                 | 说明              
 | script_add        | https://ghproxy.com/xxxx/xxx/xxx.py   | 需要运行的脚本地址，仅支持我的库的一部分脚本      |           
