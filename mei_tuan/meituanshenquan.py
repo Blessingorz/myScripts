@@ -24,6 +24,9 @@ meituan_wm_latitude=""       # 去除小数点的纬度(如30657401)
 meituan_wm_longitude=""      # 去除小数点的经度(如104065827)
 meituan_propId=""        # 所需要兑换道具的propId(推荐填写5)
 meituan_exchangeCoinNumber=""        # propId对应某类必中符所需的豆子数量(推荐填写1800)
+# 在原脚本的基础上支持了多种推送方式
+# 通知推送服务环境变量请查看：https://github.com/wuye999/myScripts/blob/main/send.md
+# 填写在脚本内则去掉export 
 
 from typing import Text
 import urllib.request
