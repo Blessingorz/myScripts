@@ -86,10 +86,13 @@ def initialize(d):
         # print("企业微信机器人 推送打开")
 
 
-def msg(str_msg):
+def msg(*agrs):
     global message_info
-    print(str_msg)
-    message_info = f"{message_info}\n{str_msg}"
+    a=''
+    for str_msg in agrs:
+        a=a+' '+str(str_msg)
+    print(a)
+    message_info = f"{message_info}\n{a}"
     sys.stdout.flush()
 
 def bark(title, content):
@@ -303,14 +306,14 @@ class WeCom:
         respone = respone.json()
         return respone["errmsg"]
 
-def send(title):
+def send(title,text=''):
     """
     使用 bark, telegram bot, dingding bot, serverJ 发送手机推送
     :param title:
     :param content:
     :return:
     """
-    content=message_info
+    content=text+'\n'+message_info
     content += '\n\n项目地址By: https://github.com/wuye999/myScripts'
     for i in notify_mode:
         if i == 'bark':
