@@ -86,11 +86,12 @@ def initialize(d):
         # print("企业微信机器人 推送打开")
 
 
-def msg(*agrs):
+def msg(*args):
     global message_info
     a=''
-    for str_msg in agrs:
+    for str_msg in args:
         a=a+' '+str(str_msg)
+    a=a[1:]
     print(a)
     message_info = f"{message_info}\n{a}"
     sys.stdout.flush()
