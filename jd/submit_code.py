@@ -39,10 +39,22 @@ class Judge_env(object):
         if path != '/jd/log/jcode':
             cookie_list=os.environ["JD_COOKIE"].split('&')       # 获取cookie_list的合集
         else:
-            cookie_list=Get_env().get_env_nofixed('Cookie')     # 获取cookie_list的合集
+            cookie_list=self.v4_cookie()     # 获取cookie_list的合集
         pin_list=[re.findall(r'pt_key=(.+);pt_pin=(.+);', cookie)[0][1] for cookie in cookie_list]  # 提取cookie中的pin
         ckkk=len(cookie_list)      
         return path,cookie_list,pin_list,ckkk
+    
+    def v4_cookie(self):
+        a=[]
+        b=re.compile(r'Cookie.*?=\"(.*?)\"', re.I)
+        with open('/jd/config/config.sh', 'r') as f:
+            for line in f.readlines():
+                try:
+                    regular=b.match(line).group(1)
+                    a.append(regular)
+                except:
+                    pass
+        return a
 
 
 # 生成path_list合集
@@ -118,56 +130,6 @@ class Match_cus(object):
                 if n==self.stop_n:
                     break
         self.codes[name]=a
-
-
-# 青龙，v4，本地，第三方等环境变量获取
-class Get_env(object):
-    # 需要导入自定义正则模块
-    def __init__(self,class_match='Match_cus'):
-        if isinstance(class_match,str):
-            self.search=eval(f'{class_match}()')
-        else:
-            self.search=class_match()
-        self.env={}
-
-    # 读取固定环境变量,返回的是字符串
-    def get_env(self,env):
-        try:
-            if env in os.environ:
-                a=os.environ[env]
-            elif '/jd' in os.path.abspath(os.path.dirname(__file__)):
-                a=self.search.set_var([env],[r'(?:export )?'+env+r' ?= ?[\"\'](.*?)[\"\']'],['/jd/config/config.sh'],1)[0]
-            else:
-                a=eval(env)
-        except:
-            print(f'不存在环境变量 {env} \n')
-            return
-        if len(a)<1:
-            print(f'环境变量 {env} 为空\n')
-            return
-        self.env[env]=a
-        return a
-
-    # 读取不固定环境变量,返回的是list
-    def get_env_nofixed(self,env):
-        a=[]
-        for n in range(1,999):
-            try:
-                if f'{env}_1' in os.environ:
-                    b=os.environ[f'{env}_{n}']
-                elif '/jd' in os.path.abspath(os.path.dirname(__file__)):
-                    b=self.search.set_var([f'{env}_{n}'],[r'(?:export )?'+f'{env}_?{n}'+r' ?= ?[\"\'](.*?)[\"\']'],['/jd/config/config.sh'],1)
-                else:
-                    b=eval(f'{env}_{n}')
-                a.append(b)
-            except:
-                break
-        a=[i for i in a if len(i)>1]
-        if len(a)<1:
-            print(f'环境变量 {env} 不存在或为空\n')
-            return    
-        self.env[env]=a
-        return a
 
 # 合成url
 class Composite_urls(object):
