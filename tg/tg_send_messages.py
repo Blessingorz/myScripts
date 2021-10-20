@@ -152,6 +152,7 @@ def tip():
 
 
 if __name__=='__main__':
+    a=Get_env()
     tg_api_id=a.get_env('tg_api_id')
     tg_api_hash=a.get_env('tg_api_hash')
     tg_send_messages=a.get_env_nofixed('tg_send_messages')  
@@ -161,6 +162,6 @@ if __name__=='__main__':
             client.start()    
     except:
         print('网络环境出错, 或tg_api出错，或验证出错')
-    a=Get_env()
+
     send_mess(tg_send_messages)
     print('\nwuye9999')
