@@ -388,7 +388,7 @@ def passerbyBot(decode, *, value=0):
 
 ## he1pu_pin数据
 def he1pu_pin(decode, *, pin=0, value=0):
-    name_value_dict={'Cfd':'jxcfd','5G超级盲盒':'mohe','京喜财富岛合珍珠':'jxcfdm','88红包':'jxlhb'}
+    name_value_dict={'Cfd':'jxcfd','5G超级盲盒':'mohe','京喜财富岛合珍珠':'jxcfdm','88红包':'jxlhb','City':'city'}
     biaozhi = 'he1pu_pin'
     global requisition
     requisition='get'
