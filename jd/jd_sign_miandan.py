@@ -237,6 +237,7 @@ Msg().main()   # 初始化通知服务
 
 def main():
     msg('🔔签到免单，开始！\n')
+    global ua
     ua=ua_random()
     cookie_list=Judge_env().main_run()
     msg(f'====================共{len(cookie_list)}京东个账号Cookie=========\n')
