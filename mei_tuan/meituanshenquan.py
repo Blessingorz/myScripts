@@ -71,8 +71,12 @@ class Msg(object):
                 d[a]=eval(a)
             except:
                 d[a]=''
-        initialize(d)           
-Msg().main()   # 初始化通知服务  
+        try:
+            initialize(d)
+        except:
+            self.getsendNotify()
+            self.main()          
+Msg().main()   # 初始化通知服务   
 
 
 # 读取环境变量
