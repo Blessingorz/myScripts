@@ -6,14 +6,14 @@ tg_api_id = '12345'
 tg_api_hash = '0123456789abcdef0123456789abcdef'
 tg_send_messages_1='@iKuuuu_VPN<<<早'
 tg_send_messages_2='@JD_ShareCode_Bot<<</help' 
-# tg_send_messages_n='@某用户<<<需要发送的消息'       #按顺序填写，最多999条
+# tg_send_messages_n='@某用户<<<需要发送的消息'       #按自然数顺序填写，最多999条
 
 # 环境变量填写 ,会优先读取环境变量。
 # export tg_api_id="12345"    
 # export tg_api_hash="0123456789abcdef0123456789abcdef"  
 # export tg_send_messages_1="@iKuuuu_VPN<<<长大了就不要笑得那么开心"
 # export tg_send_messages_2="@JD_ShareCode_Bot<<</help"
-# export tg_send_messages_n="@某用户<<<需要发送的消息"    #按顺序填写，最多999条
+# export tg_send_messages_n="@某用户<<<需要发送的消息"    #按自然数顺序填写，最多999条
 
 import os
 import re
@@ -152,6 +152,9 @@ def tip():
 
 
 if __name__=='__main__':
+    tg_api_id=a.get_env('tg_api_id')
+    tg_api_hash=a.get_env('tg_api_hash')
+    tg_send_messages=a.get_env_nofixed('tg_send_messages')  
     anon=tip()
     try:
         with TelegramClient(anon, tg_api_id, tg_api_hash) as client:
@@ -159,8 +162,5 @@ if __name__=='__main__':
     except:
         print('网络环境出错, 或tg_api出错，或验证出错')
     a=Get_env()
-    tg_api_id=a.get_env('tg_api_id')
-    tg_api_hash=a.get_env('tg_api_hash')
-    tg_send_messages=a.get_env_nofixed('tg_send_messages')    
     send_mess(tg_send_messages)
     print('\nwuye9999')
