@@ -3,7 +3,7 @@
 ```
 docker exec -it qinglong bash                # 进入容器    
 cd /ql/scripts                               # 必须进入这个目录    
-python3 /ql/scripts/detg_code.py             # 脚本在哪儿，就怎么写    
+python3 /ql/scripts/xxxxxx.py             # 脚本在哪儿，就怎么写    
 ```
 出现 Please enter your phone (or bot token） 的时候输入手机号获取验证码，【验证码在tg内查看！】 例如： +86188788878888         
 接着输入验证码     
