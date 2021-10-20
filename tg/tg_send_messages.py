@@ -2,18 +2,18 @@
 
 # 脚本内填写 
 # 向群't.me/iKuuuu_VPN' 发送 '长大了就不要笑得那么开心', 向机器人'@JD_ShareCode_Bot' 发送 '/help'。
-tg_api_id = '12345'
-tg_api_hash = '0123456789abcdef0123456789abcdef'
-tg_send_messages_1='@iKuuuu_VPN<<<早'
-tg_send_messages_2='@JD_ShareCode_Bot<<</help' 
-# tg_send_messages_n='@某用户<<<需要发送的消息'       #按自然数顺序填写，最多999条
+tg_api_id="12345"
+tg_api_hash="0123456789abcdef0123456789abcdef"
+tg_send_messages_1="@iKuuuu_VPN<<<长大了就不要笑得那么开心"
+tg_send_messages_2="@JD_ShareCode_Bot<<</help"
+tg_send_messages_n="@某用户<<<需要发送的消息"   #按自然数顺序填写，最多999条
 
 # 环境变量填写 ,会优先读取环境变量。
-# export tg_api_id="12345"    
-# export tg_api_hash="0123456789abcdef0123456789abcdef"  
+# export tg_api_id="12345"
+# export tg_api_hash="0123456789abcdef0123456789abcdef"
 # export tg_send_messages_1="@iKuuuu_VPN<<<长大了就不要笑得那么开心"
 # export tg_send_messages_2="@JD_ShareCode_Bot<<</help"
-# export tg_send_messages_n="@某用户<<<需要发送的消息"    #按自然数顺序填写，最多999条
+# export tg_send_messages_n="@某用户<<<需要发送的消息"   #按自然数顺序填写，最多999条
 
 import os
 import re
@@ -30,30 +30,29 @@ def get_env(env):
         if env in os.environ:
             a=os.environ[env]
         elif '/ql' in os.path.abspath(os.path.dirname(__file__)):
-            a=v4_env(env,'/ql/config/config.sh')
+            try:
+                a=v4_env(env,'/ql/config/config.sh')
+            except:
+                a=eval(env)
         elif '/jd' in os.path.abspath(os.path.dirname(__file__)):
-            a=v4_env(env,'/jd/config/config.sh')
+            try:
+                a=v4_env(env,'/jd/config/config.sh')
+            except:
+                a=eval(env)
         else:
             a=eval(env)
     except:
-        print(f'环境变量 {env} 不存在\n')    
+        a=False
     return a
 
 # 读取不固定环境变量,返回的是list
 def get_env_nofixed(env):
     a=[]
     for n in range(1,999):
-        try:
-            if f'{env}_1' in os.environ:
-                b=os.environ[f'{env}_{n}']
-            elif '/ql' in os.path.abspath(os.path.dirname(__file__)):
-                a=v4_env(f'{env}_{n}','/ql/config/config.sh')
-            elif '/jd' in os.path.abspath(os.path.dirname(__file__)):
-                b=v4_env(f'{env}_{n}','/jd/config/config.sh')
-            else:
-                b=eval(f'{env}_{n}')
+        b=get_env(f'{env}_{n}')
+        if b:
             a.append(b)
-        except:
+        else:
             break
     return a
 
