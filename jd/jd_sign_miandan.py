@@ -8,6 +8,7 @@ import os
 import re
 import requests
 import sys
+sys.path.append('../../tmp')
 requests.packages.urllib3.disable_warnings()
 
 
@@ -201,7 +202,7 @@ class Msg(object):
     def getsendNotify(self, a=1):
         try:
             url = 'https://ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
-            response = requests.get(url)
+            response = requests.get(url,timeout=3)
             with open('sendNotify.py', "w+", encoding="utf-8") as f:
                 f.write(response.text)
             return
@@ -213,16 +214,12 @@ class Msg(object):
 
     def main(self):
         global send,msg,initialize
-        cur_path = os.path.abspath('.')
-        sys.path.append(cur_path)
+        sys.path.append(os.path.abspath('.'))
         for n in range(3):
-            if os.path.exists(cur_path + "/sendNotify.py"):
-                try:
-                    from sendNotify import send,msg,initialize
-                    break
-                except:
-                    self.getsendNotify()
-            else:
+            try:
+                from sendNotify import send,msg,initialize
+                break
+            except:
                 self.getsendNotify()
         l=['BARK','PUSH_KEY','TG_BOT_TOKEN','TG_USER_ID','TG_API_HOST','TG_PROXY_HOST','TG_PROXY_PORT','DD_BOT_TOKEN','DD_BOT_SECRET','QQ_SKEY','Q_SKEY','QQ_MODE','QYWX_AM','PUSH_PLUS_TOKEN']
         d={}
@@ -231,10 +228,14 @@ class Msg(object):
                 d[a]=eval(a)
             except:
                 d[a]=''
-        initialize(d)   # 初始化        
+        try:
+            initialize(d)
+        except:
+            self.getsendNotify()
+            self.main()          
 Msg().main()   # 初始化通知服务 
 
-if __name__ == '__main__':
+def main():
     msg('🔔签到免单，开始！\n')
     ua=ua_random()
     cookie_list=Judge_env().main_run()
@@ -245,4 +246,7 @@ if __name__ == '__main__':
         msg(f'******开始【账号 {e}】 {pin} *********\n')
         doTask(cookie)
     send('### 签到免单 ###')   # 启用通知服务
+
+if __name__ == '__main__':
+    main()
 
