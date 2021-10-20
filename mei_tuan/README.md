@@ -1,5 +1,5 @@
 ### 美团
-此脚本只是搬运修改，方便青龙，v4等使用        
+此脚本只是搬运修改，方便青龙，v4，云函数等使用        
 此脚本只是搬运修改，方便青龙，v4，云函数等使用        
 请支持脚本作者：https://github.com/fuguiKz/meituan-shenquan             
 请支持脚本作者：https://github.com/fuguiKz/meituan-shenquan         
@@ -12,6 +12,7 @@
 ```
 
 ### 腾讯云函数
+据说美团限制了云函数ip，不知真假                            
 [查看腾讯云函数方法](https://github.com/wuye999/myScripts/blob/main/Serverless.md)
 
 
