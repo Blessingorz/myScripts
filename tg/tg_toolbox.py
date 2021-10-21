@@ -214,7 +214,6 @@ def app_proxy():
                 )
         elif 'socks5' in tg_proxy_type:
             print('启用socks5代理\n')
-            print(tg_proxy_port)
             app=TelegramClient(
                 anon,tg_api_id,tg_api_hash,
                 proxy=(socks.SOCKS5, tg_proxy_add, int(tg_proxy_port))
