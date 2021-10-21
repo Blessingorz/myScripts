@@ -2,10 +2,11 @@
 
 # 脚本内填写 ,例：
 # 向群't.me/iKuuuu_VPN' 发送 '长大了就不要笑得那么开心', 向机器人'@JD_ShareCode_Bot' 发送 '/help'。
-tg_api_id="5031291"
-tg_api_hash="2348ede87c396f5e170474c9eb0074fe"
-tg_send_messages_1="@iKuuuu_VPN<<<长大了就不要笑得那么开心"
-tg_send_messages_2="@xiao_bot<<</help"
+tg_api_id="123456789"
+tg_api_hash="12345678996f5e170474abcd4fe"
+tg_send_messages_1="@JDhlep_Bot<<</help"
+tg_send_messages_2="@xiaoyu002_bot<<</help"
+# 更多变量请查看：https://github.com/wuye999/myScripts/blob/main/tg/README.md
 
 # 环境变量填写 ,会优先读取环境变量。
 # export tg_api_id="12345"
@@ -72,7 +73,7 @@ def v4_env(env,paths):
 
 
 async def myme():
-    me = await client.get_me()
+    me = await app.get_me()
     print(f'登录成功，欢迎 {me} ')
 
 
