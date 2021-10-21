@@ -82,7 +82,10 @@ tg_forward_messages_1="@转发目标<<<@iKuuuu_VPN<<<色图"    # 监控内容�
 ![image](https://user-images.githubusercontent.com/79479594/138206171-9944c605-1b4d-4525-9606-09234ae960bf.png)                           
 监控频道，把文件下载到本地           
 运行120分钟以后，一旦监听到消息，就算不是文件，也会结束脚本          
-![image](https://user-images.githubusercontent.com/79479594/138206240-e203f933-1dd6-4b63-afea-54995b960dce.png)                       
+![image](https://user-images.githubusercontent.com/79479594/138206240-e203f933-1dd6-4b63-afea-54995b960dce.png)                           
+使用socks5代理        
+![image](https://user-images.githubusercontent.com/79479594/138214888-5b461f88-d6d8-4be4-9927-5a260c848e43.png)           
+![image](https://user-images.githubusercontent.com/79479594/138214935-ca58a1f1-4cb9-4fb2-8216-6e09012e945a.png)                 
 
 ### 多账户
 如需要使用多账户，则复制多个脚本，在每个脚本内部填写各自的变量                   
