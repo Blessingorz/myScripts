@@ -201,23 +201,29 @@ def app_proxy():
     tg_proxy_add=get_env('tg_proxy_add')
     tg_proxy_port=get_env('tg_proxy_port')
     if tg_proxy_type:
+        global socks
+        try:
+            import socks
+        except:
+            print("\n缺少socks 模块，请执行命令安装：pip3 install PySocks \n请执行命令安装：pip3 install socks")
         if 'socks4' in tg_proxy_type:
             print('启用socks4代理\n')
             app=TelegramClient(
                 anon,tg_api_id,tg_api_hash,
-                proxy=(1, tg_proxy_add, int(tg_proxy_port))
+                proxy=(socks.SOCKS4, tg_proxy_add, int(tg_proxy_port))
                 )
         elif 'socks5' in tg_proxy_type:
             print('启用socks5代理\n')
+            print(tg_proxy_port)
             app=TelegramClient(
                 anon,tg_api_id,tg_api_hash,
-                proxy=(2, tg_proxy_add, int(tg_proxy_port))
+                proxy=(socks.SOCKS5, tg_proxy_add, int(tg_proxy_port))
                 )
         elif 'http' in tg_proxy_type:
             print('启用http代理\n')
             app=TelegramClient(
                 anon,tg_api_id,tg_api_hash,
-                proxy=(3, tg_proxy_add, int(tg_proxy_port))
+                proxy=(socks.HTTP, tg_proxy_add, int(tg_proxy_port))
                 )
         else:
             print(f'不存在的代理方式{tg_proxy_type}\n')
