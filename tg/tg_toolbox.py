@@ -74,7 +74,7 @@ def v4_env(env,paths):
 
 async def myme():
     me = await app.get_me()
-    print(f'登录成功，欢迎 {me} ')
+    print(f'登录成功，欢迎 \n ')
 
 
 # 发送消息
