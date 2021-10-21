@@ -17,7 +17,7 @@ python3 /ql/scripts/xxxxxx.py             # 脚本在哪儿，就怎么写
 ```
 ### 变量
 脚本内填写或者环境变量填写，环境变量优先       
-必须变量        
+必须变量 api_id，api_hash [点我申请](https://my.telegram.org/auth?to=apps)                                      
 ```
 export tg_api_id="12345"    
 export tg_api_hash="0123456789abcdef0123456789abcdef"  
