@@ -26,7 +26,7 @@ export tg_api_hash="0123456789abcdef0123456789abcdef"
 代理
 ```
 tg_proxy_type="http"                           # socks4 或 socks5 或 http 不填则为不用代理
-tg_proxy_add="1.15.14.11"                      # 代理ip，   如果有密码，则： "username:password@1.15.14.11"
+tg_proxy_add="1.15.14.11"                      # 代理ip
 tg_proxy_port="7778"                           # 代理端口
 ```
 发送消息        
