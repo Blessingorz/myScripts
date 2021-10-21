@@ -1,4 +1,4 @@
-### **tg_toolbox.py** 
+### **脚本 tg_toolbox.py** 
 青龙获取登录凭证：         
 先填写变量tg_api_id，tg_api_hash，然后         
 ```
