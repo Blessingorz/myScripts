@@ -310,7 +310,7 @@ def travel_collectScore(cookie,inviteId):
 
 def main():
     msg('🔔双11签到加内部助力，开始！\n')
-    global inviteId_list,cookie_match
+    global inviteId_list
     inviteId_list=[]
     msg(f'====================共{len(cookie_list)}京东个账号Cookie=========\n')
     for e,cookie in enumerate(cookie_list,start=1):
