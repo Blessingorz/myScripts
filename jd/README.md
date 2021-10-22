@@ -4,9 +4,6 @@
 详细介绍请查看脚本内说明    
 ```
 9 9 * * * jd_sign_miandan.py        # 签到免单  
-9 9 * * * jd_7dayClockin.py         # 7天签到一元购   
-5 */8 * * * ql_bendi4.py            # wskey转pt_key  
-0 0 * * * jd_jxcfd_cash100.py       # 京喜财富岛抢100红包
 16 */2 * * * jd_11Boost.py          # 京东双11签到+助力
 ```
 ### 环境变量
