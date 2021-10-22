@@ -305,9 +305,6 @@ def travel_collectScore(cookie,inviteId):
 # }
 
 
-
-
-
 def main():
     msg('🔔双11签到加内部助力，开始！\n')
     global inviteId_list
@@ -320,11 +317,12 @@ def main():
         travel_sign(cookie)
         travel_collectAtuoScore(cookie)
         travel_getTaskDetail(cookie)
+    msg(f'\n====================开始助力=========\n')
     for e,cookie in enumerate(cookie_list,start=1):
         for inviteId in inviteId_list:
             if not travel_collectScore(cookie,inviteId):
                 msg(f'账号{get_pin(cookie)}火爆或助力次数已耗尽，跳过该账号\n')
-                continue
+                break
     if run_send=='yes':
         send('### 双11签到加内部助力 ###')   # 启用通知服务
 
