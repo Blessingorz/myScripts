@@ -273,10 +273,7 @@ def main():
                 if travel_pk_getHomeData_2(cookie_list[f-1])>=5:
                     msg('跳过该账号\n')
                     break
-                if not travel_pk_joinGroup(cookie,inviteId):
-                    if not f==e:
-                        msg(f'账号{get_pin(cookie)}火爆或助力次数已耗尽，跳过该账号\n')
-                        break
+                travel_pk_joinGroup(cookie,inviteId)
         except:
             msg('黑号吧\n')
     if run_send=='yes':

@@ -278,13 +278,9 @@ def main():
     for e,cookie in enumerate(cookie_list,start=1):
         for f,inviteId in enumerate(inviteId_list,start=1):
             if not travel_collectScore(cookie,inviteId):
-                if e!=1:
+                if e!=f:
                     msg(f'账号{get_pin(cookie)}火爆或助力次数已耗尽，跳过该账号\n')
                     break
-                else:
-                    if f>1:
-                        msg(f'账号{get_pin(cookie)}火爆或助力次数已耗尽，跳过该账号\n')
-                        break 
     if run_send=='yes':
         send('### 双11签到加内部助力 ###')   # 通知服务
 
