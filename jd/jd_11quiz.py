@@ -264,23 +264,19 @@ def main():
         if e==(len(cookie_list)//5):
             break
     msg(f'\n====================队伍{get_pin(cookie)}开始助力=========\n')
-    for n in range(len(cookie_list)//5):
+    for f,inviteId in enumerate(inviteId_list,start=1):
+        if travel_pk_getHomeData_2(cookie_list[f-1])>=5:
+            msg('跳过该账号\n')
+            continue
         for e,cookie in enumerate(cookie_list,start=1):
-            for f,inviteId in enumerate(inviteId_list,start=1):
-                if travel_pk_getHomeData_2(cookie_list[n])>=5:
-                    msg('跳过该账号\n')
+            if travel_pk_getHomeData_2(cookie_list[f-1])>=5:
+                msg('跳过该账号\n')
+                break
+            if not travel_pk_joinGroup(cookie,inviteId):
+                if not f==e:
+                    msg(f'账号{get_pin(cookie)}火爆或助力次数已耗尽，跳过该账号\n')
                     break
-                if not travel_pk_joinGroup(cookie,inviteId):
-                    if e!=1:
-                        msg(f'账号{get_pin(cookie)}火爆或助力次数已耗尽，跳过该账号\n')
-                        break
-                    else:
-                        if f>1:
-                            msg(f'账号{get_pin(cookie)}火爆或助力次数已耗尽，跳过该账号\n')
-                            break 
-                if travel_pk_getHomeData_2(cookie_list[n])>=5:
-                    msg('跳过该账号\n')
-                    break
+
     if run_send=='yes':
         send('### 组队竞猜赢大奖 ###')   # 通知服务
 
