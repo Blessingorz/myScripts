@@ -233,7 +233,7 @@ def travel_pk_getHomeData_2(cookie):
 # 助力
 def travel_pk_joinGroup(cookie,inviteId):
     msg(f'账号 {get_pin(cookie)} 去助力{inviteId}')
-    body = { "inviteId":inviteId,"confirmFlag":"1", "ss": { "extraData": { "log": "", "sceneid": "HYJhPageh5" }, "secretp": get_secretp(cookie), "random": ''.join(random.sample(string.digits, 6)) }, "inviteId": inviteId }
+    body = { "inviteId":inviteId,"confirmFlag":"1", "ss": { "extraData": { "log": "", "sceneid": "HYJhPageh5" }, "secretp": get_secretp(cookie), "random": ''.join(random.sample(string.digits, 6)) }}
     res=taskPostUrl("travel_pk_joinGroup", body, cookie)
     if not res:
         return
