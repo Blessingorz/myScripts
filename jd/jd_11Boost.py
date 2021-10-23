@@ -129,7 +129,7 @@ class Msg(object):
 Msg().main()   # 初始化通知服务 
 
 
-def taskPostUrl(functionId, body, cookie):
+def taskPostUrl(functionId, body, cookie, resp=True):
     url=f'{JD_API_HOST}?functionId={functionId}'
     data=f'functionId={functionId}&body={body}&client=wh5&clientVersion=1.0.0'
     headers={
@@ -141,9 +141,18 @@ def taskPostUrl(functionId, body, cookie):
         'Accept-Language': 'zh-cn',
         'Accept-Encoding': 'gzip, deflate, br',
     }
-    return url,data,headers
+    if resp:
+        for n in range(3):
+            try:
+                res = requests.post(url=url, headers=headers, json=data, timeout=10,verify=False).json()
+                return res
+            except:
+                if n==3:
+                    msg('API请求失败，请检查网路重试❗\n')  
+    else:
+        return url,data,headers
 
-def taskPostUrl2(functionId, body, cookie):
+def taskPostUrl2(functionId, body, cookie, resp=True):
     url=f'{JD_API_HOST}?functionId={functionId}&client=wh5'
     data=f'body={body}'
     headers={
@@ -155,20 +164,23 @@ def taskPostUrl2(functionId, body, cookie):
         'Accept-Language': 'zh-cn',
         'Accept-Encoding': 'gzip, deflate, br',
     }
-    return url,data,headers
+    if resp:
+        for n in range(3):
+            try:
+                res = requests.post(url=url, headers=headers, json=data, timeout=10,verify=False).json()
+                return res
+            except:
+                if n==3:
+                    msg('API请求失败，请检查网路重试❗\n')      
+    else:
+        return url,data,headers
 
 # 获取 secretp
 def get_secretp(cookie):
     body = {}
-    url,data,headers=taskPostUrl("travel_getHomeData", body, cookie)
-    for n in range(3):
-        try:
-            res = requests.post(url=url, headers=headers, json=data, timeout=10,verify=False).json()
-            break
-        except:
-            if n==3:
-                msg('API请求失败，请检查网路重试❗\n')
-                return
+    res=taskPostUrl("travel_getHomeData", body, cookie)
+    if not res:
+        return
     try:
         secretp=res['data']['result']['homeMainInfo']['secretp']
         return secretp
@@ -180,15 +192,9 @@ def get_secretp(cookie):
 def travel_sign(cookie):
     msg('开始签到...')
     body = { "ss": { "extraData": { "log": "", "sceneid": "HYJhPageh5" }, "secretp": get_secretp(cookie), "random": ''.join(random.sample(string.digits, 6)) } }
-    url,data,headers=taskPostUrl("travel_sign", body, cookie)
-    for n in range(3):
-        try:
-            res = requests.post(url=url, headers=headers, json=data, timeout=10,verify=False).json()
-            break
-        except:
-            if n==3:
-                msg('API请求失败，请检查网路重试❗\n')
-                return
+    res=taskPostUrl("travel_sign", body, cookie)
+    if not res:
+        return
     if res['code']==0 :
         if res['data']['bizCode'] == 0:
             msg('签到成功✅\n')   
@@ -203,15 +209,9 @@ def travel_sign(cookie):
 def travel_collectAtuoScore(cookie):
     msg('开始收集汪汪币...')
     body = { "ss": { "extraData": { "log": "", "sceneid": "HYJhPageh5" }, "secretp": get_secretp(cookie), "random": ''.join(random.sample(string.digits, 6)) } }
-    url,data,headers=taskPostUrl("travel_collectAtuoScore", body, cookie)
-    for n in range(3):
-        try:
-            res = requests.post(url=url, headers=headers, json=data, timeout=10,verify=False).json()
-            break
-        except:
-            if n==3:
-                msg('API请求失败，请检查网路重试❗\n')
-                return
+    res=taskPostUrl("travel_collectAtuoScore", body, cookie)
+    if not res:
+        return
     if res['code']==0 :
         if res['data']['bizCode'] == 0:
             msg(f"成功领取{res['data']['result']['produceScore']}个币\n")   
@@ -227,15 +227,9 @@ def travel_getTaskDetail(cookie):
     msg('正在获取助力码...')
     global inviteId_list
     body = {}
-    url,data,headers=taskPostUrl("travel_getTaskDetail", body, cookie)
-    for n in range(3):
-        try:
-            res = requests.post(url=url, headers=headers, json=data, timeout=10,verify=False).json()
-            break
-        except:
-            if n==3:
-                msg('API请求失败，请检查网路重试❗\n')
-                return
+    res=taskPostUrl("travel_getTaskDetail", body, cookie)
+    if not res:
+        return
     if res['code']==0 :
         if res['data']['bizCode'] == 0:
             try:
@@ -255,15 +249,9 @@ def travel_getTaskDetail(cookie):
 def travel_collectScore(cookie,inviteId):
     msg(f'账号 {get_pin(cookie)} 去助力{inviteId}')
     body = { "ss": { "extraData": { "log": "", "sceneid": "HYJhPageh5" }, "secretp": get_secretp(cookie), "random": ''.join(random.sample(string.digits, 6)) }, "inviteId": inviteId }
-    url,data,headers=taskPostUrl("travel_collectScore", body, cookie)
-    for n in range(3):
-        try:
-            res = requests.post(url=url, headers=headers, json=data, timeout=10,verify=False).json()
-            break
-        except:
-            if n==3:
-                msg('API请求失败，请检查网路重试❗\n')
-                return
+    res=taskPostUrl("travel_collectScore", body, cookie)
+    if not res:
+        return
     if res['code']==0 :
         if res['data']['success']:
             msg(f"助力成功✅\n")   
@@ -272,37 +260,6 @@ def travel_collectScore(cookie,inviteId):
     else:
         msg('错误')
         msg(f'{res}\n')
-
-
-# def travel_collectScore(taskToken, taskId) {
-#     body = { "taskId": taskId, "taskToken": taskToken, "actionType": 1, "ss": { "extraData": { "log": "", "sceneid": "HYJhPageh5" }, "secretp": secretp, "random": randomString(6) } }
-
-#     return new Promise((resolve) => {
-#         $.post(taskPostUrl("travel_collectScore", body), async(err, resp, data) => {
-#             try {
-#                 if (err) {
-#                     console.log(`${JSON.stringify(err)}`)
-#                     console.log(`${$.name} API请求失败，请检查网路重试`)
-#                 } else {
-#                     if (safeGet(data)) {
-#                         data = JSON.parse(data);
-#                         if (data.code === 0) {
-#                             if (data.data && data['data']['bizCode'] === 0) {
-#                                 console.log(data.msg)
-#                             }
-#                         } else {
-#                             console.log(`\n\n 失败:${JSON.stringify(data)}\n`)
-#                         }
-#                     }
-#                 }
-#             } catch (e) {
-#                 $.logErr(e, resp)
-#             } finally {
-#                 resolve(data);
-#             }
-#         })
-#     })
-# }
 
 
 def main():
@@ -324,7 +281,7 @@ def main():
                 msg(f'账号{get_pin(cookie)}火爆或助力次数已耗尽，跳过该账号\n')
                 break
     if run_send=='yes':
-        send('### 双11签到加内部助力 ###')   # 启用通知服务
+        send('### 双11签到加内部助力 ###')   # 通知服务
 
 
 if __name__ == '__main__':
