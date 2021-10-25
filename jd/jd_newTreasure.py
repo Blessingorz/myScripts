@@ -1,6 +1,7 @@
 # 发现新宝藏
 # 入口>   京东>12.0:/￥J5iAk3pzZUJgE4%，复制口令进入京东APP给我助力，一起瓜分1亿京豆！
-# 脚本功能为 完成全部任务，内部互助
+# 脚本功能为 完成全部任务，内部互助，抽奖
+# 已完成的任务会显示火爆，当然也可能你是黑号...
 # 环境变量JD_COOKIE，多账号用&分割
 # export JD_COOKIE="第1个cookie&第2个cookie"
 
@@ -411,12 +412,7 @@ async def boost(cookie,assignmentId,projectId,inviteId):
             try:
                 b=res['data'][0]['msg']
                 if b=='可助力':
-                    a=[]
-                    a.append(f'账号{get_pin(cookie)}去助力{inviteId}📑...')
-                    a.append(f"{b}\n")
-                    a=[aa+'\n' for aa in a]
-                    a=''.join(a)
-                    msg(a)
+                    
                     return 1
             except:
                 pass
@@ -433,6 +429,8 @@ async def boost(cookie,assignmentId,projectId,inviteId):
 
 # 助力
 async def boost_help(cookie,assignmentId,projectId,inviteId,agid_list):
+    a=[]
+    a.append(f'账号{get_pin(cookie)}去助力{inviteId}📑...')
     body={"projectId":projectId,"assignmentId":assignmentId,"type":"2","itemId":inviteId,"agid":agid_list}
     res=await taskPostUrl_5("interactive_done", body, cookie)
     if not res:
@@ -442,13 +440,16 @@ async def boost_help(cookie,assignmentId,projectId,inviteId,agid_list):
             try:
                 b=res['data'][0]['msg']
                 if '助力成功' in b:
-                    msg('助力成功✅\n')
+                    a.append('助力成功✅\n')
             except:
-                msg(res['message']+'\n')
+                a.append(res['message']+'\n')
         else:
-            msg(res['message']+'\n')
+            a.append(res['message']+'\n')
     else:
-        msg(f'错误\n{res}\n')
+        a.append(f'错误\n{res}\n')
+    a=[aa+'\n' for aa in a]
+    a=''.join(a)
+    msg(a)         
 
 # 抽奖
 async def boost_lottery(cookie,assignmentId,projectId):
@@ -756,7 +757,7 @@ def main():
     inviteId_list=[]
 
     msg(f'====================共{len(cookie_list)}京东个账号Cookie=========\n')
-
+    msg('已完成的任务会显示火爆，当然也可能你是黑号...\n')
     tasksss=[]
     for e,cookie in enumerate(cookie_list,start=1):
         msg(f'******开始【账号 {e}】 {get_pin(cookie)} *********\n')
