@@ -433,9 +433,13 @@ def main():
     womail_password_list=get_env_nofixed('womail_password')
     msg(f'====================共{len(womail_url_list)}个沃邮箱账号=========\n')
     for e,womail_url in enumerate(womail_url_list):
-        msg(f'\n******开始【账号 {e+1}】{ womail_account_list[e][:3]}****************** *********\n')
+        msg(f'\n******开始【账号 {e+1}】{womail_account_list[e][:3]}****************** *********\n')
         do_task_1(womail_url)
         do_task_2(womail_url)
+
+    msg(f'====================扩展任务共{len(womail_account_list)}个沃邮箱账号=========\n')
+    for e,f in enumerate(womail_account_list):
+        msg(f'\n******开始【账号 {e+1}】{womail_account_list[e][:3]}****************** *********\n')
         do_wo_email_task(womail_account_list[e],womail_password_list[e])
     send('### 沃邮箱 ###')   # 启用通知服务
 
