@@ -17,7 +17,7 @@
 script_add一定要加https://ghproxy.com/                     
 ```
 | key               | value                                 | 说明              
-| script_add        | https://ghproxy.com/xxxx/xxx/xxx.py   | 需要运行的脚本地址，仅支持我的库的一部分脚本      |           
+| script_add        | https://ghproxy.com/https://raw.githubusercontent.com/xxx/xxx.py   | 需要运行的脚本地址，仅支持我的库的一部分脚本      |           
 | script_update     | no                                    | 每次运行时是否强制更新脚本，yes或no,不填则为no    |          
 ```
 ![image](https://user-images.githubusercontent.com/79479594/138000369-5280b3b7-6a3d-4459-9c0b-8ec0a24581d6.png)         
