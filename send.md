@@ -3,7 +3,7 @@
 #### 1. Server酱
 https://sct.ftqq.com    
 填写 SCHKEY 值或 SendKey 值     
-export PUSH_KEY=""    
+export SCKEY=""    
 
 #### 2. BARK
 bark服务,自行搜索                                 
