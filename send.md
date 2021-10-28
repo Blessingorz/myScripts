@@ -17,7 +17,7 @@ export TG_USER_ID=""
 Telegram 代理IP（选填）     
 填写代理IP地址，代理类型为 http，比如您代理是 http://127.0.0.1:1080，则填写 "127.0.0.1"     
 如需使用，请自行解除下一行的注释        
-export TG_PROXY_IP=""     
+export TG_PROXY_HOST=""     
 Telegram 代理端口（选填）       
 填写代理端口号，代理类型为 http，比如您代理是 http://127.0.0.1:1080，则填写 "1080"      
 如需使用，请自行解除下一行的注释        
@@ -52,6 +52,5 @@ PUSH_PLUS_TOKEN：微信扫码登录后一对一推送或一对多推送下面�
 PUSH_PLUS_USER： 一对多推送的“群组编码”（一对多推送下面->您的群组(如无则新建)->群组编码，如果您是创建群组人。也需点击“查看二维码”扫描绑定，否则不能接受群组消息推送）                          
 export PUSH_PLUS_TOKEN=""                                               
 export PUSH_PLUS_USER=""                               
-export PUSH_PLUS_TOKEN_hxtrip=""                     
-export PUSH_PLUS_USER_hxtrip=""                                 
+                              
            
