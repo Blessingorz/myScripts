@@ -17,7 +17,7 @@ export TG_USER_ID=""
 Telegram 代理IP（选填）     
 填写代理IP地址，代理类型为 http，比如您代理是 http://127.0.0.1:1080，则填写 "127.0.0.1"     
 如需使用，请自行解除下一行的注释        
-export TG_PROXY_HOST=""     
+export TG_PROXY_IP=""     
 Telegram 代理端口（选填）       
 填写代理端口号，代理类型为 http，比如您代理是 http://127.0.0.1:1080，则填写 "1080"      
 如需使用，请自行解除下一行的注释        
