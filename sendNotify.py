@@ -178,7 +178,7 @@ def initialize(d):
             PUSH_PLUS_TOKEN = os.environ["PUSH_PLUS_TOKEN"]
             # print("已获取并使用Env环境 PUSH_PLUS_TOKEN")
     if "PUSH_PLUS_USER" in os.environ:
-        if len(os.environ["PUSH_PLUS_USER"]) > 1:
+        if len(os.environ["PUSH_PLUS_USER"]) > 0:
             PUSH_PLUS_USER = os.environ["PUSH_PLUS_USER"]
             # print("已获取并使用Env环境 PUSH_PLUS_USER")
         else:
@@ -327,6 +327,7 @@ def coolpush_bot(title, content):
 
 # push+推送
 def pushplus_bot(title, content):
+    global PUSH_PLUS_USER
     try:
         print("\n")
         if not PUSH_PLUS_TOKEN:
@@ -335,7 +336,7 @@ def pushplus_bot(title, content):
         if len(PUSH_PLUS_USER)<1:
             PUSH_PLUS_USER = "test"
         print("push+ 服务启动")
-        url='http://pushplus.hxtrip.com/send'
+        url='https://www.pushplus.plus/send'
         data={
             "token": PUSH_PLUS_TOKEN,
             "title": title,
@@ -343,7 +344,7 @@ def pushplus_bot(title, content):
             "topic": PUSH_PLUS_USER,
         }
         headers={
-			'Content-Type': 'application/json',
+            "Content-Type":"application/json"
 		}
         data=json.dumps(data).encode(encoding='utf-8')
         response = requests.post(url=url, data=data, headers=headers).json()
