@@ -56,11 +56,9 @@ if "PUSH_PLUS_TOKEN" in os.environ:
         PUSH_PLUS_TOKEN = os.environ["PUSH_PLUS_TOKEN"]
         # print("已获取并使用Env环境 PUSH_PLUS_TOKEN")
 if "PUSH_PLUS_USER" in os.environ:
-    if len(os.environ["PUSH_PLUS_USER"]) > 1:
+    if len(os.environ["PUSH_PLUS_USER"]) > 0:
         PUSH_PLUS_USER = os.environ["PUSH_PLUS_USER"]
         # print("已获取并使用Env环境 PUSH_PLUS_USER")
-    else:
-        PUSH_PLUS_USER = "test"
 
 # 获取企业微信应用推送 QYWX_AM
 if "QYWX_AM" in os.environ:
@@ -181,8 +179,6 @@ def initialize(d):
         if len(os.environ["PUSH_PLUS_USER"]) > 0:
             PUSH_PLUS_USER = os.environ["PUSH_PLUS_USER"]
             # print("已获取并使用Env环境 PUSH_PLUS_USER")
-        else:
-            PUSH_PLUS_USER = "test"
 
     # 获取企业微信应用推送 QYWX_AM
     if "QYWX_AM" in os.environ:
@@ -329,20 +325,17 @@ def coolpush_bot(title, content):
 def pushplus_bot(title, content):
     global PUSH_PLUS_USER
     try:
-        print("\n")
         if not PUSH_PLUS_TOKEN:
             print("push+ 服务的token未设置!!\n取消推送")
             return
-        if len(PUSH_PLUS_USER)<1:
-            PUSH_PLUS_USER = "test"
-        print("push+ 服务启动")
-        url='https://www.pushplus.plus/send'
         data={
             "token": PUSH_PLUS_TOKEN,
             "title": title,
             "content": content,
             "topic": PUSH_PLUS_USER,
         }
+        print("push+ 服务启动")
+        url='https://www.pushplus.plus/send'
         headers={
             "Content-Type":"application/json"
 		}
@@ -351,7 +344,8 @@ def pushplus_bot(title, content):
         if response['code']==200:
             print(f"push+ 推送成功！")
         else:
-            print(f"push+ 推送失败！") 
+            print(f"push+ 推送失败！")
+            print(response) 
     except Exception as e:
         print(e)
 
