@@ -1,9 +1,6 @@
 # !/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @Time    : 2021/9/16
-# @Author  : curtinlv
-# @File    : sendNotify.py
-# @Software: PyCharm
+# @Time    : 2021/10/28
 
 import sys
 import os, re
@@ -333,20 +330,22 @@ def pushplus_bot(title, content):
     try:
         print("\n")
         if not PUSH_PLUS_TOKEN:
-            print("PUSHPLUS服务的token未设置!!\n取消推送")
+            print("push+ 服务的token未设置!!\n取消推送")
             return
-        print("PUSHPLUS服务启动")
-        url='http://www.pushplus.plus/send'
+        if len(PUSH_PLUS_USER)<1:
+            PUSH_PLUS_USER = "test"
+        print("push+ 服务启动")
+        url='http://pushplus.hxtrip.com/send'
         data={
             "token": PUSH_PLUS_TOKEN,
             "title": title,
             "content": content,
             "topic": PUSH_PLUS_USER,
         }
-        data=json.dumps(data).encode(encoding='utf-8')
         headers={
-            'Content-Type': ' application/json'
-        }
+			'Content-Type': 'application/json',
+		}
+        data=json.dumps(data).encode(encoding='utf-8')
         response = requests.post(url=url, data=data, headers=headers).json()
         if response['code']==200:
             print(f"push+ 推送成功！")
