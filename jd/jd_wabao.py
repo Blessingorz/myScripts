@@ -263,38 +263,24 @@ def happyDigHome(cookie):
                 leftAmount=roundList_n['leftAmount']                # 剩余红包？
                 chunks=roundList_n['chunks']                        # 当前池详情list
 
-                if not chunks:
-                    if xueliang(cookie)>1:
-                        msg('请进入发财挖宝手动挖取最后一个格子，考虑是否开启挑战或终极')
-                        msg('当前池（挑战或终极）未开，请手动开启')
-                        happyDigDo(cookie,roundid,0,0)
-                        # msg('开启成功')
-                        return 
-                    else:
-                        break
                 msg(f'当前池序号为 {roundid} \n当前池规模为 {rows*rows}')
                 msg(f'当前池已得京东红包 {redAmount}\n 当前池已得微信红包 {cashAmount}')
                 msg(f'剩余血量 {blood}\n\n')
-                
-                for chunks_n in chunks:         # 处理池子每个格子
-                    rowIdx=chunks_n['rowIdx']               # 格子横坐标
-                    colIdx=chunks_n['colIdx']               # 格子纵坐标
-                    typeid=chunks_n['type']                 # 类型，2:京东红包  3：微信红包   4：炸弹    null:未挖
-                    value=chunks_n['value']                 # type=2 or type=3 时金额
-                    _blood=xueliang(cookie)
-                    if typeid:
-                        continue
-                    if _blood:
-                        if _blood>1:
-                            msg(f'当前血量为 {_blood} 健康，继续挖宝')
-                            msg(f'本次挖取坐标为 ({rowIdx},{colIdx})')
-                            happyDigDo(cookie,roundid,rowIdx,colIdx)
-                            _apTaskList(cookie)
-                        else:
-                            msg(f'当前血量为 {_blood} 不健康，结束该池挖宝')
-                            break
-                    else:
-                        msg('获取血量失败')
+
+                _blood=xueliang(cookie)
+                if _blood>1:
+                    happyDigDo(cookie,roundid,0,0)
+                    for n in range(roundid+4):
+                        for i in range(roundid+4):
+                            _blood=xueliang(cookie)
+                            if _blood>1:
+                                msg(f'当前血量为 {_blood} 健康，继续挖宝')
+                                msg(f'本次挖取坐标为 ({n},{i})')
+                                happyDigDo(cookie,roundid,n,i)
+                                _apTaskList(cookie)
+                            else:
+                                msg(f'当前血量为 {_blood} 不健康，结束该池挖宝')
+                                break
         else:
             msg(f'获取数据失败\n{res}\n')
     else:
@@ -444,10 +430,76 @@ def happyDigHelp(cookie,fcwbinviter,fcwbinviteCode):
     else:
         msg(res['errMsg'])
 
+
+# 微信现金id
+def spring_reward_list(cookie):
+    xueliang(cookie)
+    _apTaskList(cookie)
+    body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q","pageNum":1,"pageSize":5}
+    res=taskPostUrl("spring_reward_list", body, cookie)
+    _apTaskList(cookie)
+    log(cookie)
+    if res['code']==0:
+        if res['success']:
+            items=res['data']['items']
+            for _items in items:
+                amount=_items['amount']         # 金额
+                prizeDesc=_items['prizeDesc']   # 金额备注
+                amountid=_items['id']           # 金额id
+                poolBaseId=_items['poolBaseId']
+                prizeGroupId=_items['prizeGroupId']
+                prizeBaseId=_items['prizeBaseId']
+                if '极速版签到返红包' not in prizeDesc:
+                    wecat(cookie,amountid,poolBaseId,prizeGroupId,prizeBaseId)
+        else:
+            msg(f'获取数据失败\n{res}\n')
+    else:
+        msg(f'获取数据失败\n{res}\n')                     
+
+# 微信提现
+def wecat(cookie,amountid,poolBaseId,prizeGroupId,prizeBaseId):
+    xueliang(cookie)
+    _apTaskList(cookie)
+    url='https://api.m.jd.com'
+    headers={
+        'Cookie': cookie,
+        'Host': 'api.m.jd.com',
+        'Connection': 'keep-alive',
+        'origin': 'https://bnzf.jd.com',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        "User-Agent": ua(),
+        'Accept-Language': 'zh-cn',
+        'Accept-Encoding': 'gzip, deflate, br',
+    }
+    body={"businessSource":"happyDiggerH5Cash","base":{"id":amountid,"business":"happyDigger","poolBaseId":poolBaseId,"prizeGroupId":prizeGroupId,"prizeBaseId":prizeBaseId,"prizeType":4},"linkId":"SS55rTBOHtnLCm3n9UMk7Q"}
+    data=f"functionId=apCashWithDraw&body={json.dumps(body)}&t=1635596380119&appid=activities_platform&client=H5&clientVersion=1.0.0"
+    for n in range(3):
+        try:
+            res=requests.post(url,headers=headers,data=data).json()
+            break
+        except:
+            if n==3:
+                msg('API请求失败，请检查网路重试❗\n') 
+    log(cookie)
+    try:
+        if res['code']==0:
+            if res['success']:
+                msg(res['data']['message'])
+    except:
+        msg(res)
+    
+
+
+
+
+
+
+
 def main_run(cookie):
     apTaskDetail(cookie)
-    happyDigHome(cookie)
     apTaskList(cookie)
+    happyDigHome(cookie)
+    spring_reward_list(cookie)
     
 
 def main():
