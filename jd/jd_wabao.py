@@ -375,7 +375,7 @@ def apTaskTimeRecord(cookie,taskId):
     taskPostUrl("lite_qryBabelSiteBabelFloors", {}, cookie)
     xueliang(cookie)
     _apTaskList(cookie)
-    msg('任务完成\n')
+    msg('任务也许完成了\n')
     
 
 # 挖宝
@@ -430,9 +430,36 @@ def happyDigHelp(cookie,fcwbinviter,fcwbinviteCode):
     else:
         msg(res['errMsg'])
 
+# 领取奖励
+def happyDigExchange(cookie):
+    xueliang(cookie)
+    _apTaskList(cookie)
+    msg('开始领取奖励')
+    body={"round":2,"linkId":"SS55rTBOHtnLCm3n9UMk7Q"}
+    res=taskPostUrl("happyDigExchange", body, cookie)
+    log(cookie)
+    if not res:
+        return
+    if res['code']==0:
+        if res['success']:
+            try:
+                msg(f"领取到微信红包 {res['data']['wxValue']}\n")
+            except:
+                pass
+            try:
+                msg(f"领取到京东红包 {res['data']['redValue']}\n")
+            except:
+                pass
+        else:
+            msg(res['errMsg']+'\n')
+    else:
+        msg(res['errMsg']+'\n')
+
+
 
 # 微信现金id
 def spring_reward_list(cookie):
+    happyDigExchange(cookie)
     xueliang(cookie)
     _apTaskList(cookie)
     body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q","pageNum":1,"pageSize":5}
@@ -450,6 +477,7 @@ def spring_reward_list(cookie):
                 prizeGroupId=_items['prizeGroupId']
                 prizeBaseId=_items['prizeBaseId']
                 if '极速版签到返红包' not in prizeDesc:
+                    msg('尝试微信提现')
                     wecat(cookie,amountid,poolBaseId,prizeGroupId,prizeBaseId)
         else:
             msg(f'获取数据失败\n{res}\n')
@@ -484,9 +512,10 @@ def wecat(cookie,amountid,poolBaseId,prizeGroupId,prizeBaseId):
     try:
         if res['code']==0:
             if res['success']:
-                msg(res['data']['message'])
+                msg(res['data']['message']+'\n')
     except:
         msg(res)
+        msg('')
     
 
 
