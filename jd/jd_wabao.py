@@ -1,6 +1,7 @@
 # 发财挖宝
 # 入口>   京东极速版，我的，发财挖宝
-# 脚本功能为 完成部分任务，内部互助，挖宝，可能大概应该也许解决火爆了
+# 脚本功能为 完成部分任务，内部互助，挖宝，提现，可能大概应该也许解决火爆了
+# 由于每个号只有两次助力机会，所有只助力前两个号，以节省资源
 # 环境变量JD_COOKIE，多账号用&分割
 # export JD_COOKIE="第1个cookie&第2个cookie"
 
@@ -517,13 +518,6 @@ def wecat(cookie,amountid,poolBaseId,prizeGroupId,prizeBaseId):
         msg(res)
         msg('')
     
-
-
-
-
-
-
-
 def main_run(cookie):
     apTaskDetail(cookie)
     apTaskList(cookie)
@@ -542,6 +536,7 @@ def main():
        inviteCode(cookie) 
 
     msg('互助\n')
+    inviteCode_2_list=inviteCode_2_list[:2]
     for e,fcwbinviter in enumerate(inviteCode_2_list):
         fcwbinviteCode=inviteCode_1_list[e]
         for cookie in cookie_list:
