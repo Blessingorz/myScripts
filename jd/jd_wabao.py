@@ -1,6 +1,6 @@
 # 发财挖宝
 # 入口>   京东极速版，我的，发财挖宝
-# 脚本功能为 完成部分任务，内部互助，挖宝，可能概应该也许解决火爆了
+# 脚本功能为 完成部分任务，内部互助，挖宝，可能大概应该也许解决火爆了
 # 环境变量JD_COOKIE，多账号用&分割
 # export JD_COOKIE="第1个cookie&第2个cookie"
 
@@ -265,9 +265,11 @@ def happyDigHome(cookie):
 
                 if not chunks:
                     if xueliang(cookie)>1:
-                        msg('当前池未开，尝试开启')
+                        msg('请进入发财挖宝手动挖取最后一个格子，考虑是否开启挑战或终极')
+                        msg('当前池（挑战或终极）未开，请手动开启')
                         happyDigDo(cookie,roundid,0,0)
-                        return happyDigHome(cookie)
+                        # msg('开启成功')
+                        return 
                     else:
                         break
                 msg(f'当前池序号为 {roundid} \n当前池规模为 {rows*rows}')
