@@ -433,28 +433,29 @@ def happyDigHelp(cookie,fcwbinviter,fcwbinviteCode):
 
 # 领取奖励
 def happyDigExchange(cookie):
-    xueliang(cookie)
-    _apTaskList(cookie)
-    msg('开始领取奖励')
-    body={"round":2,"linkId":"SS55rTBOHtnLCm3n9UMk7Q"}
-    res=taskPostUrl("happyDigExchange", body, cookie)
-    log(cookie)
-    if not res:
-        return
-    if res['code']==0:
-        if res['success']:
-            try:
-                msg(f"领取到微信红包 {res['data']['wxValue']}\n")
-            except:
-                pass
-            try:
-                msg(f"领取到京东红包 {res['data']['redValue']}\n")
-            except:
-                pass
+    for n in range(0,4):
+        xueliang(cookie)
+        _apTaskList(cookie)
+        msg('开始领取奖励')
+        body={"round":n,"linkId":"SS55rTBOHtnLCm3n9UMk7Q"}
+        res=taskPostUrl("happyDigExchange", body, cookie)
+        log(cookie)
+        if not res:
+            return
+        if res['code']==0:
+            if res['success']:
+                try:
+                    msg(f"领取到微信红包 {res['data']['wxValue']}\n")
+                except:
+                    pass
+                try:
+                    msg(f"领取到京东红包 {res['data']['redValue']}\n")
+                except:
+                    pass
+            else:
+                msg(res['errMsg']+'\n')
         else:
             msg(res['errMsg']+'\n')
-    else:
-        msg(res['errMsg']+'\n')
 
 
 
