@@ -328,8 +328,8 @@ def happyDigHome(cookie):
 
                 a=jinge(cookie)
                 msg(f'当前池序号为 {roundid} \n当前池规模为 {rows}*{rows}')
-                msg(f'剩余血量 {a[0]}\n')
-                msg(f'当前已得京东红包 {a[2]}\n当前池已得微信红包 {a[1]}')
+                msg(f'剩余血量 {a[0]}')
+                msg(f'当前已得京东红包 {a[2]}\n当前池已得微信红包 {a[1]}\n')
        
                 if (_blood:=xueliang(cookie))>1:
                     happyDigDo(cookie,roundid,0,0)
