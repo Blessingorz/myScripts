@@ -4,6 +4,7 @@
 # 由于每个号只有两次助力机会，所有只助力前两个号，以节省资源
 # 环境变量JD_COOKIE，多账号用&分割
 # export JD_COOKIE="第1个cookie&第2个cookie"
+# 10/31 9:11 修复火爆
 
 import os,json,random,time,re,string,functools,asyncio
 import sys
@@ -230,6 +231,50 @@ def log(cookie, resp=True):
     else:
         return url,data,headers
 
+# 开局验证？
+def activity(cookie):
+    url="https://h5speed.m.jd.com/v2/speed/activity?flag=132&sid=f77337204fa0b3cdbc02fa03b6cfb45w&libVer=2.0.0&url=https%3A%2F%2Fbnzf.jd.com%2F&rts=1635613363462&title=%E5%8F%91%E8%B4%A2%E6%8C%96%E5%AE%9D&p1=1&p2=1&p3=1&p4=0&p5=0&p6=10&p7=249&p8=107&p9=7&p10=114&p11=1751&p12=1751&p13=0&p14=1893&p15=377&p16=1516&resources={%22badjs.json?Content=%20%5B%20Sun%20Oct%2031%202021%2001%3A02%3A39%20GMT%2B0800%20(%E5%8C%97%E7%BE%8E%E4%B8%AD%E9%83%A8%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)%20%5D%20configCenterAjaxPrame%20Exception&referer=https%3A%2F%2Fimk2.jd.com%2Fauto%2Fopen%2Fliteapp%2FconfigCenter%2Fajax%2Fsuccess%2Fexception%3Fwq&t=0.6081273460492731%22:397,%22preArousal?app=jdliteapp&refer=https%3A%2F%2Fbnzf.jd.com%2F%3FactivityId%3DSS55rTBOHtnLCm3n9UMk7Q%26lng%3D107.648869%26lat%3D30.281194%26sid%3Df77337204fa0b3cdbc02fa03b6cfb45w%26un_area%3D4_134_19915_0&imkUserId=imk2291.330737368482&type=1&msg=configCenterAjaxPrame%20Exception&t=0.1307983996705202%22:407,%22api-getStaticResource%22:392,%22api-apTaskList%22:394,%22api-getStationMarquees%22:373,%22api-happyDigHome%22:432,%22blast.cfc8150d.gif%22:365,%22halo.6d8599b2.gif%22:370,%22crack.0f00e203.gif%22:374,%22exception?data=eyJmbGFnIjoxMzIsInJ0cyI6MTYzNTYxMzM2MDUxMCwibGliVmVyIjoiMi4xLjUiLCJ1cmwiOiJodHRwczovL2JuemYuamQuY29tLyIsInRpdGxlIjoi5Y%2BR6LSi5oyW5a6dIiwiZXJyVHlwZSI6NCwiZXJyQ29kZSI6NzUwLCJlcnJNc2ciOiJKRFBlcmZvcm1hbmNlLnNlbmRSZXNvdXJjZSBpcyBub3QgYSBmdW5jdGlvbiIsImV4Y2VwdGlvbkluZm8iOnsidHlwZSI6IlR5cGVFcnJvciIsInN0YWNrIjpbXX19%22:418,%22eff9a57761a0c45a.png%22:111,%22bbbee650e29a8525.png%22:190,%22hand.1e279b77.gif%22:153,%226e3d0e3f0efa29d3.jpg%22:532,%220af3dbd3ab14a953.jpg%22:695}"
+    headers={
+        'Cookie': cookie,
+        'Host': 'h5speed.m.jd.com',
+        'Connection': 'keep-alive',
+        'referer': 'https://bnzf.jd.com/?activityId=SS55rTBOHtnLCm3n9UMk7Q&lng=107.648869&lat=30.281194&sid=f77337204fa0b3cdbc02fa03b6cfb45w&un_area=4_134_19915_0',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        "User-Agent": ua(),
+        'Accept-Language': 'zh-cn',
+        'Accept-Encoding': 'gzip, deflate, br',
+    } 
+    for n in range(3):
+        try:
+            requests.post(url,headers=headers,data=data).json()
+            return res
+        except:
+            if n==3:
+                msg('API请求失败，请检查网路重试❗\n')   
+
+
+def log2(cookie):
+    url="https://watchtower-logger.jd.com/log"
+    headers={
+        'Cookie': cookie,
+        'Host': 'watchtower-logger.jd.com',
+        'Connection': 'keep-alive',
+        'origin': 'https://bnzf.jd.com',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        "User-Agent": ua(),
+        'Accept-Language': 'zh-cn',
+        'Accept-Encoding': 'gzip, deflate, br',
+    } 
+    for n in range(3):
+        try:
+            requests.post(url,headers=headers,data=data).json()
+            return res
+        except:
+            if n==3:
+                msg('API请求失败，请检查网路重试❗\n')  
+
+
+
 
 # 剩余血量
 def xueliang(cookie):
@@ -246,6 +291,7 @@ def xueliang(cookie):
 
 # 页面数据
 def happyDigHome(cookie):
+    log2(cookie)
     body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q","round":1}
     res=taskPostUrl2("happyDigHome", body, cookie)
     if not res:
@@ -279,6 +325,7 @@ def happyDigHome(cookie):
                                 msg(f'本次挖取坐标为 ({n},{i})')
                                 happyDigDo(cookie,roundid,n,i)
                                 _apTaskList(cookie)
+                                log2(cookie)
                             else:
                                 msg(f'当前血量为 {_blood} 不健康，结束该池挖宝')
                                 break
@@ -298,6 +345,7 @@ def _apTaskList(cookie):
 
 # 任务列表
 def apTaskList(cookie):
+    log2(cookie)
     body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q"}
     res=taskPostUrl("apTaskList", body, cookie)
     if res['code']==0:
@@ -311,7 +359,6 @@ def apTaskList(cookie):
                 if forwardUrl:
                     msg(f"任务id {taskId} ")
                     msg(f"任务标题 {taskTitle} ")
-                    print(taskTitle)
                     pro_m_jd(cookie,forwardUrl)
                     apTaskTimeRecord(cookie,taskId)
                     log(cookie)
@@ -332,6 +379,7 @@ def apTaskDetail(cookie):
                 itemId=_taskItemList['itemId']              # 任务url
                 msg(f'任务标题 {itemName}')
                 pro_m_jd(cookie,itemId)
+                log2(cookie)
                 apTaskTimeRecord(cookie,357)
         else:
             msg(f'获取数据失败\n{res}\n')
@@ -362,6 +410,7 @@ def pro_m_jd(cookie,url):
 
 # 浏览任务
 def apTaskTimeRecord(cookie,taskId):
+    log2(cookie)
     body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q","taskId":taskId}
     taskPostUrl("apTaskTimeRecord", body, cookie)
     time.sleep(2)
@@ -423,6 +472,7 @@ def inviteCode(cookie):
 def happyDigHelp(cookie,fcwbinviter,fcwbinviteCode):
     msg(f"账号 {get_pin(cookie)} 去助力{fcwbinviteCode}")
     xueliang(cookie)
+    log2(cookie)
     body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q","inviter":fcwbinviter,"inviteCode":fcwbinviteCode}
     res=taskPostUrl("happyDigHelp", body, cookie)
     log(cookie)
@@ -434,6 +484,7 @@ def happyDigHelp(cookie,fcwbinviter,fcwbinviteCode):
 # 领取奖励
 def happyDigExchange(cookie):
     for n in range(0,4):
+        log2(cookie)
         xueliang(cookie)
         _apTaskList(cookie)
         msg('开始领取奖励')
@@ -461,6 +512,7 @@ def happyDigExchange(cookie):
 
 # 微信现金id
 def spring_reward_list(cookie):
+    log2(cookie)
     happyDigExchange(cookie)
     xueliang(cookie)
     _apTaskList(cookie)
@@ -488,6 +540,7 @@ def spring_reward_list(cookie):
 
 # 微信提现
 def wecat(cookie,amountid,poolBaseId,prizeGroupId,prizeBaseId):
+    log2(cookie)
     xueliang(cookie)
     _apTaskList(cookie)
     url='https://api.m.jd.com'
@@ -520,6 +573,8 @@ def wecat(cookie,amountid,poolBaseId,prizeGroupId,prizeBaseId):
         msg('')
     
 def main_run(cookie):
+    activity(cookie)
+    log2(cookie)
     apTaskDetail(cookie)
     apTaskList(cookie)
     happyDigHome(cookie)
