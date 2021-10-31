@@ -288,6 +288,21 @@ def xueliang(cookie):
             blood=res['data']['blood']                              # 剩余血量
             return blood      
 
+def jinge(cookie):
+    body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q","round":1}
+    res=taskPostUrl2("happyDigHome", body, cookie)
+    if not res:
+        return
+    if res['code']==0:
+        if res['success']:
+            curRound=res['data']['curRound']                        # 未知
+            blood=res['data']['blood']                              # 剩余血量
+            roundList=res['data']['roundList']                      # 3个总池子
+            roundList_n=roundList[0]
+            redAmount=roundList_n['redAmount']                  # 当前池已得京东红包
+            cashAmount=roundList_n['cashAmount']                # 当前池已得微信红包
+
+            return [blood,redAmount,cashAmount]   
 
 # 页面数据
 def happyDigHome(cookie):
@@ -311,8 +326,10 @@ def happyDigHome(cookie):
                 leftAmount=roundList_n['leftAmount']                # 剩余红包？
                 chunks=roundList_n['chunks']                        # 当前池详情list
 
+                a=jinge(cookie)
                 msg(f'当前池序号为 {roundid} \n当前池规模为 {rows}*{rows}')
-                msg(f'剩余血量 {xueliang(cookie)}\n')
+                msg(f'剩余血量 {a[0]}\n')
+                msg(f'当前已得京东红包 {a[2]}\n当前池已得微信红包 {a[1]}')
        
                 if (_blood:=xueliang(cookie))>1:
                     happyDigDo(cookie,roundid,0,0)
