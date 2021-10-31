@@ -291,6 +291,7 @@ def xueliang(cookie):
 
 # 页面数据
 def happyDigHome(cookie):
+    log(cookie)
     log2(cookie)
     body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q","round":1}
     res=taskPostUrl2("happyDigHome", body, cookie)
@@ -310,22 +311,20 @@ def happyDigHome(cookie):
                 leftAmount=roundList_n['leftAmount']                # 剩余红包？
                 chunks=roundList_n['chunks']                        # 当前池详情list
 
-                msg(f'当前池序号为 {roundid} \n当前池规模为 {rows*rows}')
-                msg(f'当前池已得京东红包 {redAmount}\n 当前池已得微信红包 {cashAmount}')
-                msg(f'剩余血量 {blood}\n\n')
-
-                _blood=xueliang(cookie)
-                if _blood>1:
+                msg(f'当前池序号为 {roundid} \n当前池规模为 {rows}*{rows}')
+                msg(f'剩余血量 {xueliang(cookie)}\n')
+       
+                if (_blood:=xueliang(cookie))>1:
                     happyDigDo(cookie,roundid,0,0)
                     for n in range(roundid+4):
                         for i in range(roundid+4):
-                            _blood=xueliang(cookie)
-                            if _blood>1:
+                            if (_blood:=xueliang(cookie))>1:
                                 msg(f'当前血量为 {_blood} 健康，继续挖宝')
                                 msg(f'本次挖取坐标为 ({n},{i})')
                                 happyDigDo(cookie,roundid,n,i)
                                 _apTaskList(cookie)
                                 log2(cookie)
+                                log(cookie)
                             else:
                                 msg(f'当前血量为 {_blood} 不健康，结束该池挖宝')
                                 break
@@ -379,14 +378,13 @@ def apTaskDetail(cookie):
                 itemId=_taskItemList['itemId']              # 任务url
                 msg(f'任务标题 {itemName}')
                 pro_m_jd(cookie,itemId)
+                log(cookie)
                 log2(cookie)
                 apTaskTimeRecord(cookie,357)
         else:
             msg(f'获取数据失败\n{res}\n')
     else:
         msg(f'获取数据失败\n{res}\n')        
-
-
 
 
 def pro_m_jd(cookie,url):
@@ -423,6 +421,7 @@ def apTaskTimeRecord(cookie,taskId):
     taskPostUrl("lite_qryBabelSiteBabelFloors", {}, cookie)
     time.sleep(2)
     taskPostUrl("lite_qryBabelSiteBabelFloors", {}, cookie)
+    log(cookie)
     xueliang(cookie)
     _apTaskList(cookie)
     msg('任务也许完成了\n')
@@ -496,7 +495,7 @@ def happyDigExchange(cookie):
         if res['code']==0:
             if res['success']:
                 try:
-                    msg(f"领取到微信红包 {res['data']['wxValue']}\n")
+                    msg(f"领取到微信红包 {res['data']['wxValue']}")
                 except:
                     pass
                 try:
@@ -610,8 +609,6 @@ def main():
     
     if run_send=='yes':
         send('### 发财挖宝 ###')   # 通知服务
-
-
 
 
 if __name__ == '__main__':
