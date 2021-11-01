@@ -4,6 +4,7 @@
 # 已完成的任务会显示火爆，当然也可能你是黑号...
 # 环境变量JD_COOKIE，多账号用&分割
 # export JD_COOKIE="第1个cookie&第2个cookie"
+# 11/1 12:40 增加ck格式兼容
 
 import os,json,random,time,re,string
 import asyncio
@@ -24,9 +25,17 @@ JD_API_HOST = 'https://api.m.jd.com'
 run_send='no'     # yes或no, yes则启用通知推送服务
 
 
+# 获取pin
 cookie_match=re.compile(r'pt_key=(.+);pt_pin=(.+);')
+cookie_match2=re.compile(r'pt_pin=(.+);pt_key=(.+);')
 def get_pin(cookie):
-    return cookie_match.match(cookie).group(2)
+    try:
+        return cookie_match.match(cookie).group(2)
+    except:
+        try:
+            return cookie_match2.match(cookie).group(1)
+        except:
+            print('ck格式不正确，请检测')
 
 
 # 随机ua
