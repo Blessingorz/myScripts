@@ -4,7 +4,7 @@
 # 由于每个号只有两次助力机会，所有只助力前两个号，以节省资源
 # 环境变量JD_COOKIE，多账号用&分割
 # export JD_COOKIE="第1个cookie&第2个cookie"
-# 10/31 9:11 修复火爆
+# 11/1 9:11 修复火爆
 
 import os,json,random,time,re,string,functools,asyncio
 import sys
@@ -158,9 +158,8 @@ def taskPostUrl(functionId, body, cookie, resp=True):
     else:
         return url,data,headers
 
-
 def taskPostUrl2(functionId, body, cookie, resp=True):
-    url=f'{JD_API_HOST}/?functionId={functionId}&body={json.dumps(body)}&t={gettimestamp()}&appid=activities_platform&client=H5&clientVersion=1.0.0&h5st=20211030135939197%3B7946751201227201%3Bce6c2%3Btk02w95d81c4a18nvEWgLO6rSPij7fUJ1YEjYLeqBdEe5I0dZrYL5CCCtV4avDHb8jR%2BP8ju9zg3udu2w7ylavi%2FKzqy%3B68db32308724fed881878ad6d667ebea04b9c24108e2256a1b6900a339113140%3B3.0%3B1635573579197'
+    url=f'{JD_API_HOST}/?functionId={functionId}&body={json.dumps(body)}&t={gettimestamp()}&appid=activities_platform&client=H5&clientVersion=1.0.0&h5st=20211101103844667%3B0745683210997892%3Bce6c2%3Btk02wa5901c7918nvxUVYAJ28Nuw%2FBmcDGzVe558psmhDDnV7wlC8NVGKwyC87aOmkUVcTHkY7g9ZBrjqUpM9VRovTlf%3Bce732422fa03d42113aecff728d6d5508e1f79de80b6b496f70d23035528face%3B3.0%3B1635734324667'
     headers={
         'Cookie': cookie,
         'Host': 'api.m.jd.com',
@@ -219,7 +218,7 @@ def log(cookie, resp=True):
         'Accept-Language': 'zh-cn',
         'Accept-Encoding': 'gzip, deflate, br',
     }
-    data="%7B%22params%22%3A%5B%7B%22logType%22%3A%22_trackPerformance%22%2C%22apiName%22%3A%22product-request-happyDigHome%22%2C%22apiTime%22%3A614%2C%22resolution%22%3A%7B%22availHeight%22%3A851%2C%22availWidth%22%3A393%2C%22clientHeight%22%3A726%2C%22clientWidth%22%3A393%7D%2C%22defaultErrorMsg%22%3A%22msg%3AUncaught%20TypeError%3A%20JDPerformance.sendResource%20is%20not%20a%20function%2C%20url%3Ahttps%3A%2F%2Fbnzf.jd.com%2F%3FactivityId%3DSS55rTBOHtnLCm3n9UMk7Q%26lng%3D107.64356%26lat%3D30.282319%26sid%3Dea504fccb2a92c7920db5eb3693d0f3w%26un_area%3D4_134_19915_0%2C%20lineNumber%3A1%2C%20columnNumber%3A15%22%2C%22currentUrl%22%3A%22https%3A%2F%2Fbnzf.jd.com%2F%3FactivityId%3DSS55rTBOHtnLCm3n9UMk7Q%26lng%3D107.64356%26lat%3D30.282319%26sid%3Dea504fccb2a92c7920db5eb3693d0f3w%26un_area%3D4_134_19915_0%22%2C%22appId%22%3A%22171%22%2C%22identity%22%3A%220d46db93-4028-403c-8932-213bf7249865%22%2C%22deviceInfo%22%3A%7B%22environment%22%3A%22other%22%2C%22network%22%3A%22wifi%22%2C%22appVersion%22%3A%22other%22%2C%22deviceType%22%3A%22android%22%2C%22osVersion%22%3A%22android%209%22%2C%22deviceModel%22%3A%229%3B8363031323830343433313332303-13D2438366461633039353566366%3Bnetwork%2Fwifi%3Bmodel%2FRedmi%20Note%207%3Baddressid%2F3980494433%3Baid%2F48cfb189fc66ca09%3Boaid%2F697e77ebe3fde164%3BosVer%2F28%3BappBuild%2F1864%3Bpsn%2FYybPueVNNrLHDN3sReHENAe28Z7SS3%2FruXS2pCn7oqU%3D%7C294%3Bpsq%2F10%3Badk%2F%3Bads%2F%3Bpap%2FJA2020_3112531%7C3.6.8%7CANDROID%209%3Bosv%2F9%3Bpv%2F233.10%3BinstallationId%2F991ccdcfc55f4e5e95c0bf7c28f23868%3Bjdv%2F0%7Ckong%7Ct_2011648980_%7Cjingfen%7C9c826fbe26e5400a87a3bb763a769182%7C1627482976154%7C1627482986%3Bref%2Fcom.jd.jdlite.lib.personal.view.fragment.JDPersonalFragment%3Bpartner%2Fxiaomi%3Bapprpd%2FMyJD_Main%3Beufv%2F1%3BMozilla%2F5.0%20(Linux%3B%20Android%209%3B%20Redmi%20Note%207%20Build%2FPKQ1.180904.001%22%2C%22deviceBrand%22%3A%229%3B8363031323830343433313332303-13D2438366461633039353566366%3Bnetwork%2Fwifi%3Bmodel%2FRedmi%20Note%207%3Baddressid%2F3980494433%3Baid%2F48cfb189fc66ca09%3Boaid%2F697e77ebe3fde164%3BosVer%2F28%3BappBuild%2F1864%3Bpsn%2FYybPueVNNrLHDN3sReHENAe28Z7SS3%2FruXS2pCn7oqU%3D%7C294%3Bpsq%2F10%3Badk%2F%3Bads%2F%3Bpap%2FJA2020_3112531%7C3.6.8%7CANDROID%209%3Bosv%2F9%3Bpv%2F233.10%3BinstallationId%2F991ccdcfc55f4e5e95c0bf7c28f23868%3Bjdv%2F0%7Ckong%7Ct_2011648980_%7Cjingfen%7C9c826fbe26e5400a87a3bb763a769182%7C1627482976154%7C1627482986%3Bref%2Fcom.jd.jdlite.lib.personal.view.fragment.JDPersonalFragment%3Bpartner%2Fxiaomi%3Bapprpd%2FMyJD_Main%3Beufv%2F1%3BMozilla%2F5.0%20(Linux%3B%20Android%209%3B%20Redmi%20Note%207%20Build%2FPKQ1.180904.001%22%7D%7D%5D%7D"
+    data="%7B%22params%22%3A%5B%7B%22logType%22%3A%22_trackPerformance%22%2C%22apiName%22%3A%22product-request-happyDigDo%22%2C%22apiTime%22%3A720%2C%22resolution%22%3A%7B%22availHeight%22%3A851%2C%22availWidth%22%3A393%2C%22clientHeight%22%3A726%2C%22clientWidth%22%3A393%7D%2C%22defaultErrorMsg%22%3A%22msg%3AUncaught%20TypeError%3A%20JDPerformance.sendResource%20is%20not%20a%20function%2C%20url%3Ahttps%3A%2F%2Fbnzf.jd.com%2F%3FactivityId%3DyCcpwTLIbY6pjaM42ACUVg%26lng%3D107.647038%26lat%3D30.28044%26sid%3D20f1a35cc9c79bd35a85b629b3cfb49w%26un_area%3D4_134_19915_0%2C%20lineNumber%3A1%2C%20columnNumber%3A15%22%2C%22currentUrl%22%3A%22https%3A%2F%2Fbnzf.jd.com%2F%3FactivityId%3DyCcpwTLIbY6pjaM42ACUVg%26lng%3D107.647038%26lat%3D30.28044%26sid%3D20f1a35cc9c79bd35a85b629b3cfb49w%26un_area%3D4_134_19915_0%22%2C%22appId%22%3A%22171%22%2C%22identity%22%3A%22bf5f8929-022d-431b-e38e-f938c071cf25%22%2C%22deviceInfo%22%3A%7B%22environment%22%3A%22qq%22%2C%22network%22%3A%22wifi%22%2C%22appVersion%22%3A%22unknown%22%2C%22deviceType%22%3A%22android%22%2C%22osVersion%22%3A%22android%209%22%2C%22deviceModel%22%3A%229%3B8363031323830343433313332303-13D2438366461633039353566366%3Bnetwork%2Fwifi%3Bmodel%2FRedmi%20Note%207%3Baddressid%2F3980494433%3Baid%2F48cfb189fc66ca09%3Boaid%2F697e77ebe3fde164%3BosVer%2F28%3BappBuild%2F1864%3Bpsn%2FGsCGkD48W1x%20kC3CSjkULDCvLGH%2FYvxGjShDHvGxIzk%3D%7C313%3Bpsq%2F5%3Badk%2F%3Bads%2F%3Bpap%2FJA2020_3112531%7C3.6.8%7CANDROID%209%3Bosv%2F9%3Bpv%2F247.16%3BinstallationId%2F991ccdcfc55f4e5e95c0bf7c28f23868%3Bjdv%2F0%7Ckong%7Ct_2011648980_%7Cjingfen%7C9c826fbe26e5400a87a3bb763a769182%7C1627482976154%7C1627482986%3Bref%2Fcom.jd.jdlite.lib.personal.view.fragment.JDPersonalFragment%3Bpartner%2Fxiaomi%3Bapprpd%2FMyJD_Main%3Beufv%2F1%3BMozilla%2F5.0%20(Linux%3B%20Android%209%3B%20Redmi%20Note%207%20Build%2FPKQ1.180904.001%22%2C%22deviceBrand%22%3A%229%3B8363031323830343433313332303-13D2438366461633039353566366%3Bnetwork%2Fwifi%3Bmodel%2FRedmi%20Note%207%3Baddressid%2F3980494433%3Baid%2F48cfb189fc66ca09%3Boaid%2F697e77ebe3fde164%3BosVer%2F28%3BappBuild%2F1864%3Bpsn%2FGsCGkD48W1x%20kC3CSjkULDCvLGH%2FYvxGjShDHvGxIzk%3D%7C313%3Bpsq%2F5%3Badk%2F%3Bads%2F%3Bpap%2FJA2020_3112531%7C3.6.8%7CANDROID%209%3Bosv%2F9%3Bpv%2F247.16%3BinstallationId%2F991ccdcfc55f4e5e95c0bf7c28f23868%3Bjdv%2F0%7Ckong%7Ct_2011648980_%7Cjingfen%7C9c826fbe26e5400a87a3bb763a769182%7C1627482976154%7C1627482986%3Bref%2Fcom.jd.jdlite.lib.personal.view.fragment.JDPersonalFragment%3Bpartner%2Fxiaomi%3Bapprpd%2FMyJD_Main%3Beufv%2F1%3BMozilla%2F5.0%20(Linux%3B%20Android%209%3B%20Redmi%20Note%207%20Build%2FPKQ1.180904.001%22%7D%7D%5D%7D"
     if resp:
         for n in range(3):
             try:
@@ -233,12 +232,12 @@ def log(cookie, resp=True):
 
 # 开局验证？
 def activity(cookie):
-    url="https://h5speed.m.jd.com/v2/speed/activity?flag=132&sid=f77337204fa0b3cdbc02fa03b6cfb45w&libVer=2.0.0&url=https%3A%2F%2Fbnzf.jd.com%2F&rts=1635613363462&title=%E5%8F%91%E8%B4%A2%E6%8C%96%E5%AE%9D&p1=1&p2=1&p3=1&p4=0&p5=0&p6=10&p7=249&p8=107&p9=7&p10=114&p11=1751&p12=1751&p13=0&p14=1893&p15=377&p16=1516&resources={%22badjs.json?Content=%20%5B%20Sun%20Oct%2031%202021%2001%3A02%3A39%20GMT%2B0800%20(%E5%8C%97%E7%BE%8E%E4%B8%AD%E9%83%A8%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)%20%5D%20configCenterAjaxPrame%20Exception&referer=https%3A%2F%2Fimk2.jd.com%2Fauto%2Fopen%2Fliteapp%2FconfigCenter%2Fajax%2Fsuccess%2Fexception%3Fwq&t=0.6081273460492731%22:397,%22preArousal?app=jdliteapp&refer=https%3A%2F%2Fbnzf.jd.com%2F%3FactivityId%3DSS55rTBOHtnLCm3n9UMk7Q%26lng%3D107.648869%26lat%3D30.281194%26sid%3Df77337204fa0b3cdbc02fa03b6cfb45w%26un_area%3D4_134_19915_0&imkUserId=imk2291.330737368482&type=1&msg=configCenterAjaxPrame%20Exception&t=0.1307983996705202%22:407,%22api-getStaticResource%22:392,%22api-apTaskList%22:394,%22api-getStationMarquees%22:373,%22api-happyDigHome%22:432,%22blast.cfc8150d.gif%22:365,%22halo.6d8599b2.gif%22:370,%22crack.0f00e203.gif%22:374,%22exception?data=eyJmbGFnIjoxMzIsInJ0cyI6MTYzNTYxMzM2MDUxMCwibGliVmVyIjoiMi4xLjUiLCJ1cmwiOiJodHRwczovL2JuemYuamQuY29tLyIsInRpdGxlIjoi5Y%2BR6LSi5oyW5a6dIiwiZXJyVHlwZSI6NCwiZXJyQ29kZSI6NzUwLCJlcnJNc2ciOiJKRFBlcmZvcm1hbmNlLnNlbmRSZXNvdXJjZSBpcyBub3QgYSBmdW5jdGlvbiIsImV4Y2VwdGlvbkluZm8iOnsidHlwZSI6IlR5cGVFcnJvciIsInN0YWNrIjpbXX19%22:418,%22eff9a57761a0c45a.png%22:111,%22bbbee650e29a8525.png%22:190,%22hand.1e279b77.gif%22:153,%226e3d0e3f0efa29d3.jpg%22:532,%220af3dbd3ab14a953.jpg%22:695}"
+    url="https://h5speed.m.jd.com/v2/speed/activity?flag=132&sid=f77337204fa0b3cdbc02fa03b6cfb45w&libVer=2.0.0&url=https%3A%2F%2Fbnzf.jd.com%2F&rts=1635613363462&title=%E5%8F%91%E8%B4%A2%E6%8C%96%E5%AE%9D&p1=1&p2=1&p3=1&p4=0&p5=0&p6=10&p7=249&p8=107&p9=7&p10=114&p11=1751&p12=1751&p13=0&p14=1893&p15=377&p16=1516&resources={%22badjs.json?Content=%20%5B%20Sun%20Oct%2031%202021%2001%3A02%3A39%20GMT%2B0800%20(%E5%8C%97%E7%BE%8E%E4%B8%AD%E9%83%A8%E6%A0%87%E5%87%86%E6%97%B6%E9%97%B4)%20%5D%20configCenterAjaxPrame%20Exception&referer=https%3A%2F%2Fimk2.jd.com%2Fauto%2Fopen%2Fliteapp%2FconfigCenter%2Fajax%2Fsuccess%2Fexception%3Fwq&t=0.6081273460492731%22:397,%22preArousal?app=jdliteapp&refer=https%3A%2F%2Fbnzf.jd.com%2F%3FactivityId%3DyCcpwTLIbY6pjaM42ACUVg%26lng%3D107.648869%26lat%3D30.281194%26sid%3Df77337204fa0b3cdbc02fa03b6cfb45w%26un_area%3D4_134_19915_0&imkUserId=imk2291.330737368482&type=1&msg=configCenterAjaxPrame%20Exception&t=0.1307983996705202%22:407,%22api-getStaticResource%22:392,%22api-apTaskList%22:394,%22api-getStationMarquees%22:373,%22api-happyDigHome%22:432,%22blast.cfc8150d.gif%22:365,%22halo.6d8599b2.gif%22:370,%22crack.0f00e203.gif%22:374,%22exception?data=eyJmbGFnIjoxMzIsInJ0cyI6MTYzNTYxMzM2MDUxMCwibGliVmVyIjoiMi4xLjUiLCJ1cmwiOiJodHRwczovL2JuemYuamQuY29tLyIsInRpdGxlIjoi5Y%2BR6LSi5oyW5a6dIiwiZXJyVHlwZSI6NCwiZXJyQ29kZSI6NzUwLCJlcnJNc2ciOiJKRFBlcmZvcm1hbmNlLnNlbmRSZXNvdXJjZSBpcyBub3QgYSBmdW5jdGlvbiIsImV4Y2VwdGlvbkluZm8iOnsidHlwZSI6IlR5cGVFcnJvciIsInN0YWNrIjpbXX19%22:418,%22eff9a57761a0c45a.png%22:111,%22bbbee650e29a8525.png%22:190,%22hand.1e279b77.gif%22:153,%226e3d0e3f0efa29d3.jpg%22:532,%220af3dbd3ab14a953.jpg%22:695}"
     headers={
         'Cookie': cookie,
         'Host': 'h5speed.m.jd.com',
         'Connection': 'keep-alive',
-        'referer': 'https://bnzf.jd.com/?activityId=SS55rTBOHtnLCm3n9UMk7Q&lng=107.648869&lat=30.281194&sid=f77337204fa0b3cdbc02fa03b6cfb45w&un_area=4_134_19915_0',
+        'referer': 'https://bnzf.jd.com/?activityId=yCcpwTLIbY6pjaM42ACUVg&lng=107.648869&lat=30.281194&sid=f77337204fa0b3cdbc02fa03b6cfb45w&un_area=4_134_19915_0',
         'Content-Type': 'application/x-www-form-urlencoded',
         "User-Agent": ua(),
         'Accept-Language': 'zh-cn',
@@ -278,7 +277,7 @@ def log2(cookie):
 
 # 剩余血量
 def xueliang(cookie):
-    body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q","round":1}
+    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg","round":1}
     res=taskPostUrl2("happyDigHome", body, cookie)
     if not res:
         return
@@ -288,8 +287,8 @@ def xueliang(cookie):
             blood=res['data']['blood']                              # 剩余血量
             return blood      
 
-def jinge(cookie):
-    body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q","round":1}
+def jinge(cookie,i):
+    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg","round":1}
     res=taskPostUrl2("happyDigHome", body, cookie)
     if not res:
         return
@@ -308,7 +307,7 @@ def jinge(cookie):
 def happyDigHome(cookie):
     log(cookie)
     log2(cookie)
-    body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q","round":1}
+    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg","round":1}
     res=taskPostUrl2("happyDigHome", body, cookie)
     if not res:
         return
@@ -326,10 +325,10 @@ def happyDigHome(cookie):
                 leftAmount=roundList_n['leftAmount']                # 剩余红包？
                 chunks=roundList_n['chunks']                        # 当前池详情list
 
-                a=jinge(cookie)
+                a=jinge(cookie,roundid)
                 msg(f'当前池序号为 {roundid} \n当前池规模为 {rows}*{rows}')
                 msg(f'剩余血量 {a[0]}')
-                msg(f'当前已得京东红包 {a[2]}\n当前池已得微信红包 {a[1]}\n')
+                msg(f'当前池已得京东红包 {a[2]}\n当前池已得微信红包 {a[1]}\n')
        
                 if (_blood:=xueliang(cookie))>1:
                     happyDigDo(cookie,roundid,0,0)
@@ -343,7 +342,9 @@ def happyDigHome(cookie):
                                 log2(cookie)
                                 log(cookie)
                             else:
+                                a=jinge(cookie,roundid)
                                 msg(f'当前血量为 {_blood} 不健康，结束该池挖宝')
+                                msg(f'当前池已得京东红包 {a[2]}\n当前池已得微信红包 {a[1]}\n')
                                 break
         else:
             msg(f'获取数据失败\n{res}\n')
@@ -353,7 +354,7 @@ def happyDigHome(cookie):
 
 # 任务列表
 def _apTaskList(cookie):
-    body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q"}
+    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg"}
     res=taskPostUrl("apTaskList", body, cookie)
     if not res:
         return
@@ -362,7 +363,7 @@ def _apTaskList(cookie):
 # 任务列表
 def apTaskList(cookie):
     log2(cookie)
-    body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q"}
+    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg"}
     res=taskPostUrl("apTaskList", body, cookie)
     if res['code']==0:
         if res['success']:
@@ -385,7 +386,7 @@ def apTaskList(cookie):
 
 # 浏览任务                   
 def apTaskDetail(cookie):
-    body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q","taskType":"BROWSE_CHANNEL","taskId":357,"channel":4}
+    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg","taskType":"BROWSE_CHANNEL","taskId":357,"channel":4}
     res=taskPostUrl("apTaskDetail", body, cookie)
     if res['code']==0:
         if res['success']:
@@ -426,7 +427,7 @@ def pro_m_jd(cookie,url):
 # 浏览任务
 def apTaskTimeRecord(cookie,taskId):
     log2(cookie)
-    body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q","taskId":taskId}
+    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg","taskId":taskId}
     taskPostUrl("apTaskTimeRecord", body, cookie)
     time.sleep(2)
     taskPostUrl("lite_qryBabelSiteBabelFloors", {}, cookie)
@@ -446,7 +447,7 @@ def apTaskTimeRecord(cookie,taskId):
 
 # 挖宝
 def happyDigDo(cookie,roundid,rowIdx,colIdx):
-    body={"round":roundid,"rowIdx":rowIdx,"colIdx":colIdx,"linkId":"SS55rTBOHtnLCm3n9UMk7Q"}
+    body={"round":roundid,"rowIdx":rowIdx,"colIdx":colIdx,"linkId":"yCcpwTLIbY6pjaM42ACUVg"}
     res=taskPostUrl("happyDigDo", body, cookie)
     if not res:
         return
@@ -469,7 +470,7 @@ def happyDigDo(cookie,roundid,rowIdx,colIdx):
 # 助力码
 def inviteCode(cookie):
     global inviteCode_1_list,inviteCode_2_list
-    body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q","round":1}
+    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg","round":1}
     res=taskPostUrl2("happyDigHome", body, cookie)
     if not res:
         return
@@ -489,7 +490,7 @@ def happyDigHelp(cookie,fcwbinviter,fcwbinviteCode):
     msg(f"账号 {get_pin(cookie)} 去助力{fcwbinviteCode}")
     xueliang(cookie)
     log2(cookie)
-    body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q","inviter":fcwbinviter,"inviteCode":fcwbinviteCode}
+    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg","inviter":fcwbinviter,"inviteCode":fcwbinviteCode}
     res=taskPostUrl("happyDigHelp", body, cookie)
     log(cookie)
     if res['success']:
@@ -504,7 +505,7 @@ def happyDigExchange(cookie):
         xueliang(cookie)
         _apTaskList(cookie)
         msg('开始领取奖励')
-        body={"round":n,"linkId":"SS55rTBOHtnLCm3n9UMk7Q"}
+        body={"round":n,"linkId":"yCcpwTLIbY6pjaM42ACUVg"}
         res=taskPostUrl("happyDigExchange", body, cookie)
         log(cookie)
         if not res:
@@ -532,7 +533,7 @@ def spring_reward_list(cookie):
     happyDigExchange(cookie)
     xueliang(cookie)
     _apTaskList(cookie)
-    body={"linkId":"SS55rTBOHtnLCm3n9UMk7Q","pageNum":1,"pageSize":5}
+    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg","pageNum":1,"pageSize":5}
     res=taskPostUrl("spring_reward_list", body, cookie)
     _apTaskList(cookie)
     log(cookie)
@@ -570,7 +571,7 @@ def wecat(cookie,amountid,poolBaseId,prizeGroupId,prizeBaseId):
         'Accept-Language': 'zh-cn',
         'Accept-Encoding': 'gzip, deflate, br',
     }
-    body={"businessSource":"happyDiggerH5Cash","base":{"id":amountid,"business":"happyDigger","poolBaseId":poolBaseId,"prizeGroupId":prizeGroupId,"prizeBaseId":prizeBaseId,"prizeType":4},"linkId":"SS55rTBOHtnLCm3n9UMk7Q"}
+    body={"businessSource":"happyDiggerH5Cash","base":{"id":amountid,"business":"happyDigger","poolBaseId":poolBaseId,"prizeGroupId":prizeGroupId,"prizeBaseId":prizeBaseId,"prizeType":4},"linkId":"yCcpwTLIbY6pjaM42ACUVg"}
     data=f"functionId=apCashWithDraw&body={json.dumps(body)}&t=1635596380119&appid=activities_platform&client=H5&clientVersion=1.0.0"
     for n in range(3):
         try:
