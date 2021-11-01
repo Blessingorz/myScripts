@@ -3,6 +3,8 @@
 # 脚本功能为自动签到，还在测试中
 # 环境变量JD_COOKIE，多账号用&分割
 # export JD_COOKIE="第1个cookie&第2个cookie"
+# 11/1 12:40 增加ck格式兼容
+
 import time
 import os
 import re
@@ -19,6 +21,19 @@ def ua_random():
     except:
         ua='jdpingou;android;5.5.0;11;network/wifi;model/M2102K1C;appBuild/18299;partner/lcjx11;session/110;pap/JA2019_3111789;brand/Xiaomi;Mozilla/5.0 (Linux; Android 11; M2102K1C Build/RKQ1.201112.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/92.0.4515.159 Mobile Safari/537.36'
     return ua
+
+# 获取pin
+cookie_match=re.compile(r'pt_key=(.+);pt_pin=(.+);')
+cookie_match2=re.compile(r'pt_pin=(.+);pt_key=(.+);')
+def get_pin(cookie):
+    try:
+        return cookie_match.match(cookie).group(2)
+    except:
+        try:
+            return cookie_match2.match(cookie).group(1)
+        except:
+            print('ck格式不正确，请检测')
+
 
 # 13位时间戳
 def gettimestamp():
@@ -155,7 +170,7 @@ def sign_in(cookie,a):
 # 检查账号有效性
 def getUserInfo(cookie):
     try:
-        pin=re.match(r'pt_key=(.+);pt_pin=(.+);', cookie).group(2)
+        pin=get_pin(cookie)
     except:
         msg('有一个cookie 格式出错\n')
         return False
@@ -241,9 +256,9 @@ def main():
     ua=ua_random()
     cookie_list=Judge_env().main_run()
     msg(f'====================共{len(cookie_list)}京东个账号Cookie=========\n')
-    cookie_match=re.compile(r'pt_key=(.+);pt_pin=(.+);')
+
     for e,cookie in enumerate(cookie_list,start=1):
-        pin=cookie_match.match(cookie).group(2)
+        pin=get_pin(cookie)
         msg(f'******开始【账号 {e}】 {pin} *********\n')
         doTask(cookie)
     send('### 签到免单 ###')   # 启用通知服务
