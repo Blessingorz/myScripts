@@ -277,8 +277,8 @@ def log2(cookie):
 
 # 剩余血量
 def xueliang(cookie):
-    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg","round":1}
-    res=taskPostUrl2("happyDigHome", body, cookie)
+    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg"}
+    res=taskPostUrl("happyDigHome", body, cookie)
     if not res:
         return
     if res['code']==0:
@@ -288,8 +288,8 @@ def xueliang(cookie):
             return blood      
 
 def jinge(cookie,i):
-    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg","round":1}
-    res=taskPostUrl2("happyDigHome", body, cookie)
+    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg"}
+    res=taskPostUrl("happyDigHome", body, cookie)
     if not res:
         return
     if res['code']==0:
@@ -460,6 +460,8 @@ def happyDigDo(cookie,roundid,rowIdx,colIdx):
                 msg(f"挖到微信红包 {res['data']['chunk']['value']}\n")
             elif typeid==4:
                 msg(f"挖到炸弹\n")
+            elif typeid==1:
+                msg(f"挖到优惠券\n")
             else:
                 msg(f'挖到外星物品\n')
         else:
