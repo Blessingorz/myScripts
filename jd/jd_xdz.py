@@ -180,6 +180,7 @@ def apDoTask(cookie):
 
 def liulanhuic(cookie):
     itemId_list=[
+        'https://prodev.m.jd.com/mall/active/3dS52LmsBGrZ9eQnmZ6q7QhYsVjT/index.html?babelChannel=ttt8',
         'https://prodev.m.jd.com/mall/active/JZmi8ucdvKaHHJvXqxvJpKA9KsT/index.html?babelChannel=ttt8',
         'https://h5.m.jd.com/babelDiy/Zeus/4VnAwLc5iM42E8az6CyAWR1e4kcV/index.html?babelChannel=ttt13',
         'https://prodev.m.jd.com/mall/active/31QzsgSooWDuebS3u31MxcSqZ7c2/index.html?babelChannel=ttt25',
