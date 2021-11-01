@@ -307,8 +307,8 @@ def jinge(cookie,i):
 def happyDigHome(cookie):
     log(cookie)
     log2(cookie)
-    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg","round":1}
-    res=taskPostUrl2("happyDigHome", body, cookie)
+    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg"}
+    res=taskPostUrl("happyDigHome", body, cookie)
     if not res:
         return
     if res['code']==0:
@@ -470,8 +470,8 @@ def happyDigDo(cookie,roundid,rowIdx,colIdx):
 # 助力码
 def inviteCode(cookie):
     global inviteCode_1_list,inviteCode_2_list
-    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg","round":1}
-    res=taskPostUrl2("happyDigHome", body, cookie)
+    body={"linkId":"yCcpwTLIbY6pjaM42ACUVg"}
+    res=taskPostUrl("happyDigHome", body, cookie)
     if not res:
         return
     try:
