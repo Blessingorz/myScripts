@@ -11,6 +11,7 @@
 ```
 ### 环境变量
 #### 填写
+详细变量请查看脚本内说明 
 环境变量JD_COOKIE，多账号用&分割   
 ```
 export JD_COOKIE="你的cookie1&你的cookie2"    
