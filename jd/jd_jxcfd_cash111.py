@@ -111,7 +111,6 @@ cookie_list=Judge_env().main_run()
 
 
 async def get_url(cookie,n):
-    print(sleep)
     await asyncio.sleep(sleep*n)
     headers = {
         'user-agent': ua,
