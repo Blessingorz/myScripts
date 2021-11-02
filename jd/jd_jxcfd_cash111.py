@@ -1,4 +1,4 @@
-import os,json,random,time,re,string,functools,asyncio
+import os,re,time,asyncio
 import sys
 sys.path.append(os.path.abspath('../../tmp'))
 sys.path.append(os.path.abspath('.'))
@@ -78,11 +78,6 @@ def v4_env(env,paths):
             except:
                 pass
     return c 
-
-
-# 13位时间戳
-def gettimestamp():
-    return str(int(time.time() * 1000)) 
 
 
 ## 获取cooie
