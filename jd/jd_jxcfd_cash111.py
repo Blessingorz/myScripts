@@ -15,7 +15,7 @@ except Exception as e:
 '''
 # 环境变量
 export wy_debug_cycless="50"          # 重复请求次数
-export wy_debug_sleep="0.02"          # 请求间隔为0.02秒
+export wy_debug_sleep="0.05"          # 请求间隔为0.05秒
 export wy_debug_pin="jd_997eefxx29"                # 需要请求的账号coookie的pin,多账号用&分割
 '''
 
@@ -25,7 +25,7 @@ wy_debug_headers="Host=m.jingxi.com&accept=*/*&x-requested-with=com.jd.pingou&se
 wy_debug_manner='get'           
 wy_debug_postdata=''            
 wy_debug_cycless = '50'         
-wy_debug_sleep = '0.02'         
+wy_debug_sleep = '0.05'         
 wy_debug_pin=''                 
 
 
