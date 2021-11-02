@@ -3,19 +3,15 @@ import sys
 sys.path.append(os.path.abspath('../../tmp'))
 sys.path.append(os.path.abspath('.'))
 try:
-    import requests
+    import aiohttp
 except Exception as e:
-    print(str(e) + "\n缺少requests模块, 请执行命令：pip3 install requests\n")
-requests.packages.urllib3.disable_warnings()
-
-
+    print(e, "\n缺少aiohttp 模块，请执行命令安装: pip3 install aiohttp")
+    exit(3)  
 
 # 调试
 # 京喜财富岛兑换111红包
 # 59 59 * * * * new
 # 环境变量wy_debug_pin，多账号用&分割,
-
-
 '''
 # 环境变量
 export wy_debug_cycless="50"          # 重复请求次数
@@ -31,9 +27,6 @@ wy_debug_postdata=''
 wy_debug_cycless = '50'         
 wy_debug_sleep = '0.02'         
 wy_debug_pin=''                 
-
-
-
 
 
 # 获取pin
@@ -117,28 +110,27 @@ class Judge_env(object):
 cookie_list=Judge_env().main_run()
 
 
-def get_url(cookie):
+async def get_url(cookie,n):
+    print(sleep)
+    await asyncio.sleep(sleep*n)
     headers = {
         'user-agent': ua,
         'cookie': cookie,
     }
     headers={**headers,**headers_env}
     try:      
-        res = requests.get(url=url, headers=headers)
+        async with session.get(url, headers=headers) as res:
+            res =await res.text(encoding="utf-8")
         print('请求完成')
-        print(f'{res.text}\n')
+        print(f'{res}\n')
     except:
         print('请求失败\n')
         return
-    if '20' not in str(res.status_code):
-        print(res.status_code)
-        time.sleep(0.3)
-    else:
-        time.sleep(sleep)
     sys.stdout.flush()
 
 
-def post_url(cookie):
+async def post_url(cookie,n):
+    await asyncio.sleep(sleep*n)
     headers = {
         'user-agent': ua,
         'cookie': cookie,
@@ -146,7 +138,8 @@ def post_url(cookie):
     headers={**headers,**headers_env}
     if not data:
         try:      
-            res = requests.post(url=url, headers=headers)
+            async with session.post(url, headers=headers) as res:
+                res =await res.text(encoding="utf-8")
             print('请求完成')
             print(f'{res.text}\n')
         except:
@@ -154,23 +147,42 @@ def post_url(cookie):
             return
     else:
         try: 
-            res = requests.post(url=url, headers=headers, data=data)
+            async with session.post(url, headers=headers, data=data) as res:
+                res =await res.text(encoding="utf-8")
             print('请求完成')
             print(f'{res.text}\n')
         except:
             print('请求失败\n')
             return    
-    if '20' not in str(res.status_code):
-        print(res.status_code)
-        time.sleep(0.3)
-    else:
-        time.sleep(sleep)
     sys.stdout.flush()
+
+
+async def asyncclass():
+    tasks=list()
+
+    global session
+    async with aiohttp.ClientSession() as session:
+        cycless=int(get_env('wy_debug_cycless'))
+        if (manner:=get_env('wy_debug_manner'))=='get':
+            for n in range(cycless):
+                for cookie in cookie_list:
+                    tasks.append(get_url(cookie,n))
+
+        elif manner=='post':
+            for n in range(cycless):
+                for cookie in cookie_list:
+                    tasks.append(post_url(cookie,n))
+
+        else:
+            print(f"不支持的请求方式 {manner}")
+
+        await asyncio.wait(tasks)
 
 
 if __name__ == '__main__':
     ua=ua()
-    cookie_list=[cookie for cookie in cookie_list if get_pin(cookie) in get_env('wy_debug_pin')]
+    debug_pin=get_env('wy_debug_pin')
+    cookie_list=[cookie for cookie in cookie_list if get_pin(cookie) in debug_pin]
     url=get_env('wy_debug_url') 
     try:
         headers_env = {header.split("=")[0]:''.join(header.split("=")[1:]) for header in get_env('wy_debug_headers').split('&')}
@@ -179,18 +191,5 @@ if __name__ == '__main__':
     data=get_env('wy_debug_postdata')
     sleep=float(get_env('wy_debug_sleep'))
 
-    if get_env('wy_debug_manner')=='get':
-        for n in range(int(get_env('wy_debug_cycless'))):
-            print(f'====================第{n+1}次循环=========\n')
-            for cookie in cookie_list:
-                print(f'******开始【账号 {get_pin(cookie)}】*********\n')
-                get_url(cookie)
-    elif get_env('wy_debug_manner')=='post':
-        for n in range(int(get_env('wy_debug_cycless'))):
-            print(f'====================第{n+1}次循环=========\n')
-            for cookie in cookie_list:
-                print(f'******开始【账号 {get_pin(cookie)}】*********\n')
-                post_url(cookie)
-    else:
-        print(f"不支持的请求方式 {get_env('wy_debug_manner')}")
-
+    asyncio.run(asyncclass())
+    
