@@ -1,7 +1,8 @@
 # 愤怒的锦鲤
 # 入口>京东首页>券后9.9>领券>锦鲤红包
 # 环境变量JD_COOKIE，多账号用&分割
-# 环境变量kois中填入需要助力的pt_pin，有多个请用 '@'或'&'或空格 符号连接
+# 环境变量kois中填入需要助力的pt_pin，有多个请用 '@'或'&'或空格 符号连接,不填默认全部账号内部随机助力
+# 脚本内或环境变量填写，优先环境变量
 # export JD_COOKIE="第1个cookie&第2个cookie"
 # export kois=" 第1个cookie的pin & 第2个cookie的pin "
 
@@ -56,6 +57,7 @@ def v4_env(env,paths):
         for line in f.readlines():
             try:
                 c=b.match(line).group(1)
+                print(line)
                 break
             except:
                 pass
@@ -167,16 +169,15 @@ async def taskPostUrl(functionId, body, cookie):
                 msg('API请求失败，请检查网路重试❗\n')  
 
 
-id_findall=re.compile(r'","id":(.+?),"')
 # 获取助力码
+id_findall=re.compile(r'","id":(.+?),"')
 async def h5activityIndex(cookie):
     global inviteCode_list
     body={"isjdapp":1}
     res=await taskPostUrl("h5activityIndex", body, cookie)
     if not res:
         return
-    inviteCode=id_findall.findall(res)
-    if inviteCode:
+    if inviteCode:=id_findall.findall(res):
         inviteCode=inviteCode[0]
         inviteCode_list.append(inviteCode)
         msg(f"账号 {get_pin(cookie)} 的锦鲤红包助力码为 {inviteCode}\n")
@@ -184,16 +185,16 @@ async def h5activityIndex(cookie):
         msg(f"账号 {get_pin(cookie)} 获取助力码失败\n")
 
 
-statusDesc_findall=re.compile(r',"statusDesc":"(.+?)"')
 # 助力
+statusDesc_findall=re.compile(r',"statusDesc":"(.+?)"')
 async def jinli_h5assist(cookie,redPacketId):
-    msg(f'账号 {get_pin(cookie)} 去助力{redPacketId}')
     body={"redPacketId":redPacketId,"followShop":0,"random":''.join(random.sample(string.digits, 6)),"log":"42588613~8,~0iuxyee","sceneid":"JLHBhPageh5"}
     res=await taskPostUrl("jinli_h5assist", body, cookie)
+    msg(f'账号 {get_pin(cookie)} 去助力{redPacketId}')
     if not res:
         return
-    statusDesc=statusDesc_findall.findall(res)[0]
-    if statusDesc:
+    if statusDesc:=statusDesc_findall.findall(res):
+        statusDesc=statusDesc[0]
         msg(f"{statusDesc}\n")
     else:
         msg(f"错误\n{res}\n")
@@ -201,8 +202,11 @@ async def jinli_h5assist(cookie,redPacketId):
 
 async def asyncmain():
 
-    debug_pin=get_env('kois')
-    cookie_list_pin=[cookie for cookie in cookie_list if get_pin(cookie) in debug_pin]
+    if debug_pin:=get_env('kois'):
+        # print(debug_pin)
+        cookie_list_pin=[cookie for cookie in cookie_list if get_pin(cookie) in debug_pin]
+    else:
+        cookie_list_pin=cookie_list
 
     global inviteCode_list
     inviteCode_list=list()
@@ -210,20 +214,20 @@ async def asyncmain():
     global session
     async with aiohttp.ClientSession() as session:
 
-        msg('获取助力码\n')
+        msg('***************************获取助力码***************\n')
         tasks=list()
         for cookie in cookie_list_pin:
             tasks.append(h5activityIndex(cookie))
         await asyncio.wait(tasks)
 
-        msg('助力\n')
+        msg('*******************助力**************************\n')
         tasks=list()
         for inviteCode in inviteCode_list:
             for cookie in cookie_list:
                 tasks.append(jinli_h5assist(cookie,inviteCode))
         await asyncio.wait(tasks)
 
-        
+
 def main():
     msg('🔔愤怒的锦鲤，开始！\n')
     msg(f'====================共{len(cookie_list)}京东个账号Cookie=========\n')
