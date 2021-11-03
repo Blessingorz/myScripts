@@ -10,6 +10,7 @@
 import os,json,random,time,re,string,functools,asyncio
 import sys
 sys.path.append('../../tmp')
+sys.path.append(os.path.abspath('.'))
 try:
     import aiohttp
 except Exception as e:
@@ -85,7 +86,7 @@ class Judge_env(object):
         else:
             cookie_list=os.environ["JD_COOKIE"].split('&')       # 获取cookie_list的合集
         if len(cookie_list)<1:
-            msg('请填写环境变量JD_COOKIE\n')    
+            print('请填写环境变量JD_COOKIE\n')    
         return cookie_list
 
     def v4_cookie(self):
@@ -143,6 +144,42 @@ class Msg(object):
             else:
                 print('获取通知服务失败，请检查网络连接...')
 Msg().main()   # 初始化通知服务   
+
+# 异步检查账号有效性
+nickname_findall=re.compile(r'"nickname":"(.+?)"')
+async def getUserInfo_list(cookie_list):
+    async def getUserInfo(cookie):
+        nonlocal session,cookie_ok_list
+        if not (pin:=get_pin(cookie)):
+            return
+        url = 'https://me-api.jd.com/user_new/info/GetJDUserInfoUnion?orgFlag=JD_PinGou_New&callSource=mainorder&channel=4&isHomewhite=0&sceneval=2&sceneval=2&callback='
+        headers = {
+            'Cookie': cookie,
+            'Accept': '*/*',
+            'Connection': 'close',
+            'Referer': 'https://home.m.jd.com/myJd/home.action',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Host': 'me-api.jd.com',
+            'User-Agent': ua(),
+            'Accept-Langua()ge': 'zh-cn'
+        }
+        try:
+            async with session.get(url, headers=headers, timeout=60) as res:
+                res =await res.text()        
+            if '"retcode":"0"' in res:
+                if nickname := nickname_findall.findall(res):  # 账号名
+                    cookie_ok_list.append(cookie)
+            else:
+                msg(f"账号 {pin} Cookie 已失效！请重新获取。\n")
+        except Exception:
+            msg(f"账号 {pin} Cookie 已失效！请重新获取。\n")
+
+    cookie_ok_list=list()
+    async with aiohttp.ClientSession() as session:
+        tasks=[getUserInfo(cookie) for cookie in cookie_list]
+        await asyncio.wait(tasks)
+    return [cookie for cookie in cookie_ok_list if cookie]
+cookie_list=asyncio.run(getUserInfo_list(cookie_list))      # 初始化cookie
 
 
 async def taskPostUrl(functionId, body, cookie):
@@ -222,10 +259,13 @@ async def asyncmain():
 
         msg('*******************助力**************************\n')
         tasks=list()
-        for inviteCode in inviteCode_list:
-            for cookie in cookie_list:
-                tasks.append(jinli_h5assist(cookie,inviteCode))
-        await asyncio.wait(tasks)
+        if inviteCode_list:
+            for inviteCode in inviteCode_list:
+                for cookie in cookie_list:
+                    tasks.append(jinli_h5assist(cookie,inviteCode))
+            await asyncio.wait(tasks)
+        else:
+            msg('没有需要助力的锦鲤红包助力码\n')
 
 
 def main():
