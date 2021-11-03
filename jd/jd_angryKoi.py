@@ -1,5 +1,6 @@
 # 愤怒的锦鲤
-# 入口>京东首页>券后9.9>领券>锦鲤红包
+# 由于锦鲤红包升级，需要手动打开一次锦鲤红包页面，脚本才能获取助力码
+# 入口>京东首页>领券>锦鲤红包
 # 环境变量JD_COOKIE，多账号用&分割
 # 环境变量kois中填入需要助力的pt_pin，有多个请用 '@'或'&'或空格 符号连接,不填默认全部账号内部随机助力
 # 脚本内或环境变量填写，优先环境变量
@@ -219,7 +220,9 @@ async def h5activityIndex(cookie):
         inviteCode_list.append(inviteCode)
         msg(f"账号 {get_pin(cookie)} 的锦鲤红包助力码为 {inviteCode}\n")
     else:
-        msg(f"账号 {get_pin(cookie)} 获取助力码失败\n")
+        msg(f"账号 {get_pin(cookie)} 获取助力码失败")
+        msg('由于锦鲤红包升级，需要手动打开一次锦鲤红包页面，脚本才能获取助力码')
+        msg('入口>京东首页>领券>锦鲤红包\n')
 
 
 # 助力
