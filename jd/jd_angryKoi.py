@@ -266,7 +266,7 @@ async def asyncmain():
 
         msg('***************************开启助力码***************\n')
         tasks=list()
-        for cookie in cookie_list_pin:
+        for cookie in cookie_list:
             tasks.append(h5launch(cookie))
         await asyncio.wait(tasks)
 
