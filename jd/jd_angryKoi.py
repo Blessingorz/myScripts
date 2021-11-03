@@ -1,11 +1,11 @@
 # 愤怒的锦鲤
-# 由于锦鲤红包升级，需要手动打开一次锦鲤红包页面，脚本才能获取助力码
 # 入口>京东首页>领券>锦鲤红包
 # 环境变量JD_COOKIE，多账号用&分割
 # 环境变量kois中填入需要助力的pt_pin，有多个请用 '@'或'&'或空格 符号连接,不填默认全部账号内部随机助力
 # 脚本内或环境变量填写，优先环境变量
 # export JD_COOKIE="第1个cookie&第2个cookie"
 # export kois=" 第1个cookie的pin & 第2个cookie的pin "
+# 11/4 1:00 增加自动开启助力码，无需每天手动打开锦鲤红包页面
 
 
 import os,json,random,time,re,string,functools,asyncio
@@ -206,6 +206,19 @@ async def taskPostUrl(functionId, body, cookie):
             if n==3:
                 msg('API请求失败，请检查网路重试❗\n')  
 
+# 开启助力
+code_findall=re.compile(r'"code":(.*?),')
+async def h5launch(cookie):
+    body=body={"followShop":1,"random":''.join(random.sample(string.digits, 6)),"log":"4817e3a2~8,~1wsv3ig","sceneid":"JLHBhPageh5"}
+    res=await taskPostUrl("h5launch", body, cookie)
+    if not res:
+        return
+    if Code:=code_findall.findall(res):
+        str(Code:=Code[0])=='0'
+        msg(f"账号 {get_pin(cookie)} 开启助力码成功\n")
+    else:
+        msg(f"账号 {get_pin(cookie)} 开启助力码失败")
+        msg(res)
 
 # 获取助力码
 id_findall=re.compile(r'","id":(.+?),"')
@@ -220,10 +233,7 @@ async def h5activityIndex(cookie):
         inviteCode_list.append(inviteCode)
         msg(f"账号 {get_pin(cookie)} 的锦鲤红包助力码为 {inviteCode}\n")
     else:
-        msg(f"账号 {get_pin(cookie)} 获取助力码失败")
-        msg('由于锦鲤红包升级，需要手动打开一次锦鲤红包页面，脚本才能获取助力码')
-        msg('入口>京东首页>领券>锦鲤红包\n')
-
+        msg(f"账号 {get_pin(cookie)} 获取助力码失败\n")
 
 # 助力
 statusDesc_findall=re.compile(r',"statusDesc":"(.+?)"')
@@ -253,6 +263,12 @@ async def asyncmain():
 
     global session
     async with aiohttp.ClientSession() as session:
+
+        msg('***************************开启助力码***************\n')
+        tasks=list()
+        for cookie in cookie_list_pin:
+            tasks.append(h5launch(cookie))
+        await asyncio.wait(tasks)
 
         msg('***************************获取助力码***************\n')
         tasks=list()
