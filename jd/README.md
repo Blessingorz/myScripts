@@ -8,8 +8,8 @@
 17 */6 * * * jd_wabao.py            # 京东极速版发财挖宝
 17 */6 * * * jd_xdz.py              # 星店长 
 58 59 * * * * jd_jxcfd_cash111.py   # 京喜财富岛抢111红包
-5 0 * * * jd_angryKoi.py            # 愤怒的锦鲤修复
-17 */6 * * * jd_ghwzjd.py           # 逛好物，赚京豆 测试中
+0,1 0,1 * * * jd_angryKoi.py            # 愤怒的锦鲤修复
+17 */6 * * * jd_ghwzjd.py           # 逛好物，赚京豆
 17 15 * * * jd_jxnnfls.py           # 京喜 牛牛福利社
 ```
 ### 环境变量
