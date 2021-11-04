@@ -5,7 +5,7 @@
 # 脚本内或环境变量填写，优先环境变量
 # export JD_COOKIE="第1个cookie&第2个cookie"
 # export kois=" 第1个cookie的pin & 第2个cookie的pin "
-# 11/4 1:00 增加自动开启助力码，无需每天手动打开锦鲤红包页面
+# 11/4 11:23 增加自动开红包
 
 
 import os,json,random,time,re,string,functools,asyncio
@@ -253,6 +253,24 @@ async def jinli_h5assist(cookie,redPacketId):
     else:
         msg(f"错误\n{res}\n")
 
+# 开红包
+biz_msg_findall=re.compile(r'"biz_msg":"(.*?)"')
+discount_findall=re.compile(r'"discount":"(.*?)"')
+async def h5receiveRedpacketAll(cookie):
+    body={"random":''.join(random.sample(string.digits, 6)),"log":"f88c05a0~8,~1iqo16j","sceneid":"JLHBhPageh5"}
+    res=await taskPostUrl("h5receiveRedpacketAll", body, cookie)
+    msg(f'账号 {get_pin(cookie)} 开红包')
+    if not res:
+        return
+    biz_msg=biz_msg_findall.findall(res)[0]
+    if discount:=discount_findall.findall(res):
+        discount=discount[0]
+        msg(f"恭喜您，获得红包 {discount}\n")
+    else:
+        msg(f"{biz_msg}\n")
+
+
+
 
 async def asyncmain():
 
@@ -269,15 +287,11 @@ async def asyncmain():
     async with aiohttp.ClientSession() as session:
 
         msg('***************************开启助力码***************\n')
-        tasks=list()
-        for cookie in cookie_list:
-            tasks.append(h5launch(cookie))
+        tasks=[h5launch(cookie) for cookie in cookie_list]
         await asyncio.wait(tasks)
 
         msg('***************************获取助力码***************\n')
-        tasks=list()
-        for cookie in cookie_list_pin:
-            tasks.append(h5activityIndex(cookie))
+        tasks=[h5activityIndex(cookie) for cookie in cookie_list_pin]
         await asyncio.wait(tasks)
 
         msg('*******************助力**************************\n')
@@ -289,6 +303,10 @@ async def asyncmain():
             await asyncio.wait(tasks)
         else:
             msg('没有需要助力的锦鲤红包助力码\n')
+
+        msg('*******************开红包**************************\n')
+        tasks=[h5receiveRedpacketAll(cookie) for cookie in cookie_list]
+        await asyncio.wait(tasks)
 
 
 def main():
