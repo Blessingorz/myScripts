@@ -25,7 +25,7 @@ export JD_COOKIE="你的cookie1&你的cookie2"
 自行解决    
 如果你想搬运脚本，请不要修改任何内容，包括但不限于偷偷加助力码等行为，本人很怕麻烦           
 ### 通知推送
-[点我查看](https://github.com/wuye999/myScripts/blob/main/send.md)
+[点我查看](https://github.com/wuye999/myScripts/blob/main/send.md)        
  如果你想搬运脚本，请不要修改任何内容，包括但不限于偷偷加助力码等行为，本人很怕麻烦          
 
 
