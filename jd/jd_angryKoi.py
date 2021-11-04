@@ -15,7 +15,7 @@ sys.path.append(os.path.abspath('.'))
 try:
     import aiohttp
 except Exception as e:
-    print(e, "\n缺少aiohttp 模块，请执行命令 pip3 install --upgrade pip\n缺少aiohttp 模块，请执行命令安装: pip3 install aiohttp\n")
+    print(e, "\n请更新pip版本：pip3 install --upgrade pip \n缺少aiohttp 模块，请执行命令安装: pip3 install aiohttp\n")
     exit(3) 
 try:
     import requests
