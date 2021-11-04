@@ -17,7 +17,11 @@ try:
 except Exception as e:
     print(e, "\n缺少aiohttp 模块，请执行命令安装: pip3 install aiohttp")
     exit(3) 
-
+try:
+    import requests
+except Exception as e:
+    print(str(e) + "\n缺少requests模块, 请执行命令：pip3 install requests\n")
+requests.packages.urllib3.disable_warnings()
 
 run_send='no'     # yes或no, yes则启用通知推送服务
 
