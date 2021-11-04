@@ -20,16 +20,13 @@ JD_API_HOST = 'https://api.m.jd.com'
 run_send='yes'     # yes或no, yes则启用通知推送服务
 
 
-cookie_match=re.compile(r'pt_key=(.+);pt_pin=(.+);')
-cookie_match2=re.compile(r'pt_pin=(.+);pt_key=(.+);')
+# 获取pin
+cookie_findall=re.compile(r'pt_pin=(.+?);')
 def get_pin(cookie):
     try:
-        return cookie_match.match(cookie).group(2)
+        return cookie_findall.findall(cookie)[0]
     except:
-        try:
-            return cookie_match2.match(cookie).group(1)
-        except:
-            print('ck格式不正确，请检测')
+        print('ck格式不正确，请检查')
 
 
 # 随机ua
@@ -633,7 +630,9 @@ def main():
         if not a:
             return
         main_run(cookie)
-    
+        
+    msg('作者：wuye9999\n')
+    msg('地址:https://github.com/wuye999/myScripts')
     if run_send=='yes':
         send('### 发财挖宝 ###')   # 通知服务
 
