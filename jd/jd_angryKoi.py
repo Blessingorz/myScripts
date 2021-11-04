@@ -207,7 +207,7 @@ async def taskPostUrl(functionId, body, cookie):
                 res =await res.text()
                 return res
         except:
-            if n==3:
+            if n==2:
                 msg('API请求失败，请检查网路重试❗\n')  
 
 # 开启助力
