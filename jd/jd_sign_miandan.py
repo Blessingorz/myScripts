@@ -261,6 +261,8 @@ def main():
         pin=get_pin(cookie)
         msg(f'******开始【账号 {e}】 {pin} *********\n')
         doTask(cookie)
+    msg('作者：wuye9999\n')
+    msg('地址:https://github.com/wuye999/myScripts')
     send('### 签到免单 ###')   # 启用通知服务
 
 if __name__ == '__main__':
