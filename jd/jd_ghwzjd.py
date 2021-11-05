@@ -3,6 +3,7 @@
 # 脚本功能为 完成任务，获得100京豆
 # 环境变量JD_COOKIE，多账号用&分割
 # export JD_COOKIE="第1个cookie&第2个cookie"
+# 11 5 17:41 修bug
 
 import os,json,random,time,re,string,functools,asyncio
 import sys
@@ -200,8 +201,9 @@ def getTaskList(cookie):
                 saveTaskRecord(cookie,taskId,content['taskType'],uid,tt)
                 log=functools.reduce(lambda a,i: a+'\n'+i,log)
                 msg(log)
-                if not log:
-                    return getTaskList(cookie)
+                if log:
+                    if log != ' ' and log != '\n':
+                        return getTaskList(cookie)
         log.append(f'{get_pin(cookie)}: 全部任务已完成\n')
     else:
         log.append(f"{get_pin(cookie)}:{res['msg']}\n")
