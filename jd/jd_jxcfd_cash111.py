@@ -9,7 +9,7 @@ except Exception as e:
     exit(3)  
 
 # 调试
-# 京喜财富岛兑换111红包
+# 京喜财富岛兑换111红包,看运气
 # 59 59 * * * * new
 # 环境变量wy_debug_pin，多账号用&分割,
 '''
@@ -20,15 +20,43 @@ export wy_debug_pin="jd_997eefxx29"                # 需要请求的账号coooki
 '''
 
 # 环境变量优先于脚本内部变量,不填的项默认脚本内部变量
-wy_debug_url=f'https://m.jingxi.com/jxbfd/user/ExchangePrize?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=1636019052939&ptag=7155.9.47&dwType=3&dwLvl=9&ddwPaperMoney=111000&strPoolName=jxcfd2_exchange_hb_202111&strPgtimestamp=1636019052791&strPhoneID=48cfb189fc66ca09&strPgUUNum=64182db8d7b256398c651fcf2e90510c&_stk=_cfd_t%2CbizCode%2CddwPaperMoney%2CdwEnv%2CdwLvl%2CdwType%2Cptag%2Csource%2CstrPgUUNum%2CstrPgtimestamp%2CstrPhoneID%2CstrPoolName%2CstrZone&_ste=1&h5st=20211104174412939%3B4806829085285162%3B10032%3Btk01w78e51ba630nVD60s8BL94Uv6vkZjMjSOmrJf53ICGsMS%2FbaV33WITJwFxNBuTQ%2BWxqiCvt2IovjIUhdSXWUeG6b%3Bd808e0e13166d0727ee14bf75933a1148f7317e0ea16cb31a9590f99f66d2772&_=1636019052943&sceneval=2&g_login_type=1&callback=jsonpCBKN&g_ty=ls'       # 京喜财富岛111红包api
-wy_debug_headers="Host=m.jingxi.com&accept=*/*&x-requested-with=com.jd.pingou&sec-fetch-mode=no-cors&sec-fetch-site=same-site&accept-encoding=gzip, deflate, br&accept-language=zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7&referer=https://st.jingxi.com/fortune_island/index2.html?ptag=7155.9.47"         
+wy_debug_url=f'https://m.jingxi.com/jxbfd/user/ExchangePrize?strZone=jxbfd&bizCode=jxbfd&source=jxbfd&dwEnv=7&_cfd_t=1636019052939&ptag=7155.9.47&dwType=3&dwLvl=2&ddwPaperMoney=111000&strPoolName=jxcfd2_exchange_hb_202111&strPgtimestamp=1636019052791&strPhoneID=48cfb189fc66ca09&strPgUUNum=64182db8d7b256398c651fcf2e90510c&_stk=_cfd_t%2CbizCode%2CddwPaperMoney%2CdwEnv%2CdwLvl%2CdwType%2Cptag%2Csource%2CstrPgUUNum%2CstrPgtimestamp%2CstrPhoneID%2CstrPoolName%2CstrZone&_ste=1&h5st=20211104174412939%3B4806829085285162%3B10032%3Btk01w78e51ba630nVD60s8BL94Uv6vkZjMjSOmrJf53ICGsMS%2FbaV33WITJwFxNBuTQ%2BWxqiCvt2IovjIUhdSXWUeG6b%3Bd808e0e13166d0727ee14bf75933a1148f7317e0ea16cb31a9590f99f66d2772&_=1636019052943&sceneval=2&g_login_type=1&callback=jsonpCBKN&g_ty=ls'       # 京喜财富岛111红包api
+wy_debug_headers={
+    'Host':'m.jingxi.com',
+    'accept':'*/*',
+    'x-requested-with':'com.jd.pingou',
+    'sec-fetch-mode':'no-cors',
+    'sec-fetch-site':'same-site',
+    'accept-encoding':'gzip, deflate, br',
+    'accept-language':'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+    'referer':'https://st.jingxi.com/fortune_island/index2.html?ptag=7155.9.47&sceneval=2'
+}        
 wy_debug_manner='get'           
 wy_debug_postdata=''            
 wy_debug_cycless = '50'         
 wy_debug_sleep = '0.05'         
 wy_debug_pin=''                 
 
+'''
+{"coupon":[{"hongbao":[
+    {"ddwAdvanceEndTm":0,"ddwAdvanceStartTm":0,"ddwAdvanceUnLockMoney":0,"ddwGoodsPrice":0,"ddwNeedPay":0,"ddwPaperMoney":1111000,"ddwPrice":111100,"ddwQuota":0,"ddwSecKillEndTm":0,"ddwSecKillPaperMoney":0,"ddwSecKillStartTm":0,"dwHbFirst":0,"dwIsAdvance":0,"dwIsNeedJxApp":0,"dwIsNewUserLead":0,"dwIsNewUserPrize":0,"dwIsPlatCoupon":0,"dwIsSecKill":0,"dwIsSecKillIng":0,"dwIsShowStock":0,"dwLvl":1,"dwPos":30001,"dwState":0,"dwStockNum":1,"dwUnLockLvl":10,"strPrizeName":"1111元","strPrizePic":"","strSkuId":""},
 
+    {"ddwAdvanceEndTm":0,"ddwAdvanceStartTm":0,"ddwAdvanceUnLockMoney":0,"ddwGoodsPrice":0,"ddwNeedPay":0,"ddwPaperMoney":111000,"ddwPrice":11100,"ddwQuota":0,"ddwSecKillEndTm":0,"ddwSecKillPaperMoney":0,"ddwSecKillStartTm":0,"dwHbFirst":0,"dwIsAdvance":0,"dwIsNeedJxApp":0,"dwIsNewUserLead":0,"dwIsNewUserPrize":0,"dwIsPlatCoupon":0,"dwIsSecKill":0,"dwIsSecKillIng":0,"dwIsShowStock":0,"dwLvl":2,"dwPos":30002,"dwState":1,"dwStockNum":0,"dwUnLockLvl":8,"strPrizeName":"111元","strPrizePic":"","strSkuId":""},
+    
+    {"ddwAdvanceEndTm":0,"ddwAdvanceStartTm":0,"ddwAdvanceUnLockMoney":0,"ddwGoodsPrice":0,"ddwNeedPay":0,"ddwPaperMoney":100000,"ddwPrice":10000,"ddwQuota":0,"ddwSecKillEndTm":0,"ddwSecKillPaperMoney":0,"ddwSecKillStartTm":0,"dwHbFirst":0,"dwIsAdvance":0,"dwIsNeedJxApp":0,"dwIsNewUserLead":0,"dwIsNewUserPrize":0,"dwIsPlatCoupon":0,"dwIsSecKill":0,"dwIsSecKillIng":0,"dwIsShowStock":0,"dwLvl":3,"dwPos":30003,"dwState":1,"dwStockNum":0,"dwUnLockLvl":5,"strPrizeName":"100元","strPrizePic":"","strSkuId":""},
+    
+    {"ddwAdvanceEndTm":0,"ddwAdvanceStartTm":0,"ddwAdvanceUnLockMoney":0,"ddwGoodsPrice":0,"ddwNeedPay":0,"ddwPaperMoney":100,"ddwPrice":10,"ddwQuota":0,"ddwSecKillEndTm":0,"ddwSecKillPaperMoney":0,"ddwSecKillStartTm":0,"dwHbFirst":0,"dwIsAdvance":0,"dwIsNeedJxApp":0,"dwIsNewUserLead":0,"dwIsNewUserPrize":0,"dwIsPlatCoupon":0,"dwIsSecKill":0,"dwIsSecKillIng":0,"dwIsShowStock":0,"dwLvl":8,"dwPos":30004,"dwState":0,"dwStockNum":4534,"dwUnLockLvl":1,"strPrizeName":"0.1元","strPrizePic":"","strSkuId":""},
+    
+    {"ddwAdvanceEndTm":0,"ddwAdvanceStartTm":0,"ddwAdvanceUnLockMoney":0,"ddwGoodsPrice":0,"ddwNeedPay":0,"ddwPaperMoney":200,"ddwPrice":20,"ddwQuota":0,"ddwSecKillEndTm":0,"ddwSecKillPaperMoney":0,"ddwSecKillStartTm":0,"dwHbFirst":0,"dwIsAdvance":0,"dwIsNeedJxApp":0,"dwIsNewUserLead":0,"dwIsNewUserPrize":0,"dwIsPlatCoupon":0,"dwIsSecKill":0,"dwIsSecKillIng":0,"dwIsShowStock":0,"dwLvl":7,"dwPos":30005,"dwState":2,"dwStockNum":2549,"dwUnLockLvl":2,"strPrizeName":"0.2元","strPrizePic":"","strSkuId":""},
+    
+    {"ddwAdvanceEndTm":0,"ddwAdvanceStartTm":0,"ddwAdvanceUnLockMoney":0,"ddwGoodsPrice":0,"ddwNeedPay":0,"ddwPaperMoney":500,"ddwPrice":50,"ddwQuota":0,"ddwSecKillEndTm":0,"ddwSecKillPaperMoney":0,"ddwSecKillStartTm":0,"dwHbFirst":0,"dwIsAdvance":0,"dwIsNeedJxApp":0,"dwIsNewUserLead":0,"dwIsNewUserPrize":0,"dwIsPlatCoupon":0,"dwIsSecKill":0,"dwIsSecKillIng":0,"dwIsShowStock":0,"dwLvl":6,"dwPos":30006,"dwState":0,"dwStockNum":4735,"dwUnLockLvl":2,"strPrizeName":"0.5元","strPrizePic":"","strSkuId":""},
+    
+    {"ddwAdvanceEndTm":0,"ddwAdvanceStartTm":0,"ddwAdvanceUnLockMoney":0,"ddwGoodsPrice":0,"ddwNeedPay":0,"ddwPaperMoney":1000,"ddwPrice":100,"ddwQuota":0,"ddwSecKillEndTm":0,"ddwSecKillPaperMoney":0,"ddwSecKillStartTm":0,"dwHbFirst":0,"dwIsAdvance":0,"dwIsNeedJxApp":0,"dwIsNewUserLead":0,"dwIsNewUserPrize":0,"dwIsPlatCoupon":0,"dwIsSecKill":0,"dwIsSecKillIng":0,"dwIsShowStock":0,"dwLvl":5,"dwPos":30007,"dwState":0,"dwStockNum":361,"dwUnLockLvl":2,"strPrizeName":"1元","strPrizePic":"","strSkuId":""},
+    
+    {"ddwAdvanceEndTm":0,"ddwAdvanceStartTm":0,"ddwAdvanceUnLockMoney":0,"ddwGoodsPrice":0,"ddwNeedPay":0,"ddwPaperMoney":11000,"ddwPrice":1100,"ddwQuota":0,"ddwSecKillEndTm":0,"ddwSecKillPaperMoney":0,"ddwSecKillStartTm":0,"dwHbFirst":0,"dwIsAdvance":0,"dwIsNeedJxApp":0,"dwIsNewUserLead":0,"dwIsNewUserPrize":0,"dwIsPlatCoupon":0,"dwIsSecKill":0,"dwIsSecKillIng":0,"dwIsShowStock":0,"dwLvl":4,"dwPos":30008,"dwState":1,"dwStockNum":0,"dwUnLockLvl":5,"strPrizeName":"11元","strPrizePic":"","strSkuId":""}
+    
+    ]}}
+'''
 # 获取pin
 cookie_findall=re.compile(r'pt_pin=(.+?);')
 def get_pin(cookie):
@@ -178,10 +206,11 @@ if __name__ == '__main__':
     debug_pin=get_env('wy_debug_pin')
     cookie_list=[cookie for cookie in cookie_list if get_pin(cookie) in debug_pin]
     url=get_env('wy_debug_url') 
-    try:
-        headers_env = {header.split("=")[0]:''.join(header.split("=")[1:]) for header in get_env('wy_debug_headers').split('&')}
-    except:
-        headers_env=dict()
+    # try:
+    #     headers_env = {header.split("=")[0]:''.join(header.split("=")[1:]) for header in get_env('wy_debug_headers').split('&')}
+    # except:
+    #     headers_env=dict()
+    headers_env=wy_debug_headers
     data=get_env('wy_debug_postdata')
     sleep=float(get_env('wy_debug_sleep'))
 
