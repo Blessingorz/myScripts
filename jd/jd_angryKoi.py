@@ -5,7 +5,7 @@
 # 脚本内或环境变量填写，优先环境变量
 # export JD_COOKIE="第1个cookie&第2个cookie"
 # export kois=" 第1个cookie的pin & 第2个cookie的pin "
-# 11/4 11:23 增加自动开红包
+# 11/6 9:00 修改自动开红包逻辑
 
 
 import os,json,random,time,re,string,functools,asyncio
@@ -24,6 +24,14 @@ except Exception as e:
 requests.packages.urllib3.disable_warnings()
 
 run_send='yes'     # yes或no, yes则启用通知推送服务
+
+
+# 检查python版本
+def python_version():
+    if sys.version_info < (3, 8):
+        print('你的python版本小于3.8')
+        exit()
+python_version()
 
 
 # 获取pin
@@ -63,7 +71,6 @@ def v4_env(env,paths):
         for line in f.readlines():
             try:
                 c=b.match(line).group(1)
-                print(line)
                 break
             except:
                 pass
@@ -123,7 +130,7 @@ class Msg(object):
             a += 1
             return self.getsendNotify(a)
 
-    def main(self,n=1):
+    def main(self,f=1):
         global send,msg,initialize
         sys.path.append(os.path.abspath('.'))
         for n in range(3):
@@ -143,9 +150,9 @@ class Msg(object):
             initialize(d)
         except:
             self.getsendNotify()
-            if n < 5:
-                n += 1
-                return self.main(n)
+            if f < 5:
+                f += 1
+                return self.main(f)
             else:
                 print('获取通知服务失败，请检查网络连接...')
 Msg().main()   # 初始化通知服务   
@@ -213,7 +220,7 @@ async def taskPostUrl(functionId, body, cookie):
 # 开启助力
 code_findall=re.compile(r'"code":(.*?),')
 async def h5launch(cookie):
-    body=body={"followShop":1,"random":''.join(random.sample(string.digits, 6)),"log":"4817e3a2~8,~1wsv3ig","sceneid":"JLHBhPageh5"}
+    body={"followShop":1,"random":''.join(random.sample(string.digits, 6)),"log":"4817e3a2~8,~1wsv3ig","sceneid":"JLHBhPageh5"}
     res=await taskPostUrl("h5launch", body, cookie)
     if not res:
         return
@@ -266,10 +273,13 @@ async def h5receiveRedpacketAll(cookie):
     if discount:=discount_findall.findall(res):
         discount=discount[0]
         msg(f"恭喜您，获得红包 {discount}\n")
+        try:
+            float(discount)
+            return h5receiveRedpacketAll(cookie)
+        except:
+            pass
     else:
         msg(f"{biz_msg}\n")
-
-
 
 
 async def asyncmain():
@@ -317,7 +327,6 @@ def main():
     
     msg('作者：wuye9999\n')
     msg('地址:https://github.com/wuye999/myScripts')
-
     if run_send=='yes':
         send('愤怒的锦鲤')   # 通知服务
 
