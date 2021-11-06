@@ -273,7 +273,7 @@ async def h5receiveRedpacketAll(cookie):
     if discount:=discount_findall.findall(res):
         discount=discount[0]
         msg(f"恭喜您，获得红包 {discount}\n")
-        return h5receiveRedpacketAll(cookie)
+        return await h5receiveRedpacketAll(cookie)
     else:
         msg(f"{biz_msg}\n")
 
