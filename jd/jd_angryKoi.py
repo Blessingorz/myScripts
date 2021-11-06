@@ -2,7 +2,7 @@
 # 入口>京东首页>领券>锦鲤红包
 # 环境变量JD_COOKIE，多账号用&分割
 # 环境变量kois中填入需要助力的pt_pin，有多个请用 '@'或'&'或空格 符号连接,不填默认全部账号内部随机助力
-# 环境变量wy_AsyncConcurrent规定是否启用高并发，yes或no,不填默认no
+# 环境变量wy_AsyncConcurrent规定是否启用高并发，yes或no,不填默认no不启用并发
 # 脚本内或环境变量填写，优先环境变量
 # export JD_COOKIE="第1个cookie&第2个cookie"
 # export kois=" 第1个cookie的pin & 第2个cookie的pin "
