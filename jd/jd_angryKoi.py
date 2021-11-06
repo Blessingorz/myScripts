@@ -2,10 +2,12 @@
 # 入口>京东首页>领券>锦鲤红包
 # 环境变量JD_COOKIE，多账号用&分割
 # 环境变量kois中填入需要助力的pt_pin，有多个请用 '@'或'&'或空格 符号连接,不填默认全部账号内部随机助力
+# 环境变量wy_AsyncConcurrent规定是否启用高并发，yes或no,不填默认no
 # 脚本内或环境变量填写，优先环境变量
 # export JD_COOKIE="第1个cookie&第2个cookie"
 # export kois=" 第1个cookie的pin & 第2个cookie的pin "
-# 11/6 9:00 修改自动开红包逻辑
+# export wy_AsyncConcurrent="yes"      
+# 11/6 12:00 修改自动开红包逻辑,会开完全部红包；由于并发过高，有朋友担心黑ip，增加变量wy_AsyncConcurrent是否启用高并发
 
 
 import os,json,random,time,re,string,functools,asyncio
@@ -23,7 +25,10 @@ except Exception as e:
     print(str(e) + "\n缺少requests模块, 请执行命令：pip3 install requests\n")
 requests.packages.urllib3.disable_warnings()
 
-run_send='yes'     # yes或no, yes则启用通知推送服务
+
+run_send='yes'              # yes或no, yes则启用通知推送服务
+run_getUserInfo='no'        # yes或no, yes则启用检查账号有效性
+wy_AsyncConcurrent='no'    # 是否启用高并发，环境变量优先
 
 
 # 检查python版本
@@ -191,7 +196,8 @@ async def getUserInfo_list(cookie_list):
         tasks=[getUserInfo(cookie) for cookie in cookie_list]
         await asyncio.wait(tasks)
     return [cookie for cookie in cookie_ok_list if cookie]
-cookie_list=asyncio.run(getUserInfo_list(cookie_list))      # 初始化cookie
+if run_getUserInfo=='yes':
+    cookie_list=asyncio.run(getUserInfo_list(cookie_list))      # 初始化cookie
 
 
 async def taskPostUrl(functionId, body, cookie):
@@ -293,26 +299,39 @@ async def asyncmain():
     async with aiohttp.ClientSession() as session:
 
         msg('***************************开启助力码***************\n')
-        tasks=[h5launch(cookie) for cookie in cookie_list]
-        await asyncio.wait(tasks)
+        if (wy_AsyncConcurrent:=get_env('wy_AsyncConcurrent'))=='no':
+            [await h5launch(cookie) for cookie in cookie_list]
+        else:
+            tasks=[h5launch(cookie) for cookie in cookie_list]
+            await asyncio.wait(tasks)
 
+        print(wy_AsyncConcurrent)
         msg('***************************获取助力码***************\n')
-        tasks=[h5activityIndex(cookie) for cookie in cookie_list_pin]
-        await asyncio.wait(tasks)
+        if wy_AsyncConcurrent=='no':
+            [await h5activityIndex(cookie) for cookie in cookie_list_pin]
+        else:
+            tasks=[h5activityIndex(cookie) for cookie in cookie_list_pin]
+            await asyncio.wait(tasks)
+
+
 
         msg('*******************助力**************************\n')
         tasks=list()
         if inviteCode_list:
-            for inviteCode in inviteCode_list:
-                for cookie in cookie_list:
-                    tasks.append(jinli_h5assist(cookie,inviteCode))
-            await asyncio.wait(tasks)
+            if wy_AsyncConcurrent=='no':
+                [await jinli_h5assist(cookie,inviteCode) for inviteCode in inviteCode_list for cookie in cookie_list]
+            else:
+                tasks=[jinli_h5assist(cookie,inviteCode) for inviteCode in inviteCode_list for cookie in cookie_list]
+                await asyncio.wait(tasks)
         else:
             msg('没有需要助力的锦鲤红包助力码\n')
 
         msg('*******************开红包**************************\n')
-        tasks=[h5receiveRedpacketAll(cookie) for cookie in cookie_list]
-        await asyncio.wait(tasks)
+        if wy_AsyncConcurrent=='no':
+            [await h5receiveRedpacketAll(cookie) for cookie in cookie_list]
+        else:
+            tasks=[h5receiveRedpacketAll(cookie) for cookie in cookie_list]
+            await asyncio.wait(tasks)
 
 
 def main():
