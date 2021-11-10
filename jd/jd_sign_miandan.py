@@ -3,7 +3,7 @@
 # 脚本功能为自动签到，还在测试中
 # 环境变量JD_COOKIE，多账号用&分割
 # export JD_COOKIE="第1个cookie&第2个cookie"
-# 11/1 12:40 增加ck格式兼容
+# 11 10 22:00 应要求更改cdn
 
 import time
 import os
@@ -202,9 +202,9 @@ def getUserInfo(cookie):
 
 
 def doTask(cookie):
-    a=getUserInfo(cookie)
-    if not a:
-        return
+    # a=getUserInfo(cookie)
+    # if not a:
+    #     return
     merch_list=sign_merch(cookie)
     if not merch_list:
         return
@@ -216,7 +216,7 @@ def doTask(cookie):
 class Msg(object):
     def getsendNotify(self, a=1):
         try:
-            url = 'https://ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
+            url = 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
             response = requests.get(url,timeout=3)
             with open('sendNotify.py', "w+", encoding="utf-8") as f:
                 f.write(response.text)

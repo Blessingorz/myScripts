@@ -7,7 +7,7 @@
 # export JD_COOKIE="第1个cookie&第2个cookie"
 # export kois=" 第1个cookie的pin & 第2个cookie的pin "
 # export wy_AsyncConcurrent="yes"      
-# 11/6 12:00 修改自动开红包逻辑,会开完全部红包；由于并发过高，有朋友担心黑ip，增加变量wy_AsyncConcurrent是否启用高并发
+# 11 10 22:00 应要求更改cdn
 
 
 import os,json,random,time,re,string,functools,asyncio
@@ -124,7 +124,7 @@ cookie_list=Judge_env().main_run()
 class Msg(object):
     def getsendNotify(self, a=1):
         try:
-            url = 'https://ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
+            url = 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
             response = requests.get(url,timeout=3)
             with open('sendNotify.py', "w+", encoding="utf-8") as f:
                 f.write(response.text)
@@ -309,7 +309,6 @@ async def asyncmain():
             tasks=[h5launch(cookie) for cookie in cookie_list]
             await asyncio.wait(tasks)
 
-        print(wy_AsyncConcurrent)
         msg('***************************获取助力码***************\n')
         if wy_AsyncConcurrent=='no':
             [await h5activityIndex(cookie) for cookie in cookie_list_pin]
@@ -320,7 +319,6 @@ async def asyncmain():
 
 
         msg('*******************助力**************************\n')
-        tasks=list()
         if inviteCode_list:
             if wy_AsyncConcurrent=='no':
                 [await jinli_h5assist(cookie,inviteCode) for inviteCode in inviteCode_list for cookie in cookie_list]
