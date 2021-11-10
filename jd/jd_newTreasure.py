@@ -4,7 +4,8 @@
 # 已完成的任务会显示火爆，当然也可能你是黑号...
 # 环境变量JD_COOKIE，多账号用&分割
 # export JD_COOKIE="第1个cookie&第2个cookie"
-# 11/1 12:40 增加ck格式兼容
+# 11 10 22:00 应要求更改cdn
+
 
 import os,json,random,time,re,string
 import asyncio
@@ -110,7 +111,7 @@ def getUserInfo(cookie):
 class Msg(object):
     def getsendNotify(self, a=1):
         try:
-            url = 'https://ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
+            url = 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
             response = requests.get(url,timeout=3)
             with open('sendNotify.py', "w+", encoding="utf-8") as f:
                 f.write(response.text)
@@ -121,7 +122,7 @@ class Msg(object):
             a += 1
             return self.getsendNotify(a)
 
-    def main(self,n=1):
+    def main(self,f=1):
         global send,msg,initialize
         sys.path.append(os.path.abspath('.'))
         for n in range(3):
@@ -141,9 +142,9 @@ class Msg(object):
             initialize(d)
         except:
             self.getsendNotify()
-            if n < 5:
-                n += 1
-                return self.main(n)
+            if f < 5:
+                f += 1
+                return self.main(f)
             else:
                 print('获取通知服务失败，请检查网络连接...')
 Msg().main()   # 初始化通知服务  
