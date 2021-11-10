@@ -7,6 +7,7 @@
 请支持脚本作者：https://github.com/fuguiKz/meituan-shenquan
 美团token获取教程：https://github.com/fuguiKz/meituan-shenquan
 变量解释：https://github.com/fuguiKz/meituan-shenquan
+# 11 10 22:00 应要求更改cdn
 
 环境变量填写，环境变量优先
 export meituan_token=""     # 美团token       
@@ -44,7 +45,7 @@ import datetime
 class Msg(object):
     def getsendNotify(self, a=1):
         try:
-            url = 'https://ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
+            url = 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
             response = requests.get(url,timeout=3)
             with open('sendNotify.py', "w+", encoding="utf-8") as f:
                 f.write(response.text)
@@ -75,7 +76,7 @@ class Msg(object):
             initialize(d)
         except:
             self.getsendNotify()
-            self.main()          
+            return self.main()          
 Msg().main()   # 初始化通知服务   
 
 
