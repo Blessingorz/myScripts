@@ -9,6 +9,7 @@ import time
 import hashlib
 from urllib import parse
 
+# 11 10 22:00 应要求更改cdn
 #账号配置
 # womail_url:  进入微信联通沃邮箱 公众号 抓 https://nyan.mail.wo.cn/cn/sign/index/index?mobile 开头的 URL
 # 脚本内填写 ,按自然数顺序填写，最多999条
@@ -72,7 +73,7 @@ def v4_env(env):
 class Msg(object):
     def getsendNotify(self, a=1):
         try:
-            url = 'https://ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
+            url = 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
             response = requests.get(url,timeout=3)
             with open('sendNotify.py', "w+", encoding="utf-8") as f:
                 f.write(response.text)
@@ -99,7 +100,11 @@ class Msg(object):
                 d[a]=eval(a)
             except:
                 d[a]=''
-        initialize(d)           
+        try:
+            initialize(d)  
+        except:
+            self.getsendNotify()
+            return self.main()
 Msg().main()   # 初始化通知服务  
 
 
