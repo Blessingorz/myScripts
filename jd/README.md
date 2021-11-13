@@ -8,7 +8,8 @@
 ```
 9 9 * * * jd_sign_miandan.py            # 签到免单  
 17 */6 * * * jd_wabao.py                # 京东极速版发财挖宝
-0,1 0,1 * * * jd_angryKoi.py            # 愤怒的锦鲤修复
+17 */6 * * * jd_wabao_help.py           # 发财挖宝只做任务和内部助力
+0,1 0,1 * * * jd_angryKoi.py            # 安静的锦鲤
 17 */6 * * * jd_ghwzjd.py               # 逛好物，赚京豆
 ```
 ### 环境变量
