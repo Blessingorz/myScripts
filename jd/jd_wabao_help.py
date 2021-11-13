@@ -399,7 +399,7 @@ def wecat(cookie,amountid,poolBaseId,prizeGroupId,prizeBaseId):
     
 
 def main():
-    msg('🔔发财挖宝，开始！\n')
+    msg('🔔发财挖宝只做任务和内部互助，开始！\n')
 
     msg('获取助力码\n')
     global inviteCode_1_list,inviteCode_2_list
@@ -425,7 +425,7 @@ def main():
         #     spring_reward_list(cookie)
 
     if run_send=='yes':
-        send('### 发财挖宝 ###')   # 通知服务
+        send('### 发财挖宝只做任务和内部互助 ###')   # 通知服务
 
 
 if __name__ == '__main__':
