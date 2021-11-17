@@ -3,6 +3,8 @@
 #author:fugui
 
 '''
+cron: 0 11,14,17,21,0,1,2,3 * * *
+new Env('美团');
 此脚本只是搬运修改，方便青龙，v4等使用
 请支持脚本作者：https://github.com/fuguiKz/meituan-shenquan
 美团token获取教程：https://github.com/fuguiKz/meituan-shenquan
@@ -56,7 +58,7 @@ class Msg(object):
             a += 1
             return self.getsendNotify(a)
 
-    def main(self):
+    def main(self,f=1):
         global send,msg,initialize
         sys.path.append(os.path.abspath('.'))
         for n in range(3):
@@ -65,7 +67,7 @@ class Msg(object):
                 break
             except:
                 self.getsendNotify()
-        l=['BARK','PUSH_KEY','TG_BOT_TOKEN','TG_USER_ID','TG_API_HOST','TG_PROXY_HOST','TG_PROXY_PORT','DD_BOT_TOKEN','DD_BOT_SECRET','QQ_SKEY','Q_SKEY','QQ_MODE','QYWX_AM','PUSH_PLUS_TOKEN']
+        l=['BARK','SCKEY','TG_BOT_TOKEN','TG_USER_ID','TG_API_HOST','TG_PROXY_HOST','TG_PROXY_PORT','DD_BOT_TOKEN','DD_BOT_SECRET','Q_SKEY','QQ_MODE','QYWX_AM','PUSH_PLUS_TOKEN','PUSH_PLUS_USER']
         d={}
         for a in l:
             try:
@@ -76,7 +78,11 @@ class Msg(object):
             initialize(d)
         except:
             self.getsendNotify()
-            return self.main()          
+            if f < 5:
+                f += 1
+                return self.main(f)
+            else:
+                print('获取通知服务失败，请检查网络连接...')
 Msg().main()   # 初始化通知服务   
 
 
@@ -85,18 +91,26 @@ def get_env(env):
     try:
         if env in os.environ:
             a=os.environ[env]
+        elif '/ql' in os.path.abspath(os.path.dirname(__file__)):
+            try:
+                a=v4_env(env,'/ql/config/config.sh')
+            except:
+                a=eval(env)
         elif '/jd' in os.path.abspath(os.path.dirname(__file__)):
-            a=v4_env(env)
+            try:
+                a=v4_env(env,'/jd/config/config.sh')
+            except:
+                a=eval(env)
         else:
             a=eval(env)
     except:
-        msg(f'环境变量 {env} 不存在\n')    
+        a=''
     return a
 
 # v4
-def v4_env(env):
+def v4_env(env,paths):
     b=re.compile(r'(?:export )?'+env+r' ?= ?[\"\'](.*?)[\"\']', re.I)
-    with open('/jd/config/config.sh', 'r') as f:
+    with open(paths, 'r') as f:
         for line in f.readlines():
             try:
                 c=b.match(line).group(1)

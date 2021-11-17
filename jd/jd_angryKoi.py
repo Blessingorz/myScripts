@@ -9,7 +9,7 @@ export kois=" 第1个cookie的pin & 第2个cookie的pin "
 脚本内或环境变量填写，优先环境变量
 地址：https://raw.githubusercontent.com/wuye999/myScripts/main/jd/jd_angryKoi.py
 更新：
-13/11 22:00 应要求更改为同步运行，去除aiohttp模块，慢条斯理的运行
+17/11 22:00 只开指定账号的红包
 '''
 
 import os,json,random,time,re,string,functools
@@ -180,8 +180,11 @@ def h5launch(cookie):
     if not res:
         return
     if Code:=code_findall.findall(res):
-        str(Code:=Code[0])=='0'
-        msg(f"账号 {get_pin(cookie)} 开启助力码成功\n")
+        if str(Code[0])=='0':
+            msg(f"账号 {get_pin(cookie)} 开启助力码成功\n")
+        else:
+            msg(f"账号 {get_pin(cookie)} 开启助力码失败")
+            msg(res)
     else:
         msg(f"账号 {get_pin(cookie)} 开启助力码失败")
         msg(res)
@@ -249,7 +252,7 @@ def main():
     inviteCode_list=list()
 
     msg('***************************开启助力码***************\n')
-    [h5launch(cookie) for cookie in cookie_list]
+    [h5launch(cookie) for cookie in cookie_list_pin]
 
     msg('***************************获取助力码***************\n')
     [h5activityIndex(cookie) for cookie in cookie_list_pin]
@@ -262,7 +265,7 @@ def main():
         msg('没有需要助力的锦鲤红包助力码\n')
 
     msg('*******************开红包**************************\n')
-    [h5receiveRedpacketAll(cookie) for cookie in cookie_list]
+    [h5receiveRedpacketAll(cookie) for cookie in cookie_list_pin]
     
     if run_send=='yes':
         send('安静的锦鲤')   # 通知服务
