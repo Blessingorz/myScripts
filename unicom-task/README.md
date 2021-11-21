@@ -30,7 +30,12 @@ appId：手机文件夹 unicom 里的appid文件，以文本格式打开
 ### 通知推送
 [点我查看](https://github.com/wuye999/myScripts/blob/main/send.md)          
 ### 使用方法            
-#### 青龙等        
+#### 青龙等    
+将文件unicom_index.py和文件夹task 放入/ql/scripts 里                        
+![image](https://user-images.githubusercontent.com/79479594/142781422-9a616278-1b32-4a42-ac52-9615c047e6f4.png)                                
+添加定时                             
+![image](https://user-images.githubusercontent.com/79479594/142781440-8f795296-e1a7-44b6-a4ae-f22505b33065.png)                     
+
 #### 云函数        
 
 
