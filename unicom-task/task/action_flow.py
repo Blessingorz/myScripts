@@ -7,7 +7,7 @@ sys.path.append('/tmp')
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/task')
-import requests,json,time,re,login,logging,traceback,os,random,datetime,util
+import requests,json,time,re,login,logging,traceback,random,datetime,util
 from lxml.html import fromstring
 
 #激活即将过期的流量包

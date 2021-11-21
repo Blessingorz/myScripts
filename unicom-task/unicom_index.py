@@ -1,9 +1,27 @@
+# -*- coding: utf-8 -*-
+
+'''
+cron: 16 6,16 * * * *
+变量: unicom_config_x,unicom_woEmail_x,通知服务变量
+脚本内或环境变量填写，环境变量优先
+通知推送服务环境变量请查看：https://github.com/wuye999/myScripts/blob/main/send.md
+环境变量示例：
+export unicom_config_1="手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫<<<沃邮箱登陆Url1（可留空）<<<沃邮箱密码（可留空）"
+export unicom_config_2="手机号2<<<服务密码2<<<appId2<<<抽奖次数(0-30)中奖几率渺茫<<<沃邮箱登陆Url2（可留空）<<<沃邮箱密码（可留空）"
+export PUSH_PLUS_TOKEN="微信推送Plus+(通知服务示例，可留空或不填)"
+'''
+# 脚本内示例：
+unicom_config_1="18825802580<<<888888<<<appppppp8888888888iiiddd<<<0<<<https://nyan.mail.wo.cn/cn/sign/index/index?mobile=aaa&userName=&openId=bbb<<<ccc"
+unicom_config_2="19925902590<<<999999<<<appppppp9999999999iiiddd<<<5<<< <<< "
+PUSH_PLUS_TOKEN=""
+
+
 import os,sys
 sys.path.append('/tmp')
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/task')
-import json,time,re,login,logging,traceback,random,datetime,util,sys
+import json,time,re,traceback,random,datetime,util,sys,login,logging
 try:
     from lxml.html import fromstring
     import pytz,importlib,requests,rsa
@@ -12,23 +30,9 @@ except Exception as e:
 requests.packages.urllib3.disable_warnings()
 
 
-
-'''
-cron: 16 6,16 * * * *
-变量: unicom_config_x,unicom_woEmail_x,通知服务变量
-脚本内或环境变量填写，环境变量优先
-通知推送服务环境变量请查看：https://github.com/wuye999/myScripts/blob/main/send.md
-环境变量示例：
-export unicom_config_1="手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫<<<沃邮箱俱乐部登陆Url1（可留空）"
-export unicom_config_2="手机号2<<<服务密码2<<<appId2<<<抽奖次数(0-30)中奖几率渺茫<<<沃邮箱俱乐部登陆Url2（可留空）"
-export PUSH_PLUS_TOKEN="微信推送Plus+(通知服务，可留空或不填)"
-'''
-# 脚本内示例：
-unicom_config_1="18825802580<<<888888<<<appppppp8888888888iiiddd<<<0<<<"
-PUSH_PLUS_TOKEN=""
-
-
-run_send='yes'      # yes或no,是否启用推送
+run_send='no'      # yes或no,是否启用推送
+#用户登录全局变量
+client = None
 
 
 # 云函数可写目录
@@ -37,9 +41,23 @@ def scf_path(p):
         return './'+p
     else:
         return '/tmp/'+p
-
-#用户登录全局变量
-client = None
+   
+#日志基础配置
+def log():
+    # 创建一个logger
+    global logger,logging
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+    # 创建一个handler，用于写入日志文件
+    # w 模式会记住上次日志记录的位置
+    fh = logging.FileHandler(scf_path('log.txt'), mode='a', encoding='utf-8')
+    fh.setFormatter(logging.Formatter("%(filename)s: %(message)s"))
+    logger.addHandler(fh)
+    # 创建一个handler，输出到控制台
+    ch = logging.StreamHandler()
+    ch.setFormatter(logging.Formatter("%(filename)s: %(message)s"))
+    logger.addHandler(ch)
+log() 
 
 
 # 读取环境变量
@@ -103,6 +121,8 @@ def readJson():
                 user_dict['lotteryNum']=user_list[3]
             if user_list[4] and user_list[4] != ' ' :
                 user_dict['woEmail']=user_list[4]
+            if user_list[5] and user_list[5] != ' ' :
+                user_dict['woEmail_password']=user_list[5]                
             users.append(user_dict)
         return users
     except:
@@ -120,7 +140,7 @@ def runTask(client, user):
                 if entry.name == 'sendNotify.py':
                     continue
                 if entry.name == 'util.py':
-                    continue                
+                    continue 
                 task_module = importlib.import_module('task.'+entry.name[:-3])
                 task_class = getattr(task_module, entry.name[0:-3])
                 task_obj = task_class()
@@ -176,7 +196,7 @@ class sendNotice:
 def main_handler(event, context):
     users = readJson()
     for user in users:
-        #清空上一个用户的日志记录
+        # 清空上一个用户的日志记录
         with open(scf_path('log.txt'),mode='w',encoding='utf-8') as f:
             pass
         global client

@@ -9,27 +9,6 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/task')
 import base64,rsa,time,requests,logging,traceback
 
-# 云函数可写目录
-def scf_path(p):
-    if __name__ == '__main__':
-        return './'+p
-    else:
-        return '/tmp/'+p
-
-#日志基础配置
-# 创建一个logger
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-# 创建一个handler，用于写入日志文件
-# w 模式会记住上次日志记录的位置
-fh = logging.FileHandler(scf_path('log.txt'), mode='a', encoding='utf-8')
-fh.setFormatter(logging.Formatter("%(message)s"))
-logger.addHandler(fh)
-# 创建一个handler，输出到控制台
-ch = logging.StreamHandler()
-ch.setFormatter(logging.Formatter("%(filename)s: %(message)s"))
-logger.addHandler(ch)
-
 #自动保存会话
 session = None
 
@@ -132,14 +111,14 @@ def login(username,password,appId):
     try:
         result = response.json()
         if result['code'] == '0':
-            logger.info('【登录】: ' + result['default'][-4:])
+            logging.info('【登录】: ' + result['default'][-4:])
             session.headers.update({'User-Agent': 'Mozilla/5.0 (Linux; Android 10; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0100,desmobile:' + str(username) + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}'})
             flag = True
         else:
-            logger.info('【登录】: ' + result['dsc'])
+            logging.info('【登录】: ' + result['dsc'])
     except Exception as e:
         print(traceback.format_exc())
-        logger.error('【登录】: 发生错误，原因为: ' + str(e))
+        logging.info('【登录】: 发生错误，原因为: ' + str(e))
     if flag:
         return session
     else:
