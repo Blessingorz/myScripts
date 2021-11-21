@@ -42,6 +42,8 @@ appId：手机文件夹 unicom 里的appid文件，以文本格式打开
 提交方法：本地上传zip包                    
 执行方法：unicom_index.main_handler              
 自行把将文件unicom_index.py和文件夹task压缩成zip上传                  
+![image](https://user-images.githubusercontent.com/79479594/142782021-79a1719c-e45f-473d-a51b-d83d846a6d40.png)                     
+
 ![image](https://user-images.githubusercontent.com/79479594/142781789-503e6713-6448-4139-ad67-a9a466f38e53.png)                   
 
 高级配置
