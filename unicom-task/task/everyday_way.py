@@ -56,9 +56,9 @@ class everyday_way:
         data=f'bizFrom=225&activityId=TTLXJ20210330&loginId=&response_type=web_token&rptid={rptid}&end_url=clockIn%2Findex.html%3Fchannel%3D225%26channelType%3Dnull%26uid%3D'
         res=client.post('https://epay.10010.com/partyServer/login/loginNew.do',data=data).json()
         if res['returnCode']=='0':
-            logging.info(f"【天天领现金】：res['returnMsg']")
+            logging.info(f"【天天领现金】：{res['returnMsg']}")
             return res['wap_sessionid']
-        logging.error(f"【天天领现金】：res['returnMsg']")
+        logging.error(f"【天天领现金】：{res['returnMsg']}")
     # 打卡
     def unifyDraw(self,client,user,wap_sessionid):
         data=f"loginId={user['username']}&activityId=TTLXJ20210330&wap_sessionID={wap_sessionid}&version=3.0.0&bizFrom=225&channelType=null&markerName=ttlxj&validatorId=1&drawType=B"
@@ -66,7 +66,7 @@ class everyday_way:
         if res['returnCode']=='0':
            logging.info(f"【天天领现金】：打卡成功获得 {res['amount']}")
            return
-        logging.error(f"【天天领现金】：res['returnMsg']") 
+        logging.error(f"【天天领现金】：{res['returnMsg']}") 
     # 查余额
     def userDrawInfo(self,client,user,wap_sessionid):
         data=f"loginId={user['username']}&activityId=TTLXJ20210330&wap_sessionID={wap_sessionid}&version=3.0.0&bizFrom=225"
@@ -74,7 +74,7 @@ class everyday_way:
         if res['returnCode']=='0':
            logging.info(f"【天天领现金】：总余额 {res['countAmount']}")
            return
-        logging.error(f"【天天领现金】：res['returnMsg']")        
+        logging.error(f"【天天领现金】：{res['returnMsg']}")        
 
 
         
