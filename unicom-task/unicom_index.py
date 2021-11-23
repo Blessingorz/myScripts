@@ -32,7 +32,7 @@ except Exception as e:
 requests.packages.urllib3.disable_warnings()
 
 
-run_send='no'      # yes或no,是否启用推送
+run_send='yes'      # yes或no,是否启用推送
 #用户登录全局变量
 client = None
 
