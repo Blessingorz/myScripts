@@ -8,7 +8,6 @@ sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/task')
 import requests,json,time,re,login,logging,traceback,os,random,datetime
-from lxml.html import fromstring
 import pytz
 
 #获取 encrymobile，用于抽奖
@@ -41,3 +40,5 @@ def getIntegral(client):
     except Exception as e:
         print(traceback.format_exc())
         logging.error('【积分余额】: 错误，原因为: ' + str(e))
+
+       

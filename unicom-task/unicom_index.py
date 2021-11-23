@@ -17,14 +17,15 @@ PUSH_PLUS_TOKEN=""
 
 
 import os,sys
+import requests
 sys.path.append('/tmp')
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/task')
 import json,time,re,traceback,random,datetime,util,sys,login,logging
+import pytz,importlib,requests,rsa,lxml
 try:
     from lxml.html import fromstring
-    import pytz,importlib,requests,rsa
 except Exception as e:
     print(str(e) + "\n缺少lxml,pytz,requests,rsa模块中的一个, 请执行命令：pip3 install xxx\n")
 requests.packages.urllib3.disable_warnings()
@@ -141,6 +142,10 @@ def runTask(client, user):
                     continue
                 if entry.name == 'util.py':
                     continue 
+                if entry.name == 'rsa':
+                    continue       
+                if entry.name == 'rsa-4.7.2.dist-info':
+                    continue                            
                 task_module = importlib.import_module('task.'+entry.name[:-3])
                 task_class = getattr(task_module, entry.name[0:-3])
                 task_obj = task_class()
