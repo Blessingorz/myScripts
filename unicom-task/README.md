@@ -37,27 +37,7 @@ appId：手机文件夹 unicom 里的appid文件，以文本格式打开
 ![image](https://user-images.githubusercontent.com/79479594/142781440-8f795296-e1a7-44b6-a4ae-f22505b33065.png)                     
 
 #### 云函数               
-函数类型:事件函数                        
-运行环境:python3.6                   
-提交方法：本地上传zip包                    
-执行方法：unicom_index.main_handler              
-自行把将文件unicom_index.py和文件夹task压缩成zip上传                  
-![image](https://user-images.githubusercontent.com/79479594/142782021-79a1719c-e45f-473d-a51b-d83d846a6d40.png)                     
-
-![image](https://user-images.githubusercontent.com/79479594/142781789-503e6713-6448-4139-ad67-a9a466f38e53.png)                   
-
-高级配置                             
-执行超时时间：900                          
-环境变量：key填unicom_config_1  ,value填 手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫<<<沃邮箱登陆Url1（可留空）<<<沃邮箱密码（可留空），不用加引号                                                   
-或者填在脚本内直接压缩上传                    
-![image](https://user-images.githubusercontent.com/79479594/142781853-1c07d670-4cd5-467a-8a39-39efadc7df07.png)                   
-
-触发器配置                 
-触发方式:定时触发                        
-触发周期：自定义                        
-Cron表达式：5 6,16 * * *                        
-然后点完成                 
-![image](https://user-images.githubusercontent.com/79479594/142781995-566bcae2-30f7-4714-ada1-e16ab2e232a9.png)                                  
+pass                                                 
 
 
 
