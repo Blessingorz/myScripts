@@ -77,13 +77,13 @@ def login(username,password,appId):
     }
     
     headers = {
-        'Host': 'm.client.10010.com',
         'Accept': '/',
         'Content-Type': 'application/x-www-form-urlencoded',
+        'content-type': 'application/x-www-form-urlencoded',
         'Connection': 'keep-alive',
         'User-Agent': 'ChinaUnicom4.x/3.0 CFNetwork/1197 Darwin/20.0.0',
-        'Accept-Language': 'zh-cn',
-        'Accept-Encoding': 'deflate, br',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+        'Accept-Encoding': 'gzip, deflate, br',
         'Content-Length': '891',
     }
     

@@ -11,9 +11,9 @@ class email_task:
             try:
                 url = "https://nyan.mail.wo.cn/cn/sign/index/userinfo.do?rand=0.2967650751258384"
                 res = email.post(url=url).json()
-                logging.info(f"已连续签到{res['result']['keepSign']}天")
+                logging.info(f"【沃邮箱签到】: 已连续签到{res['result']['keepSign']}天")
             except:
-                logging.info('查询签到天数错误')
+                logging.info('【沃邮箱签到】: 查询签到天数错误')
 
             url = "https://nyan.mail.wo.cn/cn/sign/user/checkin.do?rand=0.913524814493383"
             res = email.post(url=url).json()
@@ -25,7 +25,7 @@ class email_task:
             else:
                 logging.info(f"【沃邮箱签到】: 签到成功~已签到{result}天！")
         except Exception as e:
-            logging.info(f"错误 \n{e}")
+            logging.info(f"【沃邮箱签到】: 错误 \n{e}")
         try:
             url = "https://nyan.mail.wo.cn/cn/sign/user/doTask.do?rand=0.8776674762904109"
             data_params = {
@@ -47,9 +47,9 @@ class email_task:
                     else:
                         logging.info(f"【{key}】: 未知错误")
                 except Exception as e:
-                    logging.info(f"沃邮箱执行任务【{key}】错误\n{e}")
+                    logging.info(f"【沃邮箱】: 沃邮箱执行任务【{key}】错误\n{e}")
         except Exception as e:
-            logging.info(f"沃邮箱执行任务错误\n{e}")
+            logging.info(f"【沃邮箱】: 沃邮箱执行任务错误\n{e}")
 
     def dotask_2(self, email):
         #查询签到天数
@@ -57,17 +57,17 @@ class email_task:
             url = "https://club.mail.wo.cn/clubwebservice/club-user/user-sign/query-continuous-sign-record"
             res = email.get(url=url).text
             newContinuousDay=re.findall(r'"newContinuousDay":(.*?),', res)
-            logging.info(f'已连续签到 {newContinuousDay[0]} 天')
+            logging.info(f'【沃邮箱】: 已连续签到 {newContinuousDay[0]} 天')
         except Exception as e:
-            logging.info(f'查询签到天数错误 \n{e}')
+            logging.info(f'【沃邮箱】: 查询签到天数错误 \n{e}')
             
         try:
             #任务签到
             url = 'https://club.mail.wo.cn/clubwebservice/club-user/user-sign/create?channelId='
             res = email.get(url=url).json()
-            logging.info(f"成长值签到结果: {res['description']}")
+            logging.info(f"【沃邮箱】: 成长值签到结果: {res['description']}")
         except Exception as e:
-            logging.info(f'签到失败 \n{e}')
+            logging.info(f'【沃邮箱】: 签到失败 \n{e}')
 
         #积分任务
         try:
@@ -75,14 +75,14 @@ class email_task:
             res = email.get(url=url).json()
             for data in res['data']:
                 if data['irid'] == None or data['irid'] == 339 or data['taskState'] == 1:
-                    logging.info(f"跳过{data['resourceName']}")
+                    logging.info(f"【沃邮箱】: 跳过{data['resourceName']}")
                     continue
                 url = 'https://club.mail.wo.cn/clubwebservice/growth/addIntegral?resourceType='+urllib.parse.quote(str(data['resourceFlag']))
                 ress = email.get(url=url).json()
-                logging.info(f"执行任务: {data['resourceName']} ")
-                logging.info(f"状态: {ress['description']}")
+                logging.info(f"【沃邮箱】: 执行任务: {data['resourceName']} ")
+                logging.info(f"【沃邮箱】: 状态: {ress['description']}")
         except Exception as e:
-            logging.info(f'积分任务出错 \n{e}')
+            logging.info(f'【沃邮箱】: 积分任务出错 \n{e}')
 
         #成长值任务
         try:
@@ -90,14 +90,14 @@ class email_task:
             res = email.get(url=url).json()
             for data in res['data']:
                 if data['irid'] == None or data['irid'] == 576 or data['taskState'] == 1:
-                    logging.info(f"跳过{data['resourceName']}")
+                    logging.info(f"【沃邮箱】: 跳过{data['resourceName']}")
                     continue
                 url = 'https://club.mail.wo.cn/clubwebservice/growth/addGrowthViaTask?resourceType='+urllib.parse.quote(str(data['resourceFlag']))
                 ress = email.get(url=url).json()
-                logging.info(f"执行任务: {data['resourceName']}")
-                logging.info(f"状态: {ress['description']}")
+                logging.info(f"【沃邮箱】: 执行任务: {data['resourceName']}")
+                logging.info(f"【沃邮箱】: 状态: {ress['description']}")
         except Exception as e:
-            logging.info(f'成长值任务出错 \n{e}')
+            logging.info(f'【沃邮箱】: 成长值任务出错 \n{e}')
 
     def dotask_3(self,email,uid,sid):
         #app
@@ -123,9 +123,9 @@ class email_task:
                 url = f'https://mail.wo.cn/coremail/s/?func=club:addClubInfo&sid={sid}'
                 data = {"uid": uid,"userAction":userAction,"userType":"integral"}
                 res = email.post(url=url,json=data).json()
-                logging.info(f"{key}app积分结果:{res['code']}")
+                logging.info(f"【沃邮箱扩展任务】：{key}app积分结果:{res['code']}")
         except Exception as e:
-            logging.info(f'app沃邮箱执行任务错误\n{e}')
+            logging.info(f'【沃邮箱扩展任务】：app沃邮箱执行任务错误\n{e}')
 
         #增加成长值
         try:
@@ -140,9 +140,9 @@ class email_task:
                 url = f'https://mail.wo.cn/coremail/s/?func=club:addClubInfo&sid={sid}'
                 data = {"uid": uid,"userAction":userAction,"userType":"growth"}
                 res = email.post(url=url,json=data).json()
-                logging.info(f"{key}app成长值结果:{res['code']}")
+                logging.info(f"【沃邮箱扩展任务】：{key}app成长值结果:{res['code']}")
         except Exception as e:
-            logging.info(f'app沃邮箱执行任务错误\n{e}')
+            logging.info(f'【沃邮箱扩展任务】：app沃邮箱执行任务错误\n{e}')
 
         #网页
         upcookies=requests.utils.cookiejar_from_dict({
@@ -167,9 +167,9 @@ class email_task:
                 url = f'https://mail.wo.cn/coremail/s/?func=club:addClubInfo&sid={sid}'
                 data = {"uid": uid,"userAction":userAction,"userType":"integral"}
                 res = email.post(url=url,json=data).json()
-                logging.info(f"{key}网页端积分结果:{res['code']}")
+                logging.info(f"【沃邮箱扩展任务】：{key}网页端积分结果:{res['code']}")
         except Exception as e:
-            logging.info(f'网页端沃邮箱执行任务错误\n{e}')
+            logging.info(f'【沃邮箱扩展任务】：网页端沃邮箱执行任务错误\n{e}')
                 
         #增加成长值
         try:
@@ -185,9 +185,9 @@ class email_task:
                 url = f'https://mail.wo.cn/coremail/s/?func=club:addClubInfo&sid={sid}'
                 data = {"uid": uid,"userAction":userAction,"userType":"growth"}
                 res = email.post(url=url,json=data).json()
-                logging.info(f"{key}网页端成长值结果:{res['code']}")
+                logging.info(f"【沃邮箱扩展任务】：{key}网页端成长值结果:{res['code']}")
         except Exception as e:
-            logging.info(f'网页端沃邮箱执行任务错误\n{e}')
+            logging.info(f'【沃邮箱扩展任务】：网页端沃邮箱执行任务错误\n{e}')
 
         #电脑
         upcookies=requests.utils.cookiejar_from_dict({
@@ -213,9 +213,9 @@ class email_task:
                 url = f'https://mail.wo.cn/coremail/s/?func=club:addClubInfo&sid={sid}'
                 data = {"userAction":userAction}
                 response = requests.post(url=url,json=data).json()
-                logging.info(f"{key}电脑端积分结果:{res['code']}")
+                logging.info(f"【沃邮箱扩展任务】：{key}电脑端积分结果:{res['code']}")
         except Exception as e:
-            logging.info(f'电脑端沃邮箱执行任务错误\n{e}')
+            logging.info(f'【沃邮箱扩展任务】：电脑端沃邮箱执行任务错误\n{e}')
 
     def run(self, client, user):
         if "woEmail" not in user:
@@ -245,13 +245,12 @@ class email_task:
             self.dotask_2(email)
 
         with requests.Session() as email:
-            logging.info('沃邮箱扩展任务')
             url="https://mail.wo.cn/coremail/s/json?func=user:login"
             try:
                 woEmail_uid=user['username']+'@wo.cn'
                 woEmail_password=user['woEmail_password']
             except:
-                logging.info("未找到沃邮箱密码")
+                logging.info("【沃邮箱扩展任务】：未找到沃邮箱密码")
                 return
             email.headers.update({
                     "Accept": "text/x-json",
@@ -264,5 +263,10 @@ class email_task:
             })
             data={"uid": woEmail_uid, "password": woEmail_password}
             res=email.post(url=url, json=data).json()
-            logging.info(f"登录沃邮箱结果 {res['code']}")
-            self.dotask_3(email,res['var']['uid'],res['var']['sid'])
+            logging.info(f"【沃邮箱扩展任务】：登录沃邮箱结果 {res['code']}")
+            try:
+                self.dotask_3(email,res['var']['uid'],res['var']['sid'])
+            except:
+                logging.info(f"【沃邮箱扩展任务】：登录失败，沃邮箱扩展任务跳过")
+
+

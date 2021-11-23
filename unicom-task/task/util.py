@@ -31,7 +31,7 @@ def getTimezone():
 def getIntegral(client):
     try:
         integral = client.post('https://m.client.10010.com/welfare-mall-front/mobile/show/bj2205/v2/Y')
-        integral.encoding = 'utf-8'
+        # integral.encoding = 'utf-8'
         res = integral.json()
         for r in res['resdata']['data']:
             if r['name'] != None and r['number'] != None:

@@ -31,7 +31,7 @@ except Exception as e:
 requests.packages.urllib3.disable_warnings()
 
 
-run_send='yes'      # yes或no,是否启用推送
+run_send='no'      # yes或no,是否启用推送
 #用户登录全局变量
 client = None
 
@@ -145,7 +145,9 @@ def runTask(client, user):
                 if entry.name == 'rsa':
                     continue       
                 if entry.name == 'rsa-4.7.2.dist-info':
-                    continue                            
+                    continue  
+                # if entry.name != 'everyday_way.py':
+                #     continue  
                 task_module = importlib.import_module('task.'+entry.name[:-3])
                 task_class = getattr(task_module, entry.name[0:-3])
                 task_obj = task_class()
