@@ -12,7 +12,7 @@ export PUSH_PLUS_TOKEN="微信推送Plus+(通知服务示例，可留空或不�
 '''
 # 脚本内示例：
 unicom_config_1="18825802580<<<888888<<<appppppp8888888888iiiddd<<<0<<<https://nyan.mail.wo.cn/cn/sign/index/index?mobile=aaa&userName=&openId=bbb<<<ccc"
-unicom_config_2="19925902590<<<999999<<<appppppp9999999999iiiddd<<<5<<< <<< "
+unicom_config_2="19925902590<<<999999<<<appppppp9999999999iiiddd"
 PUSH_PLUS_TOKEN=""
 
 
@@ -119,12 +119,15 @@ def readJson():
                 "password": user_list[1],
                 "appId": user_list[2],
             }
-            if user_list[3] and user_list[3] != '0' and user_list[3] != ' ' :
-                user_dict['lotteryNum']=user_list[3]
-            if user_list[4] and user_list[4] != ' ' :
-                user_dict['woEmail']=user_list[4]
-            if user_list[5] and user_list[5] != ' ' :
-                user_dict['woEmail_password']=user_list[5]                
+            if len(user_list) > 3:
+                if user_list[3] and user_list[3] != '0' and user_list[3] != ' ' :
+                    user_dict['lotteryNum']=user_list[3]
+            if len(user_list) > 4:
+                if user_list[4] and user_list[4] != ' ' :
+                    user_dict['woEmail']=user_list[4]
+            if len(user_list) > 5:
+                if user_list[5] and user_list[5] != ' ' :
+                    user_dict['woEmail_password']=user_list[5]                
             users.append(user_dict)
         return users
     except:
