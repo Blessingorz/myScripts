@@ -73,7 +73,8 @@ value填     手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几�
 key和value不用加引号，多账号则unicom_config_2，unicom_config_3，自然数顺序类推                            
 
 
-![image]()                     
+![image](https://user-images.githubusercontent.com/79479594/143090708-655fe96a-bb47-4a6c-a581-7ef03d3eb545.png)
+                     
 
 ##### 触发器配置                            
 ```
