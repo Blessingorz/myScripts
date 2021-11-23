@@ -22,6 +22,7 @@ sys.path.append('/tmp')
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/task')
+sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/tenscf_rely')
 import json,time,re,traceback,random,datetime,util,sys,login,logging
 import pytz,importlib,requests,rsa,lxml
 try:
