@@ -70,7 +70,9 @@ tenscf_rely文件夹里为云函数依赖，青龙等容器无需下载
 key填       unicom_config_1                 
 value填     手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫<<<沃邮箱登陆Url1（可留空）<<<沃邮箱密码（可留空）           
 ```
-key和value不用加引号，多账号则unicom_config_2，unicom_config_3，自然数顺序类推                                
+key和value不用加引号，多账号则unicom_config_2，unicom_config_3，自然数顺序类推                            
+
+
 ![image](https://user-images.githubusercontent.com/79479594/143089582-02bf2faa-d8be-402d-a076-ef42811bd4a3.png)                     
 
 ##### 触发器配置                            
