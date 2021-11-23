@@ -2,7 +2,7 @@
 
 '''
 cron: 16 6,16 * * * *
-变量: unicom_config_x,unicom_woEmail_x,通知服务变量
+变量: unicom_config_x通知服务变量
 脚本内或环境变量填写，环境变量优先
 通知推送服务环境变量请查看：https://github.com/wuye999/myScripts/blob/main/send.md
 环境变量示例：
@@ -145,6 +145,8 @@ def runTask(client, user):
                 if entry.name == 'rsa':
                     continue       
                 if entry.name == 'rsa-4.7.2.dist-info':
+                    continue  
+                if entry.name == '__pycache__':
                     continue  
                 # if entry.name != 'everyday_way.py':
                 #     continue  
