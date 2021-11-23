@@ -39,7 +39,10 @@ tenscf_rely文件夹里为云函数依赖，青龙等容器无需下载
 ![image](https://user-images.githubusercontent.com/79479594/142781440-8f795296-e1a7-44b6-a4ae-f22505b33065.png)                     
 
 #### 云函数               
-将 tenscf_rely文件夹，unicom_index.py文件， task文件夹 压缩成zip                                                
+##### 压缩
+将 tenscf_rely文件夹，unicom_index.py文件， task文件夹 压缩成zip         
+
+
 ![image](https://user-images.githubusercontent.com/79479594/143088148-aa05ef3b-fb25-431d-ba85-6a39858e43ec.png)                              
 [自定义创建函数](https://console.cloud.tencent.com/scf/list-create?rid=1&ns=default&createType=empty)               
 ##### 基础配置                             
