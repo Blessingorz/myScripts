@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+# @Time    : 2021/11/23 22:30
+# @Author  : wuye9999
+# 沃邮箱
 import os,sys
 sys.path.append('/tmp')
 sys.path.append(os.path.abspath('.'))
