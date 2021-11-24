@@ -2,6 +2,7 @@
 # @Time    : 2021/11/24 22:30
 # @Author  : wuye9999
 # 年终亿元回馈活动
+# 入口：我的》摇亿元大
 import os,sys
 sys.path.append('/tmp')
 sys.path.append(os.path.abspath('.'))

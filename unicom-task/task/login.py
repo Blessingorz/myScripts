@@ -113,7 +113,7 @@ def login(username,password,appId):
         result = response.json()
         if result['code'] == '0':
             logging.info('【登录】: ' + result['default'][-4:])
-            session.headers.update({'User-Agent': 'Mozilla/5.0 (Linux; Android 10; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0100,desmobile:' + str(username) + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}'})
+            session.headers.update({'User-Agent': 'Mozilla/5.0 (Linux; Android 10; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + str(username) + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}'})
             flag = True
         else:
             logging.info('【登录】: ' + result['dsc'])
