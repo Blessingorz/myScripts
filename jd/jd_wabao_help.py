@@ -199,13 +199,12 @@ def inviteCode(cookie):
             msg('快去买买买吧')
     except:
         msg(f"错误\n{res}\n")
-
 # 助力
 def happyDigHelp(cookie,fcwbinviter,fcwbinviteCode):
     msg(f"账号 {get_pin(cookie)} 去助力{fcwbinviteCode}")
     xueliang(cookie)
     body={"linkId":linkId,"inviter":fcwbinviter,"inviteCode":fcwbinviteCode}
-    url=f'https://api.m.jd.com/?functionId=happyDigHelp&body={json.dumps(body)}&t={gettimestamp()}&appid=activities_platform&client=H5&clientVersion=1.0.0&h5st=20211123184338304;7340749128476656;8dd95;tk02w85c11bfb18n6NZmESRQhd0NHQ+qb2ly+KK2XlQJDFe++pQ3pEiHZvMaCngfvv1mOtdbPwsP+/xsfto1x5iFqNED;64be02f922fd8377e0e37c729bb956b7ea054e26cfcf20ac856791273031ebec;3.0;1637664218304'
+    url=f'https://api.m.jd.com/?functionId=happyDigHelp&body={json.dumps(body)}&t=1637705234767&appid=activities_platform&client=H5&clientVersion=1.0.0&h5st=20211124060714769%3B0745683210997892%3Bce6c2%3Btk02w79fe1b0218naJCbw50xNECTBzx6BMYd5aKyyr6wE%2BNA8UdHNQIGHwJSma8T%2B9kA46G3eMBPMjOkTfEFwquQEkMF%3B3f4ef68221c0f3f262a745c30dec4421de5905f27e22c8f0e00b4f1dc814ba08%3B3.0%3B1637705234769'
     headers={
         'Host': 'api.m.jd.com',
         'accept': 'application/json, text/plain, */*',
