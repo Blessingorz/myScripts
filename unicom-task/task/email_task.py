@@ -22,7 +22,7 @@ class email_task:
             keepSign=0
 
         try:   
-            if keepSign >= 22:
+            if keepSign > 22:
                 logging.info('【沃邮箱签到】: 连续签到天数大于21次,暂停签到')
             else:
                 url = "https://nyan.mail.wo.cn/cn/sign/user/checkin.do?rand=0.913524814493383"
