@@ -13,24 +13,30 @@ import requests,login,logging,urllib.parse,util,re
 class email_task:
     def dotask(self, email):
         try:
-            try:
-                url = "https://nyan.mail.wo.cn/cn/sign/index/userinfo.do?rand=0.2967650751258384"
-                res = email.post(url=url).json()
-                logging.info(f"【沃邮箱签到】: 已连续签到{res['result']['keepSign']}天")
-            except:
-                logging.info('【沃邮箱签到】: 查询签到天数错误')
-
-            url = "https://nyan.mail.wo.cn/cn/sign/user/checkin.do?rand=0.913524814493383"
+            url = "https://nyan.mail.wo.cn/cn/sign/index/userinfo.do?rand=0.2967650751258384"
             res = email.post(url=url).json()
-            result = res.get("result")
-            if result == -2:
-                logging.info("【沃邮箱签到】: 已签到")
-            elif result is None:
-                logging.info("【沃邮箱签到】: 签到失败")
+            keepSign=int(res['result']['keepSign'])
+            logging.info(f"【沃邮箱签到】: 已连续签到{keepSign}天")
+        except:
+            logging.info('【沃邮箱签到】: 查询签到天数错误')
+            keepSign=0
+
+        try:   
+            if keepSign >= 22:
+                logging.info('【沃邮箱签到】: 连续签到天数大于21次,暂停签到')
             else:
-                logging.info(f"【沃邮箱签到】: 签到成功~已签到{result}天！")
+                url = "https://nyan.mail.wo.cn/cn/sign/user/checkin.do?rand=0.913524814493383"
+                res = email.post(url=url).json()
+                result = res.get("result")
+                if result == -2:
+                    logging.info("【沃邮箱签到】: 已签到")
+                elif result is None:
+                    logging.info("【沃邮箱签到】: 签到失败")
+                else:
+                    logging.info(f"【沃邮箱签到】: 签到成功~已签到{result}天！")
         except Exception as e:
             logging.info(f"【沃邮箱签到】: 错误 \n{e}")
+
         try:
             url = "https://nyan.mail.wo.cn/cn/sign/user/doTask.do?rand=0.8776674762904109"
             data_params = {
