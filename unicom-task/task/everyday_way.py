@@ -8,7 +8,7 @@ sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/task')
 sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/tenscf_rely')
-import requests,json,time,re,login,logging,traceback,os,random,datetime
+import requests,json,time,re,login,logging,traceback,os,random,datetime,string
 from lxml.html import fromstring
 
 class everyday_way:
@@ -65,12 +65,14 @@ class everyday_way:
         logging.error(f"【天天领现金】：{res['returnMsg']}")
     # 打卡
     def unifyDraw(self,client,user,wap_sessionid):
-        data=f"loginId={user['username']}&activityId=TTLXJ20210330&wap_sessionID={wap_sessionid}&version=3.0.0&bizFrom=225&channelType=null&markerName=ttlxj&validatorId=1&drawType=B"
-        res=client.post('https://epay.10010.com/partyServer/ttlxj/unifyDraw.do',data=data).json()
-        if res['returnCode']=='0':
-           logging.info(f"【天天领现金】：打卡成功获得 {res['amount']}")
-           return
-        logging.error(f"【天天领现金】：{res['returnMsg']}") 
+        for drawType in string.ascii_uppercase:
+            data=f"loginId={user['username']}&activityId=TTLXJ20210330&wap_sessionID={wap_sessionid}&version=3.0.0&bizFrom=225&channelType=null&markerName=ttlxj&validatorId=1&drawType={drawType}"
+            res=client.post('https://epay.10010.com/partyServer/ttlxj/unifyDraw.do',data=data).json()
+            if res['returnCode']=='0':
+                logging.info(f"【天天领现金】：打卡成功获得 {res['amount']}")
+                return
+            # logging.error(f"【天天领现金】：{res['returnMsg']}") 
+        logging.error(f"【天天领现金】：打卡失败")
     # 查余额
     def userDrawInfo(self,client,user,wap_sessionid):
         data=f"loginId={user['username']}&activityId=TTLXJ20210330&wap_sessionID={wap_sessionid}&version=3.0.0&bizFrom=225"
