@@ -23,9 +23,13 @@
 详细变量请查看脚本内说明             
            
 ```
-export unicom_config_1="手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫<<<沃邮箱登陆Url1（可留空）<<<沃邮箱密码（可留空）"
-export unicom_config_2="手机号2<<<服务密码2<<<appId2<<<抽奖次数(0-30)中奖几率渺茫<<<沃邮箱登陆Url2（可留空）<<<沃邮箱密码（可留空）"  
+export unicom_config_1="手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫"
+export unicom_config_2="手机号2<<<服务密码2<<<appId2<<<抽奖次数(0-30)中奖几率渺茫"
 export unicom_config_3="自然数顺序类推..."
+export unicom_womail_1="<<<沃邮箱登陆Url1<<<手机号1(可留空)<<<沃邮箱密码（可留空）"
+export unicom_womail_2="<<<沃邮箱登陆Url2<<<手机号2(可留空)<<<沃邮箱密码（可留空）"
+export unicom_womail_3="自然数顺序类推..."
+export PUSH_PLUS_TOKEN="微信推送Plus+(通知服务示例，可留空或不填)"
 ```
 #### 获取变量         
 appId：手机文件夹 unicom 里的appid文件，以文本格式打开              
@@ -68,9 +72,9 @@ tenscf_rely文件夹里为云函数依赖，青龙等容器无需下载
 ##### 高级配置                             
 ```
 执行超时时间:900                       
-环境变量:                            
+环境变量示例，[具体点击查看](https://github.com/wuye999/myScripts/blob/f829758de2dd1c7e1d90e25462785d6713d59d63/unicom-task/README.md#L22):                            
 key填       unicom_config_1                 
-value填     手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫<<<沃邮箱登陆Url1（可留空）<<<沃邮箱密码（可留空）           
+value填     手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫          
 ```
 key和value不用加引号，多账号则unicom_config_2，unicom_config_3，自然数顺序类推                            
 
@@ -87,8 +91,7 @@ Cron表达式: 6 6,16 * * *
 ![image](https://user-images.githubusercontent.com/79479594/143089660-1ebd7de8-d3a9-4fd5-9027-6c64cb089bc3.png)         
 
 
-<<<<<<< HEAD
+
 点击 完成                            
-=======
-点击 完成                            
->>>>>>> 7ce18576a95d2885f3a392215bb21d21734d2b70
+
+
