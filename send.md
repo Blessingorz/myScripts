@@ -54,4 +54,18 @@ PUSH_PLUS_USER： 一对多推送的“群组编码”（一对多推送下面->
 export PUSH_PLUS_TOKEN=""                                               
 export PUSH_PLUS_USER=""                               
                               
-           
+#### 8. 飞书机器人
+飞书机器人的 FSKEY           
+export FSKEY=""                          
+#### 9. go-cqhttp
+go-cqhttp               
+推送到个人QQ：http://127.0.0.1/send_private_msg,群：http://127.0.0.1/send_group_msg                                            
+export GOBOT_URL=""                 
+go-cqhttp 的推送群或用户                              
+GOBOT_URL 设置 /send_private_msg 时填入 user_id=个人QQ
+GOBOT_URL 设置 /send_group_msg   时填入 group_id=QQ群
+export GOBOT_QQ=""              
+go-cqhttp 的 access_token                       
+export GOBOT_TOKEN=""                              
+
+
