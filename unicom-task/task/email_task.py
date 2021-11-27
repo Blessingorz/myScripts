@@ -67,16 +67,20 @@ class email_task:
         try:
             url = "https://club.mail.wo.cn/clubwebservice/club-user/user-sign/query-continuous-sign-record"
             res = email.get(url=url).text
-            newContinuousDay=re.findall(r'"newContinuousDay":(.*?),', res)
-            logging.info(f'【沃邮箱】: 已连续签到 {newContinuousDay[0]} 天')
+            newContinuousDay=int(re.findall(r'"newContinuousDay":(.*?),', res)[0])
+            logging.info(f'【沃邮箱】: 已连续签到 {newContinuousDay} 天')
         except Exception as e:
             logging.info(f'【沃邮箱】: 查询签到天数错误 \n{e}')
-            
+            newContinuousDay=0
+
+        #任务签到
         try:
-            #任务签到
-            url = 'https://club.mail.wo.cn/clubwebservice/club-user/user-sign/create?channelId='
-            res = email.get(url=url).json()
-            logging.info(f"【沃邮箱】: 成长值签到结果: {res['description']}")
+            if newContinuousDay>22:
+                logging.info('【沃邮箱签到】: 连续签到天数大于21次,暂停签到')
+            else:
+                url = 'https://club.mail.wo.cn/clubwebservice/club-user/user-sign/create?channelId='
+                res = email.get(url=url).json()
+                logging.info(f"【沃邮箱】: 成长值签到结果: {res['description']}")
         except Exception as e:
             logging.info(f'【沃邮箱】: 签到失败 \n{e}')
 
@@ -228,8 +232,8 @@ class email_task:
         except Exception as e:
             logging.info(f'【沃邮箱扩展任务】：电脑端沃邮箱执行任务错误\n{e}')
 
-    def run(self, client, user):
-        if "woEmail" not in user:
+    def run(self,womail):
+        if "woEmail" not in womail:
             return False
         headers = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
@@ -238,7 +242,7 @@ class email_task:
             'Accept-Encoding': 'gzip, deflate, br',
             'Connection': 'keep-alive',
         }
-        query = dict(urllib.parse.parse_qsl(urllib.parse.urlsplit(user['woEmail']).query))
+        query = dict(urllib.parse.parse_qsl(urllib.parse.urlsplit(womail['woEmail']).query))
         params = (
             ('mobile', query['mobile'].replace(' ', '+')),
             ('userName', ''),
@@ -258,10 +262,10 @@ class email_task:
         with requests.Session() as email:
             url="https://mail.wo.cn/coremail/s/json?func=user:login"
             try:
-                woEmail_uid=user['username']+'@wo.cn'
-                woEmail_password=user['woEmail_password']
+                woEmail_uid=womail['username']+'@wo.cn'
+                woEmail_password=womail['woEmail_password']
             except:
-                logging.info("【沃邮箱扩展任务】：未找到沃邮箱密码")
+                logging.info("【沃邮箱扩展任务】：未找到沃邮箱手机号或密码")
                 return
             email.headers.update({
                     "Accept": "text/x-json",
