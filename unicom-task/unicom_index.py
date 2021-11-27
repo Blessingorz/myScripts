@@ -6,13 +6,15 @@ cron: 16 6,16 * * * *
 脚本内或环境变量填写，环境变量优先
 通知推送服务环境变量请查看：https://github.com/wuye999/myScripts/blob/main/send.md
 环境变量示例：
-export unicom_config_1="手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫<<<沃邮箱登陆Url1（可留空）<<<沃邮箱密码（可留空）"
-export unicom_config_2="手机号2<<<服务密码2<<<appId2<<<抽奖次数(0-30)中奖几率渺茫<<<沃邮箱登陆Url2（可留空）<<<沃邮箱密码（可留空）"
+export unicom_config_1="手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫"
+export unicom_config_2="手机号2<<<服务密码2<<<appId2<<<抽奖次数(0-30)中奖几率渺茫"
+export unicom_womail_1="<<<沃邮箱登陆Url1<<<手机号1(可留空)<<<沃邮箱密码（可留空）"
+export unicom_womail_2="<<<沃邮箱登陆Url2<<<手机号2(可留空)<<<沃邮箱密码（可留空）"
 export PUSH_PLUS_TOKEN="微信推送Plus+(通知服务示例，可留空或不填)"
 '''
 # 脚本内示例：
-unicom_config_1="18825802580<<<888888<<<appppppp8888888888iiiddd<<<0<<<https://nyan.mail.wo.cn/cn/sign/index/index?mobile=aaa&userName=&openId=bbb<<<ccc"
-unicom_config_2="19925902590<<<999999<<<appppppp9999999999iiiddd"
+unicom_config_1="18825802580<<<888888<<<appppppp8888888888iiiddd<<<0"
+unicom_womail_1="https://nyan.mail.wo.cn/cn/sign/index/index?mobile=aaa&userName=&openId=bbb"
 PUSH_PLUS_TOKEN=""
 
 
@@ -121,43 +123,58 @@ def readJson():
             }
             if len(user_list) > 3:
                 if user_list[3] and user_list[3] != '0' and user_list[3] != ' ' :
-                    user_dict['lotteryNum']=user_list[3]
-            if len(user_list) > 4:
-                if user_list[4] and user_list[4] != ' ' :
-                    user_dict['woEmail']=user_list[4]
-            if len(user_list) > 5:
-                if user_list[5] and user_list[5] != ' ' :
-                    user_dict['woEmail_password']=user_list[5]                
+                    user_dict['lotteryNum']=user_list[3]              
             users.append(user_dict)
-        return users
     except:
-        logging.error('变量填写错误')
+        logging.error('账号变量填写错误')
+
+    womails=list()
+    # try:
+    womail_list=get_env_nofixed('unicom_womail')
+    for womail_str in womail_list:
+        womail_str_list=[v for v in womail_str.split('<<<')]
+        womail_str_dict={
+            "woEmail": womail_str_list[0],
+        }
+        if len(womail_str_list) > 1:
+            if womail_str_list[1] and womail_str_list[1] != ' ' :
+                womail_str_dict['username']=womail_str_list[1]
+        if len(womail_str_list) > 2:
+            if womail_str_list[2] and womail_str_list[2] != ' ' :
+                womail_str_dict['woEmail_password']=womail_str_list[2]
+        womails.append(womail_str_dict)
+    # except:
+    #     logging.error('沃邮箱变量填写错误')
+    return users,womails 
 
 #运行任务
 def runTask(client, user):
+    logging.info('')
     with os.scandir(os.path.abspath(os.path.dirname(__file__))+'/task') as entries:
         for entry in entries:
             if entry.is_file():
-                if entry.name == '__init__.py':
-                    continue
                 if entry.name == 'login.py':
                     continue
                 if entry.name == 'sendNotify.py':
                     continue
                 if entry.name == 'util.py':
                     continue 
-                if entry.name == 'rsa':
-                    continue       
-                if entry.name == 'rsa-4.7.2.dist-info':
+                if entry.name == 'email_task.py':
                     continue  
                 if entry.name == '__pycache__':
                     continue  
-                # if entry.name != 'everyday_way.py':
-                #     continue  
                 task_module = importlib.import_module('task.'+entry.name[:-3])
                 task_class = getattr(task_module, entry.name[0:-3])
                 task_obj = task_class()
                 task_obj.run(client, user)
+
+# 沃邮箱
+def runTas_2(womail):
+    logging.info('')
+    task_module = importlib.import_module('task.email_task')
+    task_class = getattr(task_module,'email_task')
+    task_obj = task_class()
+    task_obj.run(womail)
 
 # 通知服务
 class sendNotice:   
@@ -181,7 +198,7 @@ class sendNotice:
                 break
             except:
                 self.getsendNotify()
-        l=['BARK','SCKEY','TG_BOT_TOKEN','TG_USER_ID','TG_API_HOST','TG_PROXY_HOST','TG_PROXY_PORT','DD_BOT_TOKEN','DD_BOT_SECRET','Q_SKEY','QQ_MODE','QYWX_AM','PUSH_PLUS_TOKEN','PUSH_PLUS_USER']
+        l=['BARK','SCKEY','TG_BOT_TOKEN','TG_USER_ID','TG_API_HOST','TG_PROXY_HOST','TG_PROXY_PORT','DD_BOT_TOKEN','DD_BOT_SECRET','Q_SKEY','QQ_MODE','QYWX_AM','PUSH_PLUS_TOKEN','PUSH_PLUS_USER','FSKEY','GOBOT_URL','GOBOT_QQ','GOBOT_TOKEN']
         d={}
         for a in l:
             try:
@@ -207,7 +224,7 @@ class sendNotice:
 
 #腾讯云函数入口
 def main_handler(event, context):
-    users = readJson()
+    users,womails = readJson()
     for user in users:
         # 清空上一个用户的日志记录
         with open(scf_path('log.txt'),mode='w',encoding='utf-8') as f:
@@ -220,6 +237,18 @@ def main_handler(event, context):
             runTask(client, user)
         if run_send=='yes':
             sendNotice().main()
+
+    global womail
+    for e,womail in enumerate(womails):
+        # 清空上一个用户的日志记录
+        with open(scf_path('log.txt'),mode='w',encoding='utf-8') as f:
+            pass 
+        if womail["woEmail"]:
+            runTas_2(womail)
+        if run_send=='yes':
+            sendNotice().main()
+
+        
 
 #主函数入口
 if __name__ == '__main__':
