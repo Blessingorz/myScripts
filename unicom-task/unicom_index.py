@@ -197,7 +197,7 @@ def runTas_2(womail):
                 task_module = importlib.import_module(import_task+entry.name[:-3])
                 task_class = getattr(task_module, entry.name[0:-3])
                 task_obj = task_class()
-                task_obj.run(client, user)
+                task_obj.run(womail)
 
 # 通知服务
 class sendNotice:   
