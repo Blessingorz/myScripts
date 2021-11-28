@@ -151,7 +151,7 @@ def readJson():
 
 #运行任务
 def runTask(client, user):
-    logging.info('--------------账号分割线---------------')
+    logging.info('--------------不可视境界线---------------')
 
     if os.path.exists(os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task'):
         task_path=os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task'
@@ -180,7 +180,7 @@ def runTask(client, user):
 
 # 沃邮箱
 def runTas_2(womail):
-    logging.info('--------------账号分割线---------------')
+    logging.info('--------------不可视境界线---------------')
 
     if os.path.exists(os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task'):
         task_path=os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task'
