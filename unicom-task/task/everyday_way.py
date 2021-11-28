@@ -73,7 +73,7 @@ class everyday_way:
                 logging.info(f"【天天领现金】：打卡成功获得 {res['amount']}")
                 return
             # logging.error(f"【天天领现金】：{res['returnMsg']}") 
-        logging.error(f"【天天领现金】：打卡失败")
+        logging.error(f"【天天领现金】：已经签到过了，或打卡失败")
     # 查余额
     def userDrawInfo(self,client,user,wap_sessionid):
         data=f"loginId={user['username']}&activityId=TTLXJ20210330&wap_sessionID={wap_sessionid}&version=3.0.0&bizFrom=225"
