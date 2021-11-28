@@ -153,12 +153,12 @@ def readJson():
 def runTask(client, user):
     logging.info('')
 
-    if os.path.exists(os.path.abspath(os.path.dirname(__file__))+'/task'):
-        task_path=os.path.abspath(os.path.dirname(__file__))+'/task'
-        import_task='task.'
-    else:
+    if os.path.exists(os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task'):
         task_path=os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task'
         import_task='unicom-task.task.'
+    else:
+        task_path=os.path.abspath(os.path.dirname(__file__))+'/task'
+        import_task='task.'
         
     with os.scandir(task_path) as entries:
         for entry in entries:
@@ -182,12 +182,12 @@ def runTask(client, user):
 def runTas_2(womail):
     logging.info('')
 
-    if os.path.exists(os.path.abspath(os.path.dirname(__file__))+'/task'):
-        task_path=os.path.abspath(os.path.dirname(__file__))+'/task'
-        import_task='task.'
-    else:
+    if os.path.exists(os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task'):
         task_path=os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task'
         import_task='unicom-task.task.'
+    else:
+        task_path=os.path.abspath(os.path.dirname(__file__))+'/task'
+        import_task='task.'
 
     with os.scandir(task_path) as entries:
         for entry in entries:
