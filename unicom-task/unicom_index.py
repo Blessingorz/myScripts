@@ -131,22 +131,22 @@ def readJson():
         logging.error('账号变量填写错误')
 
     womails=list()
-    # try:
-    womail_list=get_env_nofixed('unicom_womail')
-    for womail_str in womail_list:
-        womail_str_list=[v for v in womail_str.split('<<<')]
-        womail_str_dict={
-            "woEmail": womail_str_list[0],
-        }
-        if len(womail_str_list) > 1:
-            if womail_str_list[1] and womail_str_list[1] != ' ' :
-                womail_str_dict['username']=womail_str_list[1]
-        if len(womail_str_list) > 2:
-            if womail_str_list[2] and womail_str_list[2] != ' ' :
-                womail_str_dict['woEmail_password']=womail_str_list[2]
-        womails.append(womail_str_dict)
-    # except:
-    #     logging.error('沃邮箱变量填写错误')
+    try:
+        womail_list=get_env_nofixed('unicom_womail')
+        for womail_str in womail_list:
+            womail_str_list=[v for v in womail_str.split('<<<')]
+            womail_str_dict={
+                "woEmail": womail_str_list[0],
+            }
+            if len(womail_str_list) > 1:
+                if womail_str_list[1] and womail_str_list[1] != ' ' :
+                    womail_str_dict['username']=womail_str_list[1]
+            if len(womail_str_list) > 2:
+                if womail_str_list[2] and womail_str_list[2] != ' ' :
+                    womail_str_dict['woEmail_password']=womail_str_list[2]
+            womails.append(womail_str_dict)
+    except:
+        logging.error('沃邮箱变量填写错误')
     return users,womails 
 
 #运行任务
@@ -199,23 +199,25 @@ def runTas_2(womail):
                 task_obj = task_class()
                 task_obj.run(womail)
 
-# 通知服务
+# 云函数通知服务
 class sendNotice:   
-    def getsendNotify(self, a=1):
-        try:
-            url = 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py'
-            response = requests.get(url,timeout=10)
-            with open(scf_path('sendNotify.py'), "w+", encoding="utf-8") as f:
-                f.write(response.text)
-            return
-        except:
-            pass
-        if a < 5:
-            a += 1
-            return self.getsendNotify(a)
-
-    def main(self,f=1):
-        for n in range(3):
+    def getsendNotify(self):
+        url_list = [
+            'https://mirror.ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py',
+            'https://cdn.jsdelivr.net/gh/wuye999/myScripts@main/sendNotify.py',
+            'https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py',
+        ]
+        for e,url in enumerate(url_list):
+            try:
+                response = requests.get(url,timeout=10)
+                with open(scf_path('sendNotify.py'), "w+", encoding="utf-8") as f:
+                    f.write(response.text)
+                return
+            except:
+                if e >= (len(url_list)-1):
+                    print('获取通知服务失败，请检查网络连接...')
+    def main(self,f=0):
+        for _ in range(2):
             try:
                 from sendNotify import send,msg,initialize
                 break
@@ -231,12 +233,10 @@ class sendNotice:
         try:
             initialize(d)
         except:
-            self.getsendNotify()
-            if f < 5:
+            if f < 2:
                 f += 1
+                self.getsendNotify()
                 return self.main(f)
-            else:
-                print('获取通知服务失败，请检查网络连接...')
 
         content = ''
         with open(scf_path('log.txt'), encoding='utf-8') as f:
