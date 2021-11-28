@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 '''
 cron: 5 15 * * *
 new Env('东东农场-集勋章合成兑换奖励');
@@ -67,7 +69,6 @@ def v4_env(env,paths):
 
 # 随机ua
 def ua():
-    sys.path.append(os.path.abspath('.'))
     try:
         from jdEnv import USER_AGENTS as a
     except:
@@ -214,7 +215,7 @@ def main():
     msg(f'====================共{len(cookie_list)}京东个账号Cookie=========\n')
 
     for e,cookie in enumerate(cookie_list):
-        msg(f'******开始【账号 {e}】 {get_pin(cookie)} *********\n')
+        msg(f'******开始【账号 {e+1}】 {get_pin(cookie)} *********\n')
         ffff=collect_getAwardInfo(cookie)
         if ffff:
             collect_exchangeAward(cookie)
