@@ -152,7 +152,15 @@ def readJson():
 #运行任务
 def runTask(client, user):
     logging.info('')
-    with os.scandir(os.path.abspath(os.path.dirname(__file__))+'/task') as entries:
+
+    if os.path.exists(os.path.abspath(os.path.dirname(__file__))+'/task'):
+        task_path=os.path.abspath(os.path.dirname(__file__))+'/task'
+        import_task='task.'
+    else:
+        task_path=os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task'
+        import_task='unicom-task.task.'
+        
+    with os.scandir(task_path) as entries:
         for entry in entries:
             if entry.is_file():
                 if entry.name == 'login.py':
@@ -165,7 +173,7 @@ def runTask(client, user):
                     continue  
                 if entry.name == '__pycache__':
                     continue  
-                task_module = importlib.import_module('task.'+entry.name[:-3])
+                task_module = importlib.import_module(import_task+entry.name[:-3])
                 task_class = getattr(task_module, entry.name[0:-3])
                 task_obj = task_class()
                 task_obj.run(client, user)
@@ -173,10 +181,23 @@ def runTask(client, user):
 # 沃邮箱
 def runTas_2(womail):
     logging.info('')
-    task_module = importlib.import_module('task.email_task')
-    task_class = getattr(task_module,'email_task')
-    task_obj = task_class()
-    task_obj.run(womail)
+
+    if os.path.exists(os.path.abspath(os.path.dirname(__file__))+'/task'):
+        task_path=os.path.abspath(os.path.dirname(__file__))+'/task'
+        import_task='task.'
+    else:
+        task_path=os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task'
+        import_task='unicom-task.task.'
+
+    with os.scandir(task_path) as entries:
+        for entry in entries:
+            if entry.is_file():
+                if entry.name != 'email_task.py':
+                    continue  
+                task_module = importlib.import_module(import_task+entry.name[:-3])
+                task_class = getattr(task_module, entry.name[0:-3])
+                task_obj = task_class()
+                task_obj.run(client, user)
 
 # 通知服务
 class sendNotice:   
