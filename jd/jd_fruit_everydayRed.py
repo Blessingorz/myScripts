@@ -170,7 +170,7 @@ def initForTurntableFarm(cookie):
             remainLotteryTimes=res['remainLotteryTimes']        # 抽奖次数
             turntableInfos=res['turntableInfos']                # type
             global type_name_s
-            type_name_s={type_name[0]:type_name[2] for type_name in turntableInfos}     # type与name的映射
+            type_name_s={type_name['type']:type_name['name'] for type_name in turntableInfos}     # type与name的映射
             msg(f'剩余抽奖次数为 {remainLotteryTimes}')
             return int(remainLotteryTimes)
     except:
@@ -213,14 +213,18 @@ def lotteryForTurntableFarm(cookie):
 def main():
     msg('🔔东东农场-天天红包抽奖，开始！\n')
     msg(f'====================共{len(cookie_list)}京东个账号Cookie=========\n')
-    for cookie in cookie_list:
+    for e,cookie in enumerate(cookie_list):
+        msg(f'******开始【账号 {e}】 {get_pin(cookie)} *********\n')
         remainLotteryTimes=initForTurntableFarm(cookie)
         if remainLotteryTimes>0:
             lotteryForTurntableFarm(cookie)
         else:
-            msg('抽奖次数不足')
+            msg('抽奖次数不足\n')
     
     if run_send=='yes':
         send('东东农场-天天红包抽奖')   # 通知服务
 
+
+if __name__ == '__main__':
+    main()
 
