@@ -180,8 +180,6 @@ def runTask(client, user):
 
 # 沃邮箱
 def runTas_2(womail):
-    logging.info('--------------不可视境界线---------------')
-
     if os.path.exists(os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task'):
         task_path=os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task'
         import_task='unicom-task.task.'
@@ -253,6 +251,7 @@ def main_handler(event, context):
         with open(scf_path('log.txt'),mode='w',encoding='utf-8') as f:
             pass
         global client
+        logging.info('--------------不可视境界线---------------')
         client = login.login(user['username'],user['password'],user['appId'])
         #获取账户信息
         util.getIntegral(client)
@@ -267,6 +266,7 @@ def main_handler(event, context):
         with open(scf_path('log.txt'),mode='w',encoding='utf-8') as f:
             pass 
         if womail["woEmail"]:
+            logging.info('--------------不可视境界线---------------')
             runTas_2(womail)
         if run_send=='yes':
             sendNotice().main()

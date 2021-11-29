@@ -50,7 +50,7 @@ class everyday_way:
             logging.error(f'【天天领现金】：获取token失败\n{res}')
     # 获取rptid
     def woauth2_sjyyt_new(self,client,token):
-        url=f'https://epay.10010.com/woauth2/sjyyt-new/try-login-using-usid?device_digest_trace_id=c494f11d82b548b08c14a28382676878&device_digest_token_id=chinaunicom-pro-1637487108522-9963debb40c83&token={token}&token2=ab59be8b-020b-48e8-869b-0114de34f08e'
+        url=f'https://epay.10010.com/woauth2/sjyyt-new/try-login-using-usid?device_digest_trace_id=c494f11d82b548b08c14a28382676878&device_digest_token_id=chinaunicom-pro-1637487108522-9963debb40c83&token={token}&token2={token}'
         res=client.get(url)
         if '<title>天天领现金</title>' in res.text:
             rptid=re.findall(r'rptid=(.*)', res.url)[0]
