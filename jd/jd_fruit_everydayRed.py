@@ -205,10 +205,12 @@ def lotteryForTurntableFarm(cookie):
             type_i=res['type']        # 奖品类型
             remainLotteryTimes=res['remainLotteryTimes']        # 剩余抽奖次数
             name=type_name_s[type_i]
-            msg(f"本次抽到 {name}")
-            msg(f'剩余抽奖次数为 {remainLotteryTimes}')
-            if int(remainLotteryTimes)>0:
+            msg(f"抽到 {name}")
+            if int(remainLotteryTimes) > 0:
+                msg(f'剩余抽奖次数为 {remainLotteryTimes}')
                 return lotteryForTurntableFarm(cookie)
+            else:
+                msg('抽奖次数不足\n')
     except:
         msg(f"错误\n{res}")    
 
