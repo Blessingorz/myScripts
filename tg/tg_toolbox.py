@@ -88,10 +88,7 @@ async def send_message():
             print(f'{a[0]}  {a[1]}')
             print(e)
             print(f'找不到用户名 {a[0]} 或群组 {a[0]} \n')
-    tasks=[]
-    for username_information in tg_send_messages:
-        a=username_information.split('<<<')
-        tasks.append(__send_message(a))
+    tasks=[__send_message(username_information.split('<<<')) for username_information in tg_send_messages]
     await asyncio.wait(tasks)
 
 
@@ -108,10 +105,7 @@ async def send_file():
             print(f'{a[0]}  文件备注：{a[2]}')
             print(e)
             print(f'找不到用户名 {a[0]} 或群组 {a[0]} \n')
-    tasks=[]
-    for username_information in tg_send_file:
-        a=username_information.split('<<<')
-        tasks.append(__send_file(a))
+    tasks=[__send_file(username_information.split('<<<')) for username_information in tg_send_file]
     await asyncio.wait(tasks)
 
 
@@ -126,10 +120,7 @@ async def send_voice():
             print(f'{a[0]}  语音消息')
             print(e)
             print(f'找不到用户名 {a[0]} 或群组 {a[0]} \n')
-    tasks=[]
-    for username_information in tg_send_voice:
-        a=username_information.split('<<<')
-        tasks.append(__send_voice(a))
+    tasks=[__send_voice(username_information.split('<<<')) for username_information in tg_send_voice]
     await asyncio.wait(tasks)
 
 
@@ -148,10 +139,7 @@ async def download_media():
             print(f'{a[0]}  下载文件{path}到{a[1]}')
             print(e)
             print(f'找不到用户名 {a[0]} 或群组 {a[0]} \n')
-    tasks=[]
-    for username_information in tg_download_media:
-        a=username_information.split('<<<')
-        tasks.append(__download_media(a))
+    tasks=[__download_media(username_information.split('<<<')) for username_information in tg_download_media]
     await asyncio.wait(tasks)
 
 
@@ -249,7 +237,7 @@ def app_proxy():
                     proxy=(socks.HTTP, tg_proxy_add, int(tg_proxy_port))
                     )
         else:
-            print(f'不存在的代理方式{tg_proxy_type}\n')
+            print(f'不支持的代理方式{tg_proxy_type}\n')
             app=TelegramClient(anon, tg_api_id, tg_api_hash)
     else:
         app=TelegramClient(anon, tg_api_id, tg_api_hash)
@@ -261,7 +249,7 @@ def tip():
     if '/ql' in os.path.abspath(os.path.dirname(__file__)):
         print("当前环境青龙\n")
         print('第一次请在命令行运行 cd /ql/scripts && python3 xxxxxx.py 登陆tg获取密钥\n')
-        anon='anon'
+        anon='/ql/scripts/anon'
     elif '/jd' in os.path.abspath(os.path.dirname(__file__)):
         print("当前环境V4\n")
         print('第一次请在命令行运行 cd /jd/scripts && python3 xxxxxx.py 登陆tg获取密钥\n')

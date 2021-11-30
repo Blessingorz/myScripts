@@ -40,6 +40,7 @@ class everyday_way:
             if res['index_url']:
                 return res['index_url']
         logging.error(f'【天天领现金】：获取登录链接失败\n{res}')
+
     # 获取token
     def woauth2_login(self,client,index_url):
         res=client.get(index_url).text  
@@ -48,14 +49,17 @@ class everyday_way:
             return token
         else:
             logging.error(f'【天天领现金】：获取token失败\n{res}')
+
     # 获取rptid
     def woauth2_sjyyt_new(self,client,token):
-        url=f'https://epay.10010.com/woauth2/sjyyt-new/try-login-using-usid?device_digest_trace_id=c494f11d82b548b08c14a28382676878&device_digest_token_id=chinaunicom-pro-1637487108522-9963debb40c83&token={token}&token2={token}'
+        url=f'https://epay.10010.com/woauth2/sjyyt-new/try-login-using-usid?device_digest_trace_id=&device_digest_token_id=&token={token}&token2={token}'
         res=client.get(url)
-        if '<title>天天领现金</title>' in res.text:
-            rptid=re.findall(r'rptid=(.*)', res.url)[0]
+        rptid=re.findall(r'rptid=(.*)', res.url)
+        if rptid:
+            rptid=rptid[0]
             return rptid
         logging.error(f'【天天领现金】：获取rptid失败\n{res.text}')
+
     # web登录,验证rptid，获取wap_sessionid
     def web_loginNew(self,client,rptid):
         data=f'bizFrom=225&activityId=TTLXJ20210330&loginId=&response_type=web_token&rptid={rptid}&end_url=clockIn%2Findex.html%3Fchannel%3D225%26channelType%3Dnull%26uid%3D'
@@ -64,6 +68,7 @@ class everyday_way:
             logging.info(f"【天天领现金】：{res['returnMsg']}")
             return res['wap_sessionid']
         logging.error(f"【天天领现金】：{res['returnMsg']}")
+
     # 打卡
     def unifyDraw(self,client,user,wap_sessionid):
         for drawType in string.ascii_uppercase:
@@ -74,6 +79,7 @@ class everyday_way:
                 return
             # logging.error(f"【天天领现金】：{res['returnMsg']}") 
         logging.error(f"【天天领现金】：已经签到过了，或打卡失败")
+        
     # 查余额
     def userDrawInfo(self,client,user,wap_sessionid):
         data=f"loginId={user['username']}&activityId=TTLXJ20210330&wap_sessionID={wap_sessionid}&version=3.0.0&bizFrom=225"
