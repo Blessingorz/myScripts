@@ -19,15 +19,21 @@ class turntable_lottery:
         self.client.headers.update({
             'x-requested-with': 'com.sinovatech.unicom.ui',
         })
-        self.openPlatLineNew()  # 获取cookie
-        self.powerTask()        # 做任务
-        self.lottery()          # 抽奖
+        flag = self.openPlatLineNew()  # 获取cookie
+        if flag:
+            self.powerTask()        # 做任务
+            self.lottery()          # 抽奖
 
 
     # 获取cookie
     def openPlatLineNew(self):  
         url=f"https://m.client.10010.com/mobileService/openPlatform/openPlatLineNew.htm?to_url=https://account.bol.wo.cn/cuuser/open/openLogin/activetemplate?redirectUrl=https://atp.bol.wo.cn/atplottery/ACT202009101956022770009xRb2UQ&product=hfgo&ch=010&yw_code=&desmobile={self.user['username']}&version=android@8.0805"
-        res=self.client.get(url)
+        try:
+            res=self.client.get(url,timeout=5)
+            return True
+        except:
+            logging.error(f'【转盘抽奖】：登录超时')
+
     # 抽奖
     def lottery(self):
         url=f"https://atp.bol.wo.cn/atpapi/act/lottery/start/v1/actPath/ACT202009101956022770009xRb2UQ/0"
@@ -43,6 +49,7 @@ class turntable_lottery:
                 logging.info(f"【转盘抽奖】：\n{res}")
         except:
             logging.error(f'【转盘抽奖】：出错\n{res}')
+            
     # 任务列表
     def powerTask(self):
         url='https://atp.bol.wo.cn/atpapi/lottery/powerTask/517'
