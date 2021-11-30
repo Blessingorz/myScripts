@@ -4,9 +4,7 @@
 cron: 5 15 * * *
 new Env('东东农场-天天红包抽奖');
 入口: 京东》我的>东东农场>天天红包
-变量: JD_COOKIE
-export JD_COOKIE="第1个cookie&第2个cookie"
-地址：https://raw.githubusercontent.com/wuye999/myScripts/main/jd/jd_fruit_everydayRed.py
+青龙拉取命令：ql raw https://raw.githubusercontent.com/wuye999/myScripts/main/jd/jd_fruit_everydayRed.py
 '''
 
 import os,json,random,time,re,string,functools
