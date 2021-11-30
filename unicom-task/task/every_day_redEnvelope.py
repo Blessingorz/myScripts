@@ -36,7 +36,7 @@ class every_day_redEnvelope:
             'Accept-Encoding': 'gzip, deflate',
             'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
         })
-        cookies_dict = requests.utils.dict_from_cookiejar(client.cookies)
+        cookies_dict = requests.utils.dict_from_cookiejar(self.client.cookies)
         ecs_token=cookies_dict['ecs_token']
 
         userId,userCustId,cityCode=self.login_getUserInfo(ecs_token)        # 获取userId
