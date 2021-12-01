@@ -20,16 +20,28 @@ PUSH_PLUS_TOKEN=""
 
 
 import os,sys
+def abspath(p=''):  # 返回项目所在目录
+    if '/ql' in os.path.abspath(os.path.dirname(__file__)):
+        return os.path.abspath('./unicom-task/'+p)      # 青龙
+    elif os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
+        return os.path.abspath('./'+p)      # 腾讯云函数
+    else:
+        return os.path.abspath('./'+p)      # 其他
+os.chdir(abspath())  # 修改当前工作目录为项目目录
+
 sys.path.append('/tmp')
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/task')
-sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/tenscf_rely')
-sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task')
-sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/unicom-task/tenscf_rely')
+sys.path.append('./task')
+sys.path.append('./tenscf_rely')
+sys.path.append('./utils')
 import json,time,re,traceback,random,datetime,util,sys,login,logging,importlib
-import pytz,requests,rsa,lxml     # 导入模块 pytz,requests,rsa,lxml 模块，请先安装这些模块：pip3 install xxx
+import pytz,requests,rsa,lxml     # 导入 pytz,requests,rsa,lxml 模块，出错请先安装这些模块：pip3 install xxx
 from lxml.html import fromstring
+try:
+    import execjs
+except Exception as e:
+    print(str(e) + "\n缺少execjs模块, 请执行命令：pip3 install PyExecJS\n")
 requests.packages.urllib3.disable_warnings()
 
 
@@ -38,27 +50,27 @@ run_send='yes'      # yes或no,是否启用推送
 client = None
 
 
-# 云函数可写目录
-def scf_path(p):
-    if __name__ == '__main__':
-        return './'+p
+# 腾讯云函数可写日志目录
+def log_path(p):
+    if '/var/user' == os.path.abspath('.'):
+        return f'/tmp/{p}'
     else:
-        return '/tmp/'+p
-   
+        return f'./utils/{p}'
+
+
 #日志基础配置
 def log():
     # 创建一个logger
     global logger,logging
     logger = logging.getLogger()
     logger.setLevel(logging.INFO)
-    # 创建一个handler，用于写入日志文件
-    # w 模式会记住上次日志记录的位置
-    fh = logging.FileHandler(scf_path('log.txt'), mode='a', encoding='utf-8')
+
+    fh = logging.FileHandler(log_path('log.txt'), mode='a', encoding='utf-8')   # 创建一个handler，用于写入日志文件
     fh.setFormatter(logging.Formatter("%(filename)s: %(message)s"))
     logger.addHandler(fh)
-    # 创建一个handler，输出到控制台
+
     ch = logging.StreamHandler()
-    ch.setFormatter(logging.Formatter("%(filename)s: %(message)s"))
+    ch.setFormatter(logging.Formatter("%(filename)s: %(message)s"))     # 创建一个handler，输出到控制台
     logger.addHandler(ch)
 log() 
 
@@ -106,6 +118,7 @@ def get_env_nofixed(env):
         else:
             break
     return a
+    
 
 #读取用户配置信息
 #错误原因有两种：格式错误、未读取到错误
@@ -154,47 +167,25 @@ def readJson():
 
 #运行任务
 def runTask(client, user):
-    if os.path.exists(os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task'):
-        task_path=os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task'
-        import_task='unicom-task.task.'
-    else:
-        task_path=os.path.abspath(os.path.dirname(__file__))+'/task'
-        import_task='task.'
-        
-    with os.scandir(task_path) as entries:
+    with os.scandir(os.path.abspath('./task')) as entries:
         for entry in entries:
-            if entry.is_file():
-                if entry.name == 'login.py':
+            if entry.is_file(): 
+                if entry.name=='email_task.py':
                     continue
-                if entry.name == 'sendNotify.py':
-                    continue
-                if entry.name == 'util.py':
-                    continue 
-                if entry.name == 'email_task.py':
-                    continue  
-                if entry.name == '__pycache__':
-                    continue  
-                task_module = importlib.import_module(import_task+entry.name[:-3])
+                task_module = importlib.import_module('task.'+entry.name[:-3])
                 task_class = getattr(task_module, entry.name[0:-3])
                 task_obj = task_class()
                 task_obj.run(client, user)
 
 # 沃邮箱
 def runTas_2(womail):
-    if os.path.exists(os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task'):
-        task_path=os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task'
-        import_task='unicom-task.task.'
-    else:
-        task_path=os.path.abspath(os.path.dirname(__file__))+'/task'
-        import_task='task.'
-
-    with os.scandir(task_path) as entries:
+    with os.scandir(os.path.abspath('./task')) as entries:
         for entry in entries:
             if entry.is_file():
                 if entry.name != 'email_task.py':
                     continue  
-                task_module = importlib.import_module(import_task+entry.name[:-3])
-                task_class = getattr(task_module, entry.name[0:-3])
+                task_module = importlib.import_module('task.'+entry.name[:-3])
+                task_class = getattr(task_module, entry.name[:-3])
                 task_obj = task_class()
                 task_obj.run(womail)
 
@@ -209,7 +200,7 @@ class sendNotice:
         for e,url in enumerate(url_list):
             try:
                 response = requests.get(url,timeout=10)
-                with open(scf_path('sendNotify.py'), "w+", encoding="utf-8") as f:
+                with open(log_path('sendNotify.py'), "w+", encoding="utf-8") as f:
                     f.write(response.text)
                 return
             except:
@@ -238,7 +229,7 @@ class sendNotice:
                 return self.main(f)
 
         content = ''
-        with open(scf_path('log.txt'), encoding='utf-8') as f:
+        with open(log_path('log.txt'), encoding='utf-8') as f:
             for line in f.readlines():
                 content += line
         send('unicom_task',content)
@@ -249,7 +240,7 @@ def main_handler(event, context):
     users,womails = readJson()
     for user in users:
         # 清空上一个用户的日志记录
-        with open(scf_path('log.txt'),mode='w',encoding='utf-8') as f:
+        with open(log_path('log.txt'),mode='w',encoding='utf-8') as f:
             pass
         global client
         logging.info('--------------账号分割线---------------')
@@ -264,7 +255,7 @@ def main_handler(event, context):
     global womail
     for e,womail in enumerate(womails):
         # 清空上一个用户的日志记录
-        with open(scf_path('log.txt'),mode='w',encoding='utf-8') as f:
+        with open(log_path('log.txt'),mode='w',encoding='utf-8') as f:
             pass 
         if womail["woEmail"]:
             logging.info('--------------账号分割线---------------')

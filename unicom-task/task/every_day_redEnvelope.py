@@ -53,9 +53,9 @@ class every_day_redEnvelope:
                 cityCode=res['data']['cityCode']
                 return userId,userCustId,cityCode
             else:
-                logging.info('获取userId失败')
+                logging.info('【天天抽红包】：获取userId失败')
         except:
-            logging.error(f'错误\n{res}')
+            logging.error(f'【天天抽红包】：错误\n{res}')
 
     # 登录获取token
     def login_nologin(self,ecs_token,userId):
@@ -70,9 +70,9 @@ class every_day_redEnvelope:
                 token=res['data']['token']
                 return token
             else:
-                logging.info('获取token失败')
+                logging.info('【天天抽红包】：获取token失败')
         except:
-            logging.error(f'错误\n{res}')
+            logging.error(f'【天天抽红包】：错误\n{res}')
 
     # 抽奖
     def lottery_lottery(self,token,userCustId,cityCode):
@@ -89,12 +89,12 @@ class every_day_redEnvelope:
             if res['code']=='200':
                 msg=res['msg']
                 if not msg:
-                    logging.info(f"抽到 {res['data']['desc']}")
+                    logging.info(f"【天天抽红包】：抽到 {res['data']['desc']}")
                 else:
-                    logging.info(msg)
+                    logging.info(f"【天天抽红包】：{msg}")
             else:
-                logging.info(res)
+                logging.info(f"【天天抽红包】：{res}")
         except:
-            logging.error(f'错误\n{res}')
+            logging.error(f'【天天抽红包】：错误\n{res}')
 
 

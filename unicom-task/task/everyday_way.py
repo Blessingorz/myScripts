@@ -20,6 +20,8 @@ class everyday_way:
             token=self.woauth2_login(client, index_url)             # 获取token
             rptid=self.woauth2_sjyyt_new(client, token)             # 获取rptid
             wap_sessionid=self.web_loginNew(client,rptid)           # web登录,验证rptid，获取wap_sessionid
+            if not wap_sessionid:
+                return
             # 任务
             self.unifyDraw(client,user,wap_sessionid)       # 打卡
             self.userDrawInfo(client,user,wap_sessionid)    # 查余额
@@ -52,7 +54,7 @@ class everyday_way:
         if rptid:
             rptid=rptid[0]
             return rptid
-        logging.error(f'【天天领现金】：获取rptid失败\n{res.text}')
+        logging.error(f'【天天领现金】：获取rptid失败\n{res.url}')
 
     # web登录,验证rptid，获取wap_sessionid
     def web_loginNew(self,client,rptid):
