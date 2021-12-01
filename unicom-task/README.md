@@ -84,7 +84,7 @@ ql repo https://ghproxy.com/https://github.com/wuye999/myScripts.git "unicom_ind
 ```
 执行超时时间:900  
 ```                       
-环境变量示例，[具体点击查看](https://github.com/wuye999/myScripts/blob/f829758de2dd1c7e1d90e25462785d6713d59d63/unicom-task/README.md#L22):               
+环境变量示例:               
      
      
 |  key  |   value    |    
