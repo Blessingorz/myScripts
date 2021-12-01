@@ -30,8 +30,8 @@
 export unicom_config_1="手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫"
 export unicom_config_2="手机号2<<<服务密码2<<<appId2<<<抽奖次数(0-30)中奖几率渺茫"
 export unicom_config_3="自然数顺序类推..."
-export unicom_womail_1="<<<沃邮箱登陆Url1<<<手机号1(可留空)<<<沃邮箱密码（可留空）"
-export unicom_womail_2="<<<沃邮箱登陆Url2<<<手机号2(可留空)<<<沃邮箱密码（可留空）"
+export unicom_womail_1="沃邮箱登陆Url1<<<手机号1(可留空)<<<沃邮箱密码（可留空）"
+export unicom_womail_2="沃邮箱登陆Url2<<<手机号2(可留空)<<<沃邮箱密码（可留空）"
 export unicom_womail_3="自然数顺序类推..."
 export PUSH_PLUS_TOKEN="微信推送Plus+(通知服务示例，可留空或不填)"
 ```
@@ -83,10 +83,15 @@ ql repo https://ghproxy.com/https://github.com/wuye999/myScripts.git "unicom_ind
 ##### 高级配置                             
 ```
 执行超时时间:900                       
-环境变量示例，[具体点击查看](https://github.com/wuye999/myScripts/blob/f829758de2dd1c7e1d90e25462785d6713d59d63/unicom-task/README.md#L22):                            
-key填       unicom_config_1                 
-value填     手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫          
-```
+环境变量示例，[具体点击查看](https://github.com/wuye999/myScripts/blob/f829758de2dd1c7e1d90e25462785d6713d59d63/unicom-task/README.md#L22):               
+```       
+|  key  |   value    |    
+|  ----  | ----  |
+|  unicom_config_1  | 手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫 |               
+|  unicom_womail_1  | 沃邮箱登陆Url2<<<手机号2(可留空)<<<沃邮箱密码（可留空） |   
+|  PUSH_PLUS_TOKEN  | 微信推送Plus+(通知服务示例，可留空或不填)  |       
+
+
 key和value不用加引号，多账号则unicom_config_2，unicom_config_3，自然数顺序类推                            
 
 
