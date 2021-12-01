@@ -52,6 +52,7 @@ ql repo https://ghproxy.com/https://github.com/wuye999/myScripts.git "unicom_ind
 **手动下载和青龙拉取的文件夹tenscf_rely文件夹是不一样的**                       
 青龙最新版是/ql/scripts/wuye999_myScripts/unicom-task                             
 没更新的是/ql/scripts/unicom-task                       
+![image](https://user-images.githubusercontent.com/79479594/144328277-b7547b28-0e6d-4058-81bc-e4d0234c2f72.png)                                
                         
 ### 云函数               
 ##### 压缩
