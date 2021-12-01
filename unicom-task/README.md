@@ -82,9 +82,11 @@ ql repo https://ghproxy.com/https://github.com/wuye999/myScripts.git "unicom_ind
                         
 ##### 高级配置                             
 ```
-执行超时时间:900                       
+执行超时时间:900  
+```                       
 环境变量示例，[具体点击查看](https://github.com/wuye999/myScripts/blob/f829758de2dd1c7e1d90e25462785d6713d59d63/unicom-task/README.md#L22):               
-```       
+     
+     
 |  key  |   value    |    
 |  ----  | ----  |
 |  unicom_config_1  | 手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫 |               
