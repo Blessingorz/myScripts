@@ -9,8 +9,8 @@ new Env('联通日常任务');
 环境变量示例：
 export unicom_config_1="手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫"
 export unicom_config_2="手机号2<<<服务密码2<<<appId2<<<抽奖次数(0-30)中奖几率渺茫"
-export unicom_womail_1="<<<沃邮箱登陆Url1<<<手机号1(可留空)<<<沃邮箱密码（可留空）"
-export unicom_womail_2="<<<沃邮箱登陆Url2<<<手机号2(可留空)<<<沃邮箱密码（可留空）"
+export unicom_womail_1="沃邮箱登陆Url1<<<手机号1(可留空)<<<沃邮箱密码（可留空）"
+export unicom_womail_2="沃邮箱登陆Url2<<<手机号2(可留空)<<<沃邮箱密码（可留空）"
 export PUSH_PLUS_TOKEN="微信推送Plus+(通知服务示例，可留空或不填)"
 '''
 # 脚本内示例：
@@ -42,6 +42,7 @@ try:
     import execjs
 except Exception as e:
     print(str(e) + "\n缺少execjs模块, 请执行命令：pip3 install PyExecJS\n")
+    exit()
 requests.packages.urllib3.disable_warnings()
 
 
@@ -51,8 +52,8 @@ client = None
 
 
 # 腾讯云函数可写日志目录
-def log_path(p):
-    if '/var/user' == os.path.abspath('.'):
+def log_path(p=''):
+    if os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
         return f'/tmp/{p}'
     else:
         return f'./utils/{p}'
