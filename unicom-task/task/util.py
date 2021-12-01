@@ -3,12 +3,6 @@
 # @Author  : srcrs
 # @Email   : srcrs@foxmail.com
 import os,sys
-sys.path.append('/tmp')
-sys.path.append(os.path.abspath('.'))
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/task')
-sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/tenscf_rely')
-sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task')
 import requests,json,time,re,login,logging,traceback,os,random,datetime
 import pytz
 

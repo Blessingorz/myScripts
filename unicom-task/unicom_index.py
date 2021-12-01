@@ -20,19 +20,16 @@ PUSH_PLUS_TOKEN=""
 
 
 import os,sys
-import requests
 sys.path.append('/tmp')
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/task')
 sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/tenscf_rely')
 sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task')
-import json,time,re,traceback,random,datetime,util,sys,login,logging
-import pytz,importlib,requests,rsa,lxml
-try:
-    from lxml.html import fromstring
-except Exception as e:
-    print(str(e) + "\n缺少lxml,pytz,requests,rsa模块中的一个, 请执行命令：pip3 install xxx\n")
+sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/unicom-task/tenscf_rely')
+import json,time,re,traceback,random,datetime,util,sys,login,logging,importlib
+import pytz,requests,rsa,lxml     # 导入模块 pytz,requests,rsa,lxml 模块，请先安装这些模块
+from lxml.html import fromstring
 requests.packages.urllib3.disable_warnings()
 
 
@@ -116,6 +113,9 @@ def readJson():
     users=list()
     try:
         unicom_config_list=get_env_nofixed('unicom_config')
+        if not unicom_config_list:
+            logging.error('未读取到账号信息')
+
         for unicom_config in unicom_config_list:
             user_list=[v for v in unicom_config.split('<<<')]
             user_dict={
@@ -133,6 +133,9 @@ def readJson():
     womails=list()
     try:
         womail_list=get_env_nofixed('unicom_womail')
+        if not unicom_config_list:
+            logging.error('未读取到沃邮箱url')
+
         for womail_str in womail_list:
             womail_str_list=[v for v in womail_str.split('<<<')]
             womail_str_dict={

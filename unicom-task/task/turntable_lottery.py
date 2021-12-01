@@ -4,12 +4,6 @@
 # 转盘抽奖
 # 入口：我的》转盘抽奖
 import os,sys
-sys.path.append('/tmp')
-sys.path.append(os.path.abspath('.'))
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/task')
-sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/tenscf_rely')
-sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task')
 import requests,login,logging,urllib.parse,util,re
 
 class turntable_lottery:
