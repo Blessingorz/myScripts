@@ -48,6 +48,8 @@ appId：手机文件夹 unicom 里的appid文件，以文本格式打开
 cron: 28 20 * * *               
 ql repo https://ghproxy.com/https://github.com/wuye999/myScripts.git "unicom_index" "" "unicom-task"                                        
 ```
+搞不定，不会安装依赖的同学，手动下载一次 文件夹 tenscf_rely 放入 /ql/scripts/unicom-task                        
+手动下载和青龙拉取的文件夹tenscf_rely文件夹是不一样的                                            
                         
 ### 云函数               
 ##### 压缩
