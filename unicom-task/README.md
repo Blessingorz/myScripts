@@ -56,10 +56,11 @@ ql repo https://ghproxy.com/https://github.com/wuye999/myScripts.git "unicom_ind
                         
 ### 云函数               
 ##### 压缩
-将 tenscf_rely文件夹，unicom_index.py文件， task文件夹 压缩成zip         
+将 tenscf_rely文件夹，utils文件夹， task文件夹， unicom_index.py文件， 压缩成zip         
 
 
-![image](https://user-images.githubusercontent.com/79479594/143088148-aa05ef3b-fb25-431d-ba85-6a39858e43ec.png)                              
+![image](https://user-images.githubusercontent.com/79479594/144328517-c3e6392f-56a0-4ff4-9116-883ca2d9c405.png)                                           
+                             
 [自定义创建函数](https://console.cloud.tencent.com/scf/list-create?rid=1&ns=default&createType=empty)               
 ##### 基础配置                             
 ```
