@@ -28,7 +28,7 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/tenscf_rely')
 sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/unicom-task/task')
 sys.path.append(os.path.abspath(os.path.dirname(__file__))+'/unicom-task/tenscf_rely')
 import json,time,re,traceback,random,datetime,util,sys,login,logging,importlib
-import pytz,requests,rsa,lxml     # 导入模块 pytz,requests,rsa,lxml 模块，请先安装这些模块
+import pytz,requests,rsa,lxml     # 导入模块 pytz,requests,rsa,lxml 模块，请先安装这些模块：pip3 install xxx
 from lxml.html import fromstring
 requests.packages.urllib3.disable_warnings()
 
