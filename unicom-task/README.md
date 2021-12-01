@@ -88,7 +88,7 @@ ql repo https://ghproxy.com/https://github.com/wuye999/myScripts.git "unicom_ind
 |  key  |   value    |    
 |  ----  | ----  |
 |  unicom_config_1  | 手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫 |               
-|  unicom_womail_1  | 沃邮箱登陆Url2<<<手机号2(可留空)<<<沃邮箱密码（可留空） |   
+|  unicom_womail_1  | 沃邮箱登陆Url1<<<沃邮箱对应手机号(可留空)<<<沃邮箱密码（可留空） |   
 |  PUSH_PLUS_TOKEN  | 微信推送Plus+(通知服务示例，可留空或不填)  |       
 
 
