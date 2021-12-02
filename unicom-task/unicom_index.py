@@ -202,7 +202,7 @@ class sendNotice:
         for e,url in enumerate(url_list):
             try:
                 response = requests.get(url,timeout=10)
-                with open(scf_path('sendNotify.py'), "w+", encoding="utf-8") as f:
+                with open(log_path('sendNotify.py'), "w+", encoding="utf-8") as f:
                     f.write(response.text)
                 return
             except:
@@ -231,7 +231,7 @@ class sendNotice:
                 return self.main(f)
 
         content = ''
-        with open(scf_path('log.txt'), encoding='utf-8') as f:
+        with open(log_path('log.txt'), encoding='utf-8') as f:
             for line in f.readlines():
                 content += line
         send('unicom_task',content)
