@@ -1,7 +1,5 @@
 ##### 通知环境变量
-在脚本内或环境变量中填写，如果是脚本内，需要去掉export 后填写   
-
-
+##### 在脚本内或环境变量中填写，如果是脚本内，需要去掉export 后填写   
 
 
 #### 通知环境变量
@@ -11,8 +9,6 @@
 export PUSH_KEY=""              
 
 
-
-
 #### 2. BARK
 #### 下方填写app提供的设备码，例如：https://api.day.app/123 那么此处的设备码就是123
 export BARK_PUSH=""             
@@ -20,8 +16,6 @@ export BARK_PUSH=""
 export BARK_SOUND=""                
 #### 下方填写推送消息分组，默认为"QingLong"
 export BARK_GROUP="QingLong"                                                    
-
-
 
 
 #### 3. Telegram 
@@ -46,15 +40,11 @@ export TG_PROXY_AUTH=""
 export TG_API_HOST=""                                                           
 
 
-
-
 #### 4. 钉钉 
 #### 官方文档：https://developers.dingtalk.com/document/app/custom-robot-access
 #### 下方填写token后面的内容，只需 https://oapi.dingtalk.com/robot/send?access_token=XXX 等于=符号后面的XXX即可
 export DD_BOT_TOKEN=""                                                       
 export DD_BOT_SECRET=""                                             
-
-
 
 
 #### 5. 企业微信机器人
@@ -63,22 +53,16 @@ export DD_BOT_SECRET=""
 export QYWX_KEY=""                                                                                                  
 
 
-
-
 #### 6. 企业微信应用
 #### 参考文档：http://note.youdao.com/s/HMiudGkb
 #### 下方填写素材库图片id（corpid,corpsecret,touser,agentid），素材库图片填0为图文消息, 填1为纯文本消息
 export QYWX_AM=""                                                                               
 
 
-
-
 #### 7. iGot聚合
 #### 参考文档：https://wahao.github.io/Bark-MP-helper
 #### 下方填写iGot的推送key，支持多方式推送，确保消息可达
 export IGOT_PUSH_KEY=""                                                         
-
-
 
 
 #### 8. Push Plus
@@ -91,8 +75,6 @@ export PUSH_PLUS_TOKEN=""
 export PUSH_PLUS_USER=""                                                                
 
 
-
-
 #### 9. go-cqhttp
 #### gobot_url 推送到个人QQ: http://127.0.0.1/send_private_msg  群：http://127.0.0.1/send_group_msg 
 #### gobot_token 填写在go-cqhttp文件设置的访问密钥
@@ -101,8 +83,6 @@ export PUSH_PLUS_USER=""
 export GOBOT_URL=""                                     
 export GOBOT_TOKEN=""                                                   
 export GOBOT_QQ=""                                      
-
-
 
 
 #### 10. gotify
@@ -115,21 +95,14 @@ export GOTIFY_PRIORITY=0
 
 
 
-
-
 #### 11. qmsg 酱·   
 #### qmsg 酱的 QMSG_KEY                                                                                       
 export QMSG_KEY=""                                                                       
 #### qmsg 酱的 QMSG_TYPE                                                                                       
 export QMSG_TYPE=""                                                                                                             
- 
-
-
 
 
 #### 12. 飞书机器人
-
-
 
 
 #### 飞书机器人的 FSKEY                                                              
