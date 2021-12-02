@@ -24,9 +24,12 @@ class woread_task:
 
     # 登录
     def login(self):
+        phonenum=self.getEncryptMobile()
+        if not phonenum:
+            return
         url = 'https://st.woread.com.cn/touchextenernal/common/shouTingLogin.action'
         data = {
-            'phonenum': self.getEncryptMobile()
+            'phonenum': phonenum
         }
         resp = self.session.post(url=url, data=data)
         if not self.session.cookies.get('useraccount', False):
@@ -48,8 +51,12 @@ class woread_task:
         }
         '''
         scriptText = 'var window = {};' + securityJs + scriptText
-        ctx = execjs.compile(scriptText)
-        EncryptMobile = ctx.call('getEncryptMobile', self.user['username'])
+        try:
+            ctx = execjs.compile(scriptText)
+            EncryptMobile = ctx.call('getEncryptMobile', self.user['username'])
+        except:
+            logging.error("【沃阅读】: 没有找到运行JavaScript的环境，退出")
+            return
         return EncryptMobile
 
     # 验证登录吗？
