@@ -6,7 +6,7 @@ new Env('冬香节送福利');
 入口: 京东极速版》首页》领红包
 说明：每天3次抽奖机会，抽奖，提现
 青龙拉取命令：
-ql raw https://raw.githubusercontent.com/wuye999/myScripts/main/jd/jd_fruit_medalExchange.py
+ql raw https://raw.githubusercontent.com/wuye999/myScripts/main/jd/jd_dongxiang_benefits.py
 '''
 import os,json,random,time,re,string,functools
 import sys
