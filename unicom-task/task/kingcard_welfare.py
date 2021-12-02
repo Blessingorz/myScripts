@@ -4,7 +4,6 @@
 # @Email   : srcrs@foxmail.com
 import os,sys
 import requests,json,time,re,login,logging,traceback,os,random,datetime,util
-from lxml.html import fromstring
 
 #自动续约王卡福利二选一 每个月3次
 class kingcard_welfare:

@@ -4,7 +4,6 @@
 # @Email   : srcrs@foxmail.com
 import os,sys
 import requests,json,time,re,login,logging,traceback,os,random,datetime,util
-from lxml.html import fromstring
 
 #沃之树任务
 #位置: 首页 --> 游戏 --> 沃之树

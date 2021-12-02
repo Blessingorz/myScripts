@@ -5,7 +5,6 @@
 # 入口》我的》天天抽红
 import os,sys
 import requests,json,time,re,login,logging,traceback,os,random,datetime,util
-from lxml.html import fromstring
 
 class every_day_redEnvelope:
     def run(self, client, user):

@@ -4,7 +4,6 @@
 # @Email   : srcrs@foxmail.com
 import os,sys
 import requests,json,time,re,login,logging,traceback,os,random,datetime,util
-from lxml.html import fromstring
 
 #积分抽奖，可在环境变量中设置抽奖次数，否则每天将只会抽奖一次
 #需要注意的是，配置完抽奖次数，程序每运行一次都将触发积分抽奖，直至达每日30次抽奖用完或积分不够(测试过程中未中过奖)

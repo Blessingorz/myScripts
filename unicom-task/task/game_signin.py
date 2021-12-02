@@ -4,7 +4,6 @@
 # @Email   : srcrs@foxmail.com
 import os,sys
 import requests,json,time,re,login,logging,traceback,os,random,datetime
-from lxml.html import fromstring
 
 #游戏任务中心每日打卡领积分，游戏任务自然数递增至7，游戏频道每日1积分
 #位置: 首页 --> 游戏 --> 每日打卡

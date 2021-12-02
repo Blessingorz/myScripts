@@ -4,7 +4,6 @@
 # @Email   : srcrs@foxmail.com
 import os,sys
 import requests,json,time,re,login,logging,traceback,os,random,datetime,util
-from lxml.html import fromstring
 
 #天天抽奖
 #我的 --> 我的金币 --> 天天抽好礼

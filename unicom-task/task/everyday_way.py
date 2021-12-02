@@ -4,7 +4,6 @@
 #位置: 我的 --> 天天领现
 import os,sys
 import requests,json,time,re,login,logging,traceback,os,random,datetime,string
-from lxml.html import fromstring
 
 class everyday_way:
     def run(self, client, user):
