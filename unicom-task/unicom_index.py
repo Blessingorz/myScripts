@@ -26,7 +26,7 @@ def abspath(p=''):  # 返回项目所在目录
     elif os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
         return os.path.abspath('./'+p)                  # 腾讯云函数
     else:
-        return os.path.abspath(os.path.dirname(f'{__file__}/{p}'))      # 其他
+        return os.path.abspath(os.path.dirname(f'{os.path.split(__file__)[0]}/{p}'))      # 其他
 os.chdir(abspath())  # 修改当前工作目录为项目目录
 
 sys.path.append('/tmp')
