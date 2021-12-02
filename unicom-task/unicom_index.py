@@ -190,6 +190,7 @@ def runTas_2(womail):
                 task_obj = task_class()
                 task_obj.run(womail)
 
+
 # 云函数通知服务
 class sendNotice:   
     def getsendNotify(self):
@@ -201,7 +202,7 @@ class sendNotice:
         for e,url in enumerate(url_list):
             try:
                 response = requests.get(url,timeout=10)
-                with open(log_path('sendNotify.py'), "w+", encoding="utf-8") as f:
+                with open(scf_path('sendNotify.py'), "w+", encoding="utf-8") as f:
                     f.write(response.text)
                 return
             except:
@@ -214,7 +215,7 @@ class sendNotice:
                 break
             except:
                 self.getsendNotify()
-        l=['BARK','SCKEY','TG_BOT_TOKEN','TG_USER_ID','TG_API_HOST','TG_PROXY_HOST','TG_PROXY_PORT','DD_BOT_TOKEN','DD_BOT_SECRET','Q_SKEY','QQ_MODE','QYWX_AM','PUSH_PLUS_TOKEN','PUSH_PLUS_USER','FSKEY','GOBOT_URL','GOBOT_QQ','GOBOT_TOKEN']
+        l=['BARK_PUSH', 'BARK_ARCHIVE', 'BARK_GROUP', 'BARK_SOUND', 'DD_BOT_SECRET', 'DD_BOT_TOKEN', 'FSKEY', 'GOBOT_URL', 'GOBOT_QQ', 'GOBOT_TOKEN', 'GOTIFY_URL', 'GOTIFY_TOKEN', 'GOTIFY_PRIORITY', 'IGOT_PUSH_KEY', 'PUSH_KEY', 'PUSH_PLUS_TOKEN', 'PUSH_PLUS_USER', 'QMSG_KEY', 'QMSG_TYPE', 'QYWX_AM', 'QYWX_KEY', 'TG_BOT_TOKEN', 'TG_USER_ID', 'TG_API_HOST', 'TG_PROXY_AUTH', 'TG_PROXY_HOST', 'TG_PROXY_PORT']
         d={}
         for a in l:
             try:
@@ -230,7 +231,7 @@ class sendNotice:
                 return self.main(f)
 
         content = ''
-        with open(log_path('log.txt'), encoding='utf-8') as f:
+        with open(scf_path('log.txt'), encoding='utf-8') as f:
             for line in f.readlines():
                 content += line
         send('unicom_task',content)
