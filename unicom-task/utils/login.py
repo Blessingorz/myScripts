@@ -70,7 +70,11 @@ def login(username,password,appId,imei):
         logging.info('【账号密码登录】: 发生错误，原因为: ' + str(e))
 
     if flag:
-        saveCookie(username+'login', session.cookies.get_dict())   # 保存cookie
+        saveCookie(username+'login_login_cookies', session.cookies.get_dict())   # 保存cookie
+        saveCookie(username+'login_onLine_token_online', result.get('token_online',''))  # 保存token_online
+        session.headers = {
+                'User-Agent': 'Mozilla/5.0 (Linux; Android 10; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + str(username) + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}',
+        }
         return session
     else:
         return False
@@ -81,10 +85,13 @@ def saveCookie(key, cookies):
     if os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
         logging.info('当前环境为云函数，无法保存cookie')
     if not isinstance(cookies, dict):
-        cookies = requests.utils.dict_from_cookiejar(cookies)     # 把cookies转化成字典。
+        try:
+            cookies = requests.utils.dict_from_cookiejar(cookies)     # 把cookies转化成字典。
+        except:
+            pass
     with open(f"./utils/{key}.json",'w') as f:
         json.dump(cookies,f)
-        logging.info('保存cookie成功')
+        logging.info(f'保存cookie成功')
 
 
 # 读取cookie
@@ -92,53 +99,73 @@ def readCookie(key):
     if not os.path.exists(f"./utils/{key}.json"):
         logging.info('未找到cookie')
         return
-    try:
-        with open(f"./utils/{key}.json", 'r') as f:
-            cookies_dict = json.loads(f.read()) 
+    with open(f"./utils/{key}.json", 'r') as f:
+        cookies_dict = json.loads(f.read())
+    try: 
         cookies = requests.utils.cookiejar_from_dict(cookies_dict)
-        return cookies
     except:
-        logging.error('读取cookie失败，请确保cookie为json格式')
+        cookies=cookies_dict
+    return cookies
 
 
 # 获取login会话  
 def get_loginSession(username,password,appId,imei):
     if not imei:    # 设备ID(通常是获取手机的imei) 联通判断是否登录多台设备 不能多台设备同时登录 填写常用的设备ID
         imei=imei_random()
-    cookies=readCookie(username+'login')    # 读取已保存的cookie
-    if cookies:
+    cookies=readCookie(username+'login_login_cookies')    # 读取已保存的cookie
+    token_online=readCookie(username+'login_onLine_token_online')      # 读取已保存的token_online
+
+    # 使用cookie登录
+    if cookies and token_online:     
         logging.info(f'【cookie登录】 {username[:3]}******** ')
-        session = requests.Session()
-        session.headers = {
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 9; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + str(username) + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}',
-        }
-        session.cookies=cookies
-        if checklogin(username,session):    # 验证cookie是否有效
+        session = onLine(username,appId,imei,cookies,token_online)
+        if session:    
             return session
+
     # 使用cookie登录失败，进行账号密码登录
     session=login(username,password,appId,imei)
-    session.headers = {
-            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + str(username) + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}',
-    }
     return session
 
 
-# 验证cookie是否有效        
-def checklogin(username,session):
-    url='https://m.client.10010.com/mobileService/customer/query/getMyUnicomDateTotle.htm'
+# cookie登录       
+def onLine(username,appId,imei,cookies,token_online):
+    session = requests.Session()
+    session.cookies=cookies
+    session.cookies.update({'devicedId':imei})
+    url='https://m.client.10010.com//mobileService/onLine.htm'
     headers={
-    'content-type': 'application/x-www-form-urlencoded',
-    'content-length': '52',
-    'accept-encoding': 'gzip',
-    'user-agent': 'okhttp/4.4.0',
+        'content-type': 'application/x-www-form-urlencoded',
+        'content-length': '897',
+        'accept-encoding': 'gzip',
+        'user-agent': 'okhttp/4.4.0',
     }
-    data=f'yw_code=&mobile={username}&version=android%408.0805'
-    res=session.post(url,headers=headers,data=data)
+    data={
+        'reqtime': time.time(),
+        'provinceChanel': 'general',
+        'appId': appId,
+        'netWay': '4G',
+        'deviceModel': 'Redmi Note 7',
+        'step': 'bindlist',
+        'deviceCode': imei,
+        'version': 'android@8.0805',
+        'deviceId': imei,
+        'deviceBrand': 'Xiaomi',
+        'flushkey': '1',
+        'token_online': token_online,
+    }
+    res=session.post(url,headers=headers,data=data,cookies=cookies)
     try:
         resjson=res.json()
-        if resjson.get('nickName',None) or resjson.get('top',None):
+        # print(resjson)
+        if resjson.get('token_online',None):
             logging.info(f'【cookie登录】 成功')
-            saveCookie(username+'login', session.cookies.get_dict())   # 保存此次cookie
-            return True
+            saveCookie(username+'login_login_cookies', session.cookies.get_dict())   # 保存cookie
+            saveCookie(username+'login_onLine_token_online', resjson.get('token_online',''))  # 保存token_online
+            session.headers = {
+                'User-Agent': 'Mozilla/5.0 (Linux; Android 9; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + str(username) + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}',
+            }
+            return session
+        else:
+            logging.info('cookie已失效')
     except:
         logging.info('cookie已失效')

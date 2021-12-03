@@ -239,38 +239,14 @@ class email_task:
         except Exception as e:
             logging.error(f'【沃邮箱扩展任务】：电脑端沃邮箱执行任务错误\n{e}')
 
-    def dotask_4(self):
-        try:
-            url = f'https://nyan.mail.wo.cn/cn/sign/user/overtask.do?rand={random.random()}'
-            data = {
-                'taskLevel': '2'
-            }
-            resp = self.email.post(url=url, data=data)
-            data = resp.json()
-            logging.info(json.dumps(data, indent=4, ensure_ascii=False))
-            result = [item['taskName'] for item in data['result']]  
-        except:
-            logging.error('获取result失败')
-            return
-             
-        try:
-            for task_name in ["loginmail", "clubactivity", "club"]:  # , "download"
-                if task_name in result:
-                    continue
-                url = f'https://nyan.mail.wo.cn/cn/sign/user/doTask.do?rand={random.random()}'
-                data = {
-                    'taskName': task_name
-                }
-                resp = self.email.post(url=url, data=data)
-                print(resp.text)
-        except Exception as e:
-            print(e)
 
     def dotask_5(self):
         try:
             url = f'https://nyan.mail.wo.cn/cn/puzzle2/user/overtask.do?time={random.random()}'
             resp = self.email.get(url=url)
-            data = resp.json()
+            data = resp.text
+            logging.info(data)
+            logging.info(resp.json)
             print(json.dumps(data, indent=4, ensure_ascii=False))
             result = [item['taskName'] for item in data['result']]
         except:
@@ -318,6 +294,7 @@ class email_task:
                 print(json.dumps(data, indent=4, ensure_ascii=False))     
             except Exception as e:
                 print(e)
+
 
     def dotask_6(self):
         url = 'https://club.mail.wo.cn/ActivityWeb/activity-detail/surplus-times'
@@ -397,6 +374,7 @@ class email_task:
         except:
             print(resp.text)
 
+
     def run(self,womail):
         if "woEmail" not in womail:
             return False
@@ -407,64 +385,66 @@ class email_task:
             logging.error('沃邮箱url错误')
             return
 
+        ua={
+            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.7(0x18000733) NetType/WIFI Language/zh_CN',
+        }
         headers = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.7(0x18000733) NetType/WIFI Language/zh_CN',
             'Accept-Language': 'zh-cn',
             'Accept-Encoding': 'gzip, deflate, br',
             'Connection': 'keep-alive',
         }
-        womail["woEmail"]
         query = dict(urllib.parse.parse_qsl(urllib.parse.urlsplit(womail["woEmail"]).query))
         params = (
             ('mobile', query['mobile'].replace(' ', '+')),
             ('userName', ''),
             ('openId', query['openId'].replace(' ', '+')),
         )
-        print(params)
-        # params = (
-        #     ('mobile', mobile),
-        #     ('userName', ''),
-        #     ('openId', openId),
-        # )
-        # print(params)
+
         with requests.Session() as self.email:
-            self.email.headers=headers
+            self.email.headers.update(ua)
             url='https://nyan.mail.wo.cn/cn/sign/index/index'
-            self.email.get(url=url, params=params)      # 登录
+            self.email.get(url=url, headers=headers, params=params)      # 登录
             url = 'https://nyan.mail.wo.cn/cn/sign/wap/index.html'
             self.email.get(url=url)   # 登录
             self.dotask()
-            self.email.headers.update({
-                'Referer': 'https://nyan.mail.wo.cn/cn/sign/wap/index.html',
-                'X-Requested-With': 'com.tencent.mm',
-            })
-            self.dotask_4()
+            # self.email.headers.update({
+            #     'Referer': 'https://nyan.mail.wo.cn/cn/sign/wap/index.html',
+            #     'X-Requested-With': 'com.tencent.mm',
+            # })
+            # self.dotask_4()
 
 
         with requests.Session() as self.email:
-            self.email.headers=headers
+            self.email.headers.update(ua)
             url="https://club.mail.wo.cn/clubwebservice"
-            self.email.get(url=url, params=params)  # 登录
+            self.email.get(url=url, headers=headers, params=params)  # 登录
             self.dotask_2()
 
-        with requests.Session() as self.email:
-            self.email.headers=headers
-            self.email.headers.update({'Referer': 'https://nyan.mail.wo.cn/cn/puzzle2/wap/index.html'})
-            url = 'https://nyan.mail.wo.cn/cn/puzzle2/index/index'
-            self.email.get(url=url, params=params)      # 登录
-            url = 'https://nyan.mail.wo.cn/cn/puzzle2/wap/index.html'
-            self.email.get(url=url)
-            self.dotask_5()
 
-        with requests.Session() as self.email:
-            self.email.headers=headers
-            self.email.headers.update({'Referer': 'https://club.mail.wo.cn/ActivityWeb/scratchable/wap/template/index.html?activityId=387&resourceId=wo-wx'})
-            url = f'https://club.mail.wo.cn/ActivityWeb/activity-web/index?activityId=387&typeIdentification=scratchable&resourceId=wo-wx&mobile={mobile}&userName=&openId={openId}'
-            self.email.get(url=url)            
-            url = 'https://club.mail.wo.cn/ActivityWeb/activity-web/index?activityId=387&typeIdentification=scratchable&resourceId=wo-wx'
-            self.email.get(url=url)
-            self.dotask_6()
+        # with requests.Session() as self.email:
+        #     self.email.headers.update(ua)
+        #     self.email.headers.update({
+        #         'Referer': 'https://nyan.mail.wo.cn/cn/puzzle2/wap/index.html',
+        #         'X-Requested-With': 'com.tencent.mm'
+        #     })
+        #     url = 'https://nyan.mail.wo.cn/cn/puzzle2/index/index'
+        #     self.email.get(url=url, params=params)      # 登录
+        #     url = 'https://nyan.mail.wo.cn/cn/puzzle2/wap/index.html'
+        #     self.email.get(url=url)
+        #     self.dotask_5()
+
+        # with requests.Session() as self.email:
+        #     self.email.headers.update(ua)
+        #     self.email.headers.update({
+        #         'Referer': 'https://club.mail.wo.cn/ActivityWeb/scratchable/wap/template/index.html?activityId=387&resourceId=wo-wx',
+        #         'X-Requested-With': 'com.tencent.mm'
+        #         })
+        #     url = f'https://club.mail.wo.cn/ActivityWeb/activity-web/index?activityId=387&typeIdentification=scratchable&resourceId=wo-wx&mobile={mobile}&userName=&openId={openId}'
+        #     self.email.get(url=url)            
+        #     url = 'https://club.mail.wo.cn/ActivityWeb/activity-web/index?activityId=387&typeIdentification=scratchable&resourceId=wo-wx'
+        #     self.email.get(url=url)
+        #     self.dotask_6()
 
 
         with requests.Session() as self.email:
