@@ -189,39 +189,42 @@ def readJson():
         logging.error('沃邮箱变量填写错误')
     return users,womails 
 
+
 #运行任务
 def runTask(client, user):
-    with os.scandir(os.path.abspath('./task')) as entries:
-        for entry in entries:
-            if entry.is_file(): 
-                if entry.name=='email_task.py':
-                    continue
-                if entry.name=='encryption.py':
-                    continue
-                if entry.name=='login.py':
-                    continue
-                if entry.name=='sendNotify.py':
-                    continue
-                if entry.name=='util.py':
-                    continue
-                if entry.name=='action_flow.py':
-                    continue
-                task_module = importlib.import_module('task.'+entry.name[:-3])
-                task_class = getattr(task_module, entry.name[0:-3])
-                task_obj = task_class()
-                task_obj.run(client, user)
+    task_list=login.readCookie('task_list')
+    for task_name in task_list:
+        if task_name=='email_task.py':
+            continue
+        task_name=task_name[:-3]
+        task_module = importlib.import_module('task.'+task_name)
+        task_class = getattr(task_module, task_name)
+        task_obj = task_class()
+        task_obj.run(client, user)
+    # with os.scandir(os.path.abspath('./task')) as entries:
+    #     for entry in entries:
+    #         if entry.is_file(): 
+    #             if entry.name=='email_task.py':
+    #                 continue
+    #             if entry.name=='encryption.py':
+    #                 continue
+    #             if entry.name=='login.py':
+    #                 continue
+    #             if entry.name=='sendNotify.py':
+    #                 continue
+    #             if entry.name=='util.py':
+    #                 continue
+    #             if entry.name=='action_flow.py':
+    #                 continue
+    #             task_module = importlib.import_module('task.'+entry.name[:-3])
+    #             task_class = getattr(task_module, entry.name[0:-3])
+    #             task_obj = task_class()
+    #             task_obj.run(client, user)
 
 # 沃邮箱
 def runTas_2(womail):
-    with os.scandir(os.path.abspath('./task')) as entries:
-        for entry in entries:
-            if entry.is_file():
-                if entry.name != 'email_task.py':
-                    continue  
-                task_module = importlib.import_module('task.'+entry.name[:-3])
-                task_class = getattr(task_module, entry.name[:-3])
-                task_obj = task_class()
-                task_obj.run(womail)
+    task_class=task.email_task.email_task
+    task_class().run(womail)
 
 
 # 云函数通知服务
