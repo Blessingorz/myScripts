@@ -35,7 +35,7 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append('./task')
 sys.path.append('./tenscf_rely')
 sys.path.append('./utils')
-import json,time,re,traceback,random,datetime,util,sys,login,logging,importlib,utils.sendNotify
+import json,time,re,traceback,random,datetime,util,sys,login,logging,importlib
 import pytz,requests,rsa     # 导入 pytz,requests,rsa 模块，出错请先安装这些模块：pip3 install xxx
 try:
     import execjs
@@ -196,6 +196,14 @@ def runTask(client, user):
         for entry in entries:
             if entry.is_file(): 
                 if entry.name=='email_task.py':
+                    continue
+                if entry.name=='encryption.py':
+                    continue
+                if entry.name=='login.py':
+                    continue
+                if entry.name=='sendNotify.py':
+                    continue
+                if entry.name=='util.py':
                     continue
                 task_module = importlib.import_module('task.'+entry.name[:-3])
                 task_class = getattr(task_module, entry.name[0:-3])
