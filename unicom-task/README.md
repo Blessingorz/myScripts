@@ -27,8 +27,8 @@
 详细变量请查看脚本内说明             
            
 ```
-export unicom_config_1="手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫"
-export unicom_config_2="手机号2<<<服务密码2<<<appId2<<<抽奖次数(0-30)中奖几率渺茫"
+export unicom_config_1="手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫<<<手机的imei（可留空）"
+export unicom_config_2="手机号2<<<服务密码2<<<appId2<<<抽奖次数(0-30)中奖几率渺茫<<<手机的imei（可留空）"
 export unicom_config_3="自然数顺序类推..."
 export unicom_womail_1="沃邮箱登陆Url1<<<手机号1(可留空)<<<沃邮箱密码（可留空）"
 export unicom_womail_2="沃邮箱登陆Url2<<<手机号2(可留空)<<<沃邮箱密码（可留空）"
@@ -93,7 +93,7 @@ ql repo https://ghproxy.com/https://github.com/wuye999/myScripts.git "unicom_ind
      
 |  key  |   value    |    
 |  ----  | ----  |
-|  unicom_config_1  | 手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫 |               
+|  unicom_config_1  | 手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫<<<手机的imei（可留空） |               
 |  unicom_womail_1  | 沃邮箱登陆Url1<<<沃邮箱对应手机号(可留空)<<<沃邮箱密码（可留空） |   
 |  PUSH_PLUS_TOKEN  | 微信推送Plus+(通知服务示例，可留空或不填)  |       
 
