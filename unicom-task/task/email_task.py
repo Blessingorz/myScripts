@@ -265,12 +265,18 @@ class email_task:
 
         with requests.Session() as email:
             url="https://mail.wo.cn/coremail/s/json?func=user:login"
-            try:
+
+            if womail['username']:
                 woEmail_uid=womail['username']+'@wo.cn'
-                woEmail_password=womail['woEmail_password']
-            except:
-                logging.error("【沃邮箱扩展任务】：未找到沃邮箱手机号或密码")
+            else:
+                logging.error("【沃邮箱扩展任务】：未找到沃邮箱手机号")
                 return
+            if womail['woEmail_password']:
+                woEmail_password=womail['woEmail_password']
+            else:
+                logging.error("【沃邮箱扩展任务】：未找到沃邮箱密码")
+                return
+
             email.headers.update({
                     "Accept": "text/x-json",
                     "Content-Type": "text/x-json",

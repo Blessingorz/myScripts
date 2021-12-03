@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 
 '''
-cron: 16 6,16 * * * *
+cron: 16 6,16 * * *
 new Env('联通日常任务');
 变量: unicom_config_x，通知服务变量
 脚本内或环境变量填写，环境变量优先
 通知推送服务环境变量请查看：https://github.com/wuye999/myScripts/blob/main/send.md
 环境变量示例：
-export unicom_config_1="手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫"
-export unicom_config_2="手机号2<<<服务密码2<<<appId2<<<抽奖次数(0-30)中奖几率渺茫"
+export unicom_config_1="手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫<<<手机的imei（可留空）"
+export unicom_config_2="手机号2<<<服务密码2<<<appId2<<<抽奖次数(0-30)中奖几率渺茫<<<手机的imei（可留空）"
 export unicom_womail_1="沃邮箱登陆Url1<<<手机号1(可留空)<<<沃邮箱密码（可留空）"
 export unicom_womail_2="沃邮箱登陆Url2<<<手机号2(可留空)<<<沃邮箱密码（可留空）"
 export PUSH_PLUS_TOKEN="微信推送Plus+(通知服务示例，可留空或不填)"
 '''
 # 脚本内示例：
-unicom_config_1="18825802580<<<888888<<<appppppp8888888888iiiddd<<<0"
+unicom_config_1="18825802580<<<888888<<<appppppp8888888888iiiddd<<<0<<<860128045213200"
 unicom_womail_1="https://nyan.mail.wo.cn/cn/sign/index/index?mobile=aaa&userName=&openId=bbb"
 PUSH_PLUS_TOKEN=""
 
@@ -35,7 +35,7 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append('./task')
 sys.path.append('./tenscf_rely')
 sys.path.append('./utils')
-import json,time,re,traceback,random,datetime,util,sys,login,logging,importlib
+import json,time,re,traceback,random,datetime,util,sys,login,logging,importlib,utils.sendNotify
 import pytz,requests,rsa     # 导入 pytz,requests,rsa 模块，出错请先安装这些模块：pip3 install xxx
 try:
     import execjs
@@ -136,9 +136,23 @@ def readJson():
                 "password": user_list[1],
                 "appId": user_list[2],
             }
+
             if len(user_list) > 3:
                 if user_list[3] and user_list[3] != '0' and user_list[3] != ' ' :
-                    user_dict['lotteryNum']=user_list[3]              
+                    user_dict['lotteryNum']=user_list[3]
+                else:
+                    user_dict['lotteryNum']='0' 
+            else:
+                user_dict['lotteryNum']='0'  
+
+            if len(user_list) > 4:
+                if user_list[4] and user_list[4] != '0' and user_list[4] != ' ' :
+                    user_dict['imei']=user_list[4] 
+                else:
+                    user_dict['imei']=''
+            else:
+                user_dict['imei']=''
+
             users.append(user_dict)
     except:
         logging.error('账号变量填写错误')
@@ -157,9 +171,20 @@ def readJson():
             if len(womail_str_list) > 1:
                 if womail_str_list[1] and womail_str_list[1] != ' ' :
                     womail_str_dict['username']=womail_str_list[1]
+                else:
+                    womail_str_dict['username']=''
+            else:
+                womail_str_dict['username']=''
+
             if len(womail_str_list) > 2:
                 if womail_str_list[2] and womail_str_list[2] != ' ' :
                     womail_str_dict['woEmail_password']=womail_str_list[2]
+                else:
+                    womail_str_dict['woEmail_password']=''
+            else:
+                womail_str_dict['woEmail_password']=''
+
+
             womails.append(womail_str_dict)
     except:
         logging.error('沃邮箱变量填写错误')
@@ -210,7 +235,7 @@ class sendNotice:
     def main(self,f=0):
         for _ in range(2):
             try:
-                from sendNotify import send,msg,initialize
+                from utils.sendNotify import send,msg,initialize
                 break
             except:
                 self.getsendNotify()
@@ -245,7 +270,7 @@ def main_handler(event, context):
             pass
         global client
         logging.info('--------------账号分割线---------------')
-        client = login.login(user['username'],user['password'],user['appId'])
+        client = login.get_loginSession(user['username'],user['password'],user['appId'],user['imei'])
         #获取账户信息
         util.getIntegral(client)
         if client != False:

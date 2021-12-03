@@ -3,120 +3,142 @@
 # @Author  : srcrs
 # @Email   : srcrs@foxmail.com
 import os,sys
-import base64,rsa,time,requests,logging,traceback
+import base64,rsa,time,requests,logging,traceback,random,json,execjs
+from utils.encryption import encryption
 
-#自动保存会话
-session = None
+# 随机imei
+def imei_random():
+    value = '86' + ''.join(random.choices('0123456789', k=12))
+    sum_ = 0
+    parity = 1
+    for i, digit in enumerate([int(x) for x in value]):
+        if i % 2 == parity:
+            digit *= 2
+            if digit > 9:
+                digit -= 9
+        sum_ += digit
+    value += str((10 - sum_ % 10) % 10)
+    return value
 
-#获取公钥的key
-def str2key(s):
-    # 对字符串解码
-    b_str = base64.b64decode(s)
-
-    if len(b_str) < 162:
-        return False
-
-    hex_str = ''
-
-    # 按位转换成16进制
-    for x in b_str:
-        h = hex(x)[2:]
-        h = h.rjust(2, '0')
-        hex_str += h
-
-    # 找到模数和指数的开头结束位置
-    m_start = 29 * 2
-    e_start = 159 * 2
-    m_len = 128 * 2
-    e_len = 3 * 2
-
-    modulus = hex_str[m_start:m_start + m_len]
-    exponent = hex_str[e_start:e_start + e_len]
-
-    return modulus,exponent
-
-#对手机号和登录密码进行加密
-def encryption(message,key):
-    modulus = int(key[0], 16)
-    exponent = int(key[1], 16)
-    rsa_pubkey = rsa.PublicKey(modulus, exponent)
-    crypto = rsa.encrypt(message, rsa_pubkey)
-    b64str = base64.b64encode(crypto)
-    return b64str
 
 #进行登录
 #手机号和密码加密代码，参考自这篇文章 http://www.bubuko.com/infodetail-2349299.html?&_=1524316738826
-def login(username,password,appId):
+def login(username,password,appId,imei):
     global session
     session = requests.Session()
-    #rsa 公钥
-    pubkey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDc+CZK9bBA9IU+gZUOc6FUGu7yO9WpTNB0PzmgFBh96Mg1WrovD1oqZ+eIF4LjvxKXGOdI79JRdve9NPhQo07+uqGQgE4imwNnRx7PFtCRryiIEcUoavuNtuRVoBAm6qdB0SrctgaqGfLgKvZHOnwTjyNqjBUxzMeQlEC2czEMSwIDAQAB"
-    #获取公钥的 key
-    key = str2key(pubkey)
-    #这里对手机号和密码加密，传入参数需是 byte 类型
-    username = encryption(str.encode(username),key)
-    password = encryption(str.encode(password),key)
-    #appId 联通后端会验证这个值,如不是常登录设备会触发验证码登录
-    #appId = os.environ.get('APPID_COVER')
-    #设置一个标志，用户是否登录成功
     flag = False
-    
-    cookies = {
-        'c_sfbm': '234g_00',
-        'logHostIP': 'null',
-        'route': 'cc3839c658dd60cb7c25f6c2fe6eb964',
-        'channel': 'GGPD',
-        'city': '076|776',
-        'devicedId': 'B97CDE2A-D435-437D-9FEC-5D821A012972',
-        'mobileService1': 'ProEsSI6SM4DbWhaeVsPtve9pu7VWz0m94giTHkPBl40Gx8nebgV!-1027473388',
-        'mobileServiceAll': 'a92d76b26705a45a087027f893c70618',
-    }
-    
+
+    session.cookies.update({'devicedId':imei})
     headers = {
-        'Accept': '/',
-        'Content-Type': 'application/x-www-form-urlencoded',
         'content-type': 'application/x-www-form-urlencoded',
-        'Connection': 'keep-alive',
-        'User-Agent': 'ChinaUnicom4.x/3.0 CFNetwork/1197 Darwin/20.0.0',
-        'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Content-Length': '891',
+        'content-length': '796',
+        'accept-encoding': 'gzip',
+        'user-agent': 'okhttp/4.4.0',
     }
-    
-    data = {
-        'reqtime': round(time.time()*1000),
+
+    data={
         'simCount': '1',
-        'version': 'iphone_c@8.0004',
-        'mobile': username,
-        'netWay': 'wifi',
-        'isRemberPwd': 'false',
+        'yw_code': '',
+        'deviceOS': 'android9',
+        'mobile': encryption(username),
+        'netWay': '4G',
+        'deviceCode': imei,
+        'isRemberPwd': 'true',
+        'version': 'android@8.0805',
+        'deviceId': imei,
+        'password': encryption(password),
+        'keyVersion': '1',
+        'pip': '192.168.43.1',
+        'provinceChanel': 'general',
         'appId': appId,
-        'deviceId': 'b61f7efcba733583170df52d8f2f9f87521b3844d01ccbc774bbfa379eaeb3fa',
-        'pip': '192.168.1.4',
-        'password': password,
-        'deviceOS': '14.0.1',
-        'deviceBrand': 'iphone',
-        'deviceModel': 'iPad',
-        'remark4': '',
-        'keyVersion': '',
-        'deviceCode': 'B97CDE2A-D435-437D-9FEC-5D821A012972'
+        'deviceModel': 'Redmi Note 7',
+        'deviceBrand': 'Xiaomi',
+        'timestamp': time.strftime('%Y%m%d%H%M%S', time.localtime(time.time())),
     }
     
-    response = session.post('https://m.client.10010.com/mobileService/login.htm', headers=headers, cookies=cookies, data=data)
+    response = session.post('https://m.client.10010.com/mobileService/login.htm', headers=headers, data=data)
     response.encoding='utf-8'
     try:
         result = response.json()
         if result['code'] == '0':
-            logging.info('【登录】: ' + result['default'][-4:])
-            session.headers.update({'User-Agent': 'Mozilla/5.0 (Linux; Android 10; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + str(username) + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}'})
+            logging.info('【账号密码登录】: ' + result['default'][:3]+'********')
             flag = True
         else:
-            logging.info('【登录】: ' + result['dsc'])
+            logging.info('【账号密码登录】: ' + result['dsc'])
     except Exception as e:
         print(traceback.format_exc())
-        logging.info('【登录】: 发生错误，原因为: ' + str(e))
+        logging.info('【账号密码登录】: 发生错误，原因为: ' + str(e))
+
     if flag:
+        saveCookie(username+'login', session.cookies.get_dict())   # 保存cookie
         return session
     else:
         return False
-    
+
+
+# 保存cookie
+def saveCookie(key, cookies):
+    if os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
+        logging.info('当前环境为云函数，无法保存cookie')
+    if not isinstance(cookies, dict):
+        cookies = requests.utils.dict_from_cookiejar(cookies)     # 把cookies转化成字典。
+    with open(f"./utils/{key}.json",'w') as f:
+        json.dump(cookies,f)
+        logging.info('保存cookie成功')
+
+
+# 读取cookie
+def readCookie(key):
+    if not os.path.exists(f"./utils/{key}.json"):
+        logging.info('未找到cookie')
+        return
+    try:
+        with open(f"./utils/{key}.json", 'r') as f:
+            cookies_dict = json.loads(f.read()) 
+        cookies = requests.utils.cookiejar_from_dict(cookies_dict)
+        return cookies
+    except:
+        logging.error('读取cookie失败，请确保cookie为json格式')
+
+
+# 获取login会话  
+def get_loginSession(username,password,appId,imei):
+    if not imei:    # 设备ID(通常是获取手机的imei) 联通判断是否登录多台设备 不能多台设备同时登录 填写常用的设备ID
+        imei=imei_random()
+    cookies=readCookie(username+'login')    # 读取已保存的cookie
+    if cookies:
+        logging.info(f'【cookie登录】 {username[:3]}******** ')
+        session = requests.Session()
+        session.headers = {
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 9; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + str(username) + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}',
+        }
+        session.cookies=cookies
+        if checklogin(username,session):    # 验证cookie是否有效
+            return session
+    # 使用cookie登录失败，进行账号密码登录
+    session=login(username,password,appId,imei)
+    session.headers = {
+            'User-Agent': 'Mozilla/5.0 (Linux; Android 10; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + str(username) + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}',
+    }
+    return session
+
+
+# 验证cookie是否有效        
+def checklogin(username,session):
+    url='https://m.client.10010.com/mobileService/customer/query/getMyUnicomDateTotle.htm'
+    headers={
+    'content-type': 'application/x-www-form-urlencoded',
+    'content-length': '52',
+    'accept-encoding': 'gzip',
+    'user-agent': 'okhttp/4.4.0',
+    }
+    data=f'yw_code=&mobile={username}&version=android%408.0805'
+    res=session.post(url,headers=headers,data=data)
+    try:
+        resjson=res.json()
+        if resjson.get('nickName',None) or resjson.get('top',None):
+            logging.info(f'【cookie登录】 成功')
+            saveCookie(username+'login', session.cookies.get_dict())   # 保存此次cookie
+            return True
+    except:
+        logging.info('cookie已失效')
