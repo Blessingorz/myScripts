@@ -19,6 +19,9 @@ unicom_womail_1="https://nyan.mail.wo.cn/cn/sign/index/index?mobile=aaa&userName
 PUSH_PLUS_TOKEN=""
 
 
+run_send='yes'      # yes或no,是否启用推送
+
+
 import os,sys
 def abspath(p=''):  # 返回项目所在目录
     if '/ql' in os.path.abspath(os.path.dirname(__file__)):
@@ -42,11 +45,6 @@ except Exception as e:
     print(str(e) + "\n缺少execjs模块, 请执行命令：pip3 install PyExecJS\n")
     exit()
 requests.packages.urllib3.disable_warnings()
-
-
-run_send='yes'      # yes或no,是否启用推送
-#用户登录全局变量
-client = None
 
 
 # 腾讯云函数可写日志目录
@@ -192,7 +190,7 @@ def readJson():
 
 #运行任务
 def runTask(client, user):
-    task_list=login.readCookie('task_list')
+    task_list=login.readCookie('task_list')     # 只有在task_list.json的任务才会执行
     for task_name in task_list:
         if task_name=='email_task.py':
             continue
@@ -201,29 +199,12 @@ def runTask(client, user):
         task_class = getattr(task_module, task_name)
         task_obj = task_class()
         task_obj.run(client, user)
-    # with os.scandir(os.path.abspath('./task')) as entries:
-    #     for entry in entries:
-    #         if entry.is_file(): 
-    #             if entry.name=='email_task.py':
-    #                 continue
-    #             if entry.name=='encryption.py':
-    #                 continue
-    #             if entry.name=='login.py':
-    #                 continue
-    #             if entry.name=='sendNotify.py':
-    #                 continue
-    #             if entry.name=='util.py':
-    #                 continue
-    #             if entry.name=='action_flow.py':
-    #                 continue
-    #             task_module = importlib.import_module('task.'+entry.name[:-3])
-    #             task_class = getattr(task_module, entry.name[0:-3])
-    #             task_obj = task_class()
-    #             task_obj.run(client, user)
 
 # 沃邮箱
 def runTas_2(womail):
-    task_class=task.email_task.email_task
+    task_list=login.readCookie('task_list')     # 只有在task_list.json的任务才会执行
+    if 'email_task.py' not in task_list: return 
+    from task.email_task import email_task as task_class
     task_class().run(womail)
 
 
