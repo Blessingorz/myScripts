@@ -3,7 +3,7 @@
 # @Author  : wuye9999
 # 沃邮箱
 import os,sys
-import requests,login,logging,urllib.parse,util,random
+import requests,login,logging,urllib.parse,util,random,re
 
 class email_task:
     def dotask(self):
@@ -397,12 +397,12 @@ class email_task:
     def run(self,womail):
         if "woEmail" not in womail:
             return False
-        try:
-            mobile=re.findall('mobile=(.*?)&', womail["woEmail"])[0]
-            openId=re.findall('openId=(.*)', womail["woEmail"])[0]
-        except:
-            logging.error('沃邮箱url错误')
-            return
+    # try:
+        mobile=re.findall('mobile=(.*?)&', womail["woEmail"])[0]
+        openId=re.findall('openId=(.*)', womail["woEmail"])[0]
+    # except:
+        logging.error('沃邮箱url错误')
+        # return
 
         self.email=requests.Session()
         self.email.headers.updata({
