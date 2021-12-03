@@ -405,7 +405,7 @@ class email_task:
         # return
 
         self.email=requests.Session()
-        self.email.headers.updata({
+        self.email.headers.update({
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.7(0x18000733) NetType/WIFI Language/zh_CN',
             'Accept-Language': 'zh-cn',
@@ -424,7 +424,7 @@ class email_task:
             self.email.get(url=url, params=params)  # 登录
             self.dotask_2()
 
-            self.email.headers.updata({
+            self.email.headers.update({
                 'Referer': 'https://nyan.mail.wo.cn/cn/sign/wap/index.html',
                 'X-Requested-With': 'com.tencent.mm',
             })
@@ -434,7 +434,7 @@ class email_task:
             self.email.get(url=url)   # 登录
             self.dotask()
 
-            self.email.headers.updata({'Referer': 'https://nyan.mail.wo.cn/cn/puzzle2/wap/index.html'})
+            self.email.headers.update({'Referer': 'https://nyan.mail.wo.cn/cn/puzzle2/wap/index.html'})
             url = 'https://nyan.mail.wo.cn/cn/puzzle2/index/index'
             self.email.get(url=url, params=params)      # 登录
             self.dotask_4()
@@ -443,7 +443,7 @@ class email_task:
             self.email.get(url=url)
             self.dotask_5()
 
-            self.email.headers.updata({'Referer': 'https://nyan.mail.wo.cn/cn/puzzle2/wap/index.html'})
+            self.email.headers.update({'Referer': 'https://nyan.mail.wo.cn/cn/puzzle2/wap/index.html'})
             url = f'https://club.mail.wo.cn/ActivityWeb/activity-web/index?activityId=387&typeIdentification=scratchable&resourceId=wo-wx&mobile={mobile}&userName=&openId={openId}'
             self.email.get(url=url)            
             url = 'https://club.mail.wo.cn/ActivityWeb/activity-web/index?activityId=387&typeIdentification=scratchable&resourceId=wo-wx'
