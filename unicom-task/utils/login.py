@@ -84,6 +84,7 @@ def login(username,password,appId,imei):
 def saveCookie(key, cookies):
     if os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
         logging.info('当前环境为云函数，无法保存cookie')
+        return
     if not isinstance(cookies, dict):
         try:
             cookies = requests.utils.dict_from_cookiejar(cookies)     # 把cookies转化成字典。
@@ -153,7 +154,7 @@ def onLine(username,appId,imei,cookies,token_online):
         'flushkey': '1',
         'token_online': token_online,
     }
-    res=session.post(url,headers=headers,data=data,cookies=cookies)
+    res=session.post(url,headers=headers,data=data)
     try:
         resjson=res.json()
         # print(resjson)
