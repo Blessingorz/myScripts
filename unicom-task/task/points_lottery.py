@@ -12,6 +12,8 @@ class points_lottery:
     def run(self, client, user):
         if ('lotteryNum' not in user):
             return False
+        if not user['lotteryNum']:
+            return False
         if user['lotteryNum'] == '0' or user['lotteryNum'] == ' ':
             return False
         try:
