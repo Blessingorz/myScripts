@@ -32,7 +32,6 @@ os.chdir(abspath())  # 修改当前工作目录为项目目录
 sys.path.append('/tmp')
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-sys.path.append('./task')
 sys.path.append('./tenscf_rely')
 sys.path.append('./utils')
 import json,time,re,traceback,random,datetime,util,sys,login,logging,importlib
@@ -269,7 +268,6 @@ class sendNotice:
             for line in f.readlines():
                 content += line
         send('unicom_task',content)
-
 
 #腾讯云函数入口
 def main_handler(event, context):

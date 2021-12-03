@@ -3,7 +3,10 @@
 # @Author  : wuye9999
 # 沃邮箱
 import os,sys
-import requests,login,logging,urllib.parse,util,random,re
+import json,time,re,traceback,random,datetime,util,sys,login,logging,importlib,urllib
+import pytz,requests,rsa     # 导入 pytz,requests,rsa 模块，出错请先安装这些模块：pip3 install xxx
+import execjs
+requests.packages.urllib3.disable_warnings()
 
 class email_task:
     def dotask(self):
@@ -397,53 +400,66 @@ class email_task:
     def run(self,womail):
         if "woEmail" not in womail:
             return False
-    # try:
-        mobile=re.findall('mobile=(.*?)&', womail["woEmail"])[0]
-        openId=re.findall('openId=(.*)', womail["woEmail"])[0]
-    # except:
-        logging.error('沃邮箱url错误')
-        # return
+        try:
+            mobile=re.findall('mobile=(.*?)&', womail["woEmail"])[0]
+            openId=re.findall('openId=(.*)', womail["woEmail"])[0]
+        except:
+            logging.error('沃邮箱url错误')
+            return
 
-        self.email=requests.Session()
-        self.email.headers.update({
+        headers = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_5_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.7(0x18000733) NetType/WIFI Language/zh_CN',
             'Accept-Language': 'zh-cn',
             'Accept-Encoding': 'gzip, deflate, br',
             'Connection': 'keep-alive',
-        })
-
-        params = {
-            'mobile':mobile,
-            'userName': '',
-            'openId': openId,
         }
-
+        womail["woEmail"]
+        query = dict(urllib.parse.parse_qsl(urllib.parse.urlsplit(womail["woEmail"]).query))
+        params = (
+            ('mobile', query['mobile'].replace(' ', '+')),
+            ('userName', ''),
+            ('openId', query['openId'].replace(' ', '+')),
+        )
+        print(params)
+        # params = (
+        #     ('mobile', mobile),
+        #     ('userName', ''),
+        #     ('openId', openId),
+        # )
+        # print(params)
         with requests.Session() as self.email:
-            url="https://club.mail.wo.cn/clubwebservice"
-            self.email.get(url=url, params=params)  # 登录
-            self.dotask_2()
-
-            self.email.headers.update({
-                'Referer': 'https://nyan.mail.wo.cn/cn/sign/wap/index.html',
-                'X-Requested-With': 'com.tencent.mm',
-            })
+            self.email.headers=headers
             url='https://nyan.mail.wo.cn/cn/sign/index/index'
             self.email.get(url=url, params=params)      # 登录
             url = 'https://nyan.mail.wo.cn/cn/sign/wap/index.html'
             self.email.get(url=url)   # 登录
             self.dotask()
+            self.email.headers.update({
+                'Referer': 'https://nyan.mail.wo.cn/cn/sign/wap/index.html',
+                'X-Requested-With': 'com.tencent.mm',
+            })
+            self.dotask_4()
 
+
+        with requests.Session() as self.email:
+            self.email.headers=headers
+            url="https://club.mail.wo.cn/clubwebservice"
+            self.email.get(url=url, params=params)  # 登录
+            self.dotask_2()
+
+        with requests.Session() as self.email:
+            self.email.headers=headers
             self.email.headers.update({'Referer': 'https://nyan.mail.wo.cn/cn/puzzle2/wap/index.html'})
             url = 'https://nyan.mail.wo.cn/cn/puzzle2/index/index'
             self.email.get(url=url, params=params)      # 登录
-            self.dotask_4()
-
             url = 'https://nyan.mail.wo.cn/cn/puzzle2/wap/index.html'
             self.email.get(url=url)
             self.dotask_5()
 
-            self.email.headers.update({'Referer': 'https://nyan.mail.wo.cn/cn/puzzle2/wap/index.html'})
+        with requests.Session() as self.email:
+            self.email.headers=headers
+            self.email.headers.update({'Referer': 'https://club.mail.wo.cn/ActivityWeb/scratchable/wap/template/index.html?activityId=387&resourceId=wo-wx'})
             url = f'https://club.mail.wo.cn/ActivityWeb/activity-web/index?activityId=387&typeIdentification=scratchable&resourceId=wo-wx&mobile={mobile}&userName=&openId={openId}'
             self.email.get(url=url)            
             url = 'https://club.mail.wo.cn/ActivityWeb/activity-web/index?activityId=387&typeIdentification=scratchable&resourceId=wo-wx'
