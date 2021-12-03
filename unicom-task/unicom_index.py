@@ -205,6 +205,8 @@ def runTask(client, user):
                     continue
                 if entry.name=='util.py':
                     continue
+                if entry.name=='action_flow.py':
+                    continue
                 task_module = importlib.import_module('task.'+entry.name[:-3])
                 task_class = getattr(task_module, entry.name[0:-3])
                 task_obj = task_class()

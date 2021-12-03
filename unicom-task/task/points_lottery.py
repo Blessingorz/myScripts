@@ -12,6 +12,8 @@ class points_lottery:
     def run(self, client, user):
         if ('lotteryNum' not in user):
             return False
+        if user['lotteryNum'] == '0' or user['lotteryNum'] == ' ':
+            return False
         try:
             numjsp = util.get_encryptmobile(client)
             #如果用户未设置此值，将不会自动抽奖
