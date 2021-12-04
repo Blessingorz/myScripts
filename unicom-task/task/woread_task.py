@@ -44,7 +44,7 @@ class woread_task:
             logging.error('【沃阅读】: 登录失败,结束执行任务')
             return
         else:
-            # logging.info('【沃阅读】: 登录成功')
+            logging.info('【沃阅读】: 登录成功')
             return True
 
     # 加密登陆数据
