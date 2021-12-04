@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2021/2/15 06:00
-# @Author  : srcrs
-# @Email   : srcrs@foxmail.com
+# @Time    : 2021/12/4 06:00
+# @Author  : wuye9999
 import os,sys
 import base64,rsa,time,requests,logging,traceback,random,json,execjs
 from utils.encryption import encryption
@@ -99,7 +98,7 @@ def saveData(key, value):
             json.dump(value,f)
             logging.info(f'保存数据成功')
     except Exception as e:
-        logging.info(f'保存数据失败\n{e}')
+        logging.error(f'保存数据失败\n{e}')
 
 
 # 读取cookie
@@ -116,7 +115,7 @@ def readData(key):
             logging.info('数据为空')
             return value
     except Exception as e:
-        logging.info(f'读取数据失败\n{e}')
+        logging.error(f'读取数据失败\n{e}')
 
 
 
@@ -125,18 +124,21 @@ def get_loginSession(username,password,appId,imei):
     if not imei:    # 设备ID(通常是获取手机的imei) 联通判断是否登录多台设备 不能多台设备同时登录 填写常用的设备ID
         imei=imei_random()
 
-    login_cookies=readData(username+'login_login_cookies')      # 读取cookie
-    if login_cookies:       
-        flag=True
-        if username != login_cookies['username']: flag=False    # 对比账号信息是否更改
-        if password != login_cookies['password']: flag=False    # 对比账号信息是否更改
-        if appId != login_cookies['appId']: flag=False          # 对比账号信息是否更改
-        # if imei != login_cookies['imei']: flag=False            # 对比账号信息是否更改
-        cookies=requests.utils.cookiejar_from_dict(login_cookies['cookies'])        # 将dict形式cookies转换为RequestsCookieJar形式
-        token_online=login_cookies['token_online']
-        if not cookies: flag=False
-        if not token_online: flag=False 
-    else:
+    try:
+        login_cookies=readData(username+'login_login_cookies')      # 读取cookie
+        if login_cookies:       
+            flag=True
+            if username != login_cookies['username']: flag=False    # 对比账号信息是否更改
+            if password != login_cookies['password']: flag=False    # 对比账号信息是否更改
+            if appId != login_cookies['appId']: flag=False          # 对比账号信息是否更改
+            # if imei != login_cookies['imei']: flag=False            # 对比账号信息是否更改
+            cookies=requests.utils.cookiejar_from_dict(login_cookies['cookies'])        # 将dict形式cookies转换为RequestsCookieJar形式
+            token_online=login_cookies['token_online']
+            if not cookies: flag=False
+            if not token_online: flag=False 
+        else:
+            flag=False 
+    except:
         flag=False 
 
     # 使用cookie登录
