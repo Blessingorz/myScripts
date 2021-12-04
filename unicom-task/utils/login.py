@@ -131,7 +131,6 @@ def get_loginSession(username,password,appId,imei):
 # cookie登录       
 def onLine(username,appId,imei,cookies,token_online):
     session = requests.Session()
-    session.cookies=cookies
     session.cookies.update({'devicedId':imei})
     url='https://m.client.10010.com//mobileService/onLine.htm'
     headers={
@@ -154,7 +153,7 @@ def onLine(username,appId,imei,cookies,token_online):
         'flushkey': '1',
         'token_online': token_online,
     }
-    res=session.post(url,headers=headers,data=data)
+    res=session.post(url,headers=headers,data=data,cookies=cookies)
     try:
         resjson=res.json()
         # print(resjson)

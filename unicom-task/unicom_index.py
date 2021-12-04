@@ -45,6 +45,7 @@ except Exception as e:
     print(str(e) + "\n缺少execjs模块, 请执行命令：pip3 install PyExecJS\n")
     exit()
 requests.packages.urllib3.disable_warnings()
+from task_list import task_list
 
 
 # 腾讯云函数可写日志目录
@@ -190,7 +191,6 @@ def readJson():
 
 #运行任务
 def runTask(client, user):
-    task_list=login.readCookie('task_list')     # 只有在task_list.json的任务才会执行
     for task_name in task_list:
         if task_name=='email_task.py':
             continue
@@ -202,10 +202,14 @@ def runTask(client, user):
 
 # 沃邮箱
 def runTas_2(womail):
-    task_list=login.readCookie('task_list')     # 只有在task_list.json的任务才会执行
-    if 'email_task.py' not in task_list: return 
-    from task.email_task import email_task as task_class
-    task_class().run(womail)
+    for task_name in task_list:
+        if task_name != 'email_task.py':
+            continue
+        task_name=task_name[:-3]
+        task_module = importlib.import_module('task.'+task_name)
+        task_class = getattr(task_module, task_name)
+        task_obj = task_class()
+        task_obj.run(client, user)
 
 
 # 云函数通知服务
