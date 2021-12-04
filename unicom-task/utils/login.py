@@ -6,6 +6,8 @@ import os,sys
 import base64,rsa,time,requests,logging,traceback,random,json,execjs
 from utils.encryption import encryption
 
+# 设备ID(通常是获取手机的imei) 联通判断是否登录多台设备 不能多台设备同时登录 填写常用的设备ID
+# 不填则使用随机imei
 # 随机imei
 def imei_random():
     value = '86' + ''.join(random.choices('0123456789', k=12))
@@ -70,8 +72,15 @@ def login(username,password,appId,imei):
         logging.info('【账号密码登录】: 发生错误，原因为: ' + str(e))
 
     if flag:
-        saveCookie(username+'login_login_cookies', session.cookies.get_dict())   # 保存cookie
-        saveCookie(username+'login_onLine_token_online', result.get('token_online',''))  # 保存token_online
+        value={
+            'username': username,
+            'password': password,
+            'appId': appId,
+            'imei': imei,
+            'cookies': session.cookies.get_dict(),
+            'token_online': result.get('token_online',''),
+        }
+        saveData(username+'login_login_cookies', value)   # 保存cookie
         session.headers = {
                 'User-Agent': 'Mozilla/5.0 (Linux; Android 10; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + str(username) + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}',
         }
@@ -81,45 +90,59 @@ def login(username,password,appId,imei):
 
 
 # 保存cookie
-def saveCookie(key, cookies):
-    if os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
-        logging.info('当前环境为云函数，无法保存cookie')
-        return
-    if not isinstance(cookies, dict):
-        try:
-            cookies = requests.utils.dict_from_cookiejar(cookies)     # 把cookies转化成字典。
-        except:
-            pass
-    with open(f"./utils/{key}.json",'w') as f:
-        json.dump(cookies,f)
-        logging.info(f'保存cookie成功')
+def saveData(key, value):
+    try:
+        if os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
+            logging.info('当前环境为云函数，无法保存数据')
+            return
+        with open(f"./utils/{key}.json",'w') as f:
+            json.dump(value,f)
+            logging.info(f'保存数据成功')
+    except Exception as e:
+        logging.info(f'保存数据失败\n{e}')
 
 
 # 读取cookie
-def readCookie(key):
-    if not os.path.exists(f"./utils/{key}.json"):
-        logging.info('未找到cookie')
-        return
-    with open(f"./utils/{key}.json", 'r') as f:
-        cookies_dict = json.loads(f.read())
-    try: 
-        cookies = requests.utils.cookiejar_from_dict(cookies_dict)
-    except:
-        cookies=cookies_dict
-    return cookies
+def readData(key):
+    try:
+        if not os.path.exists(f"./utils/{key}.json"):
+            logging.info('数据文件不存在')
+            return
+        with open(f"./utils/{key}.json", 'r') as f:
+            value = json.loads(f.read())
+        if value:
+            return value
+        else:
+            logging.info('数据为空')
+            return value
+    except Exception as e:
+        logging.info(f'读取数据失败\n{e}')
+
 
 
 # 获取login会话  
 def get_loginSession(username,password,appId,imei):
     if not imei:    # 设备ID(通常是获取手机的imei) 联通判断是否登录多台设备 不能多台设备同时登录 填写常用的设备ID
         imei=imei_random()
-    cookies=readCookie(username+'login_login_cookies')    # 读取已保存的cookie
-    token_online=readCookie(username+'login_onLine_token_online')      # 读取已保存的token_online
+
+    login_cookies=readData(username+'login_login_cookies')      # 读取cookie
+    if login_cookies:       
+        flag=True
+        if username != login_cookies['username']: flag=False    # 对比账号信息是否更改
+        if password != login_cookies['password']: flag=False    # 对比账号信息是否更改
+        if appId != login_cookies['appId']: flag=False          # 对比账号信息是否更改
+        # if imei != login_cookies['imei']: flag=False            # 对比账号信息是否更改
+        cookies=requests.utils.cookiejar_from_dict(login_cookies['cookies'])        # 将dict形式cookies转换为RequestsCookieJar形式
+        token_online=login_cookies['token_online']
+        if not cookies: flag=False
+        if not token_online: flag=False 
+    else:
+        flag=False 
 
     # 使用cookie登录
-    if cookies and token_online:     
+    if flag:     
         logging.info(f'【cookie登录】 {username[:3]}******** ')
-        session = onLine(username,appId,imei,cookies,token_online)
+        session = onLine(username)      # cookie登录
         if session:    
             return session
 
@@ -129,7 +152,15 @@ def get_loginSession(username,password,appId,imei):
 
 
 # cookie登录       
-def onLine(username,appId,imei,cookies,token_online):
+def onLine(username):
+    login_cookies=readData(username+'login_login_cookies')      # 读取cookie
+    username=login_cookies['username']
+    password=login_cookies['password']
+    appId=login_cookies['appId']
+    imei=login_cookies['imei']
+    cookies=requests.utils.cookiejar_from_dict(login_cookies['cookies'])        # 将dict形式cookies转换为RequestsCookieJar形式
+    token_online=login_cookies['token_online']
+
     session = requests.Session()
     session.cookies.update({'devicedId':imei})
     url='https://m.client.10010.com//mobileService/onLine.htm'
@@ -155,12 +186,21 @@ def onLine(username,appId,imei,cookies,token_online):
     }
     res=session.post(url,headers=headers,data=data,cookies=cookies)
     try:
-        resjson=res.json()
-        # print(resjson)
-        if resjson.get('token_online',None):
+        result=res.json()
+        # print(result)
+        if result.get('token_online',None):
             logging.info(f'【cookie登录】 成功')
-            saveCookie(username+'login_login_cookies', session.cookies.get_dict())   # 保存cookie
-            saveCookie(username+'login_onLine_token_online', resjson.get('token_online',''))  # 保存token_online
+
+            value={
+                'username': username,
+                'password': password,
+                'appId': appId,
+                'imei': imei,
+                'cookies': session.cookies.get_dict(),
+                'token_online': result.get('token_online',''),
+            }
+            saveData(username+'login_login_cookies', value)   # 保存cookie
+
             session.headers = {
                 'User-Agent': 'Mozilla/5.0 (Linux; Android 9; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + str(username) + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}',
             }

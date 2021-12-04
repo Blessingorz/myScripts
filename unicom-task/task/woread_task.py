@@ -3,7 +3,7 @@
 # @Author  : rhming
 # 沃阅读: 每日阅读抽奖大活动
 import os,sys
-import requests,login,logging,urllib.parse,util,re,execjs
+import requests,login,logging,urllib.parse,util,re,execjs,time
 
 class woread_task:
     def run(self, client, user):
@@ -15,10 +15,18 @@ class woread_task:
             'X-Requested-With': 'XMLHttpRequest',
         }
         
-        if not self.login():    # 登录
-            return
-        if not self.popupListInfo():    # 验证登录吗？
-            return 
+        cookies_dict=login.readData(self.user['username']+'woread_task_popupListInfo_cookies')  # 读取cookie
+        if cookies_dict:
+            cookies=requests.utils.cookiejar_from_dict(cookies_dict)
+            self.session.cookies=cookies
+
+        if self.popupListInfo():    # 验证登录吗？
+            pass
+        else:
+            if not self.login():    # 登录
+                return
+            if not self.popupListInfo():    # 验证登录吗？
+                return 
 
         self.luckdraw_run()     # 抽奖
 
@@ -34,7 +42,9 @@ class woread_task:
         resp = self.session.post(url=url, data=data)
         if not self.session.cookies.get('useraccount', False):
             logging.error('【沃阅读】: 登录失败,结束执行任务')
+            return
         else:
+            # logging.info('【沃阅读】: 登录成功')
             return True
 
     # 加密登陆数据
@@ -65,9 +75,11 @@ class woread_task:
         resp = self.session.post(url=url)
         try:
             resp.json()
+            login.saveData(self.user['username']+'woread_task_popupListInfo_cookies', self.session.cookies.get_dict())
+            logging.info('【沃阅读】: cookie登录成功')
             return True
         except:
-            logging.error('【沃阅读】: 登录失败,结束执行任务')
+            # logging.error('【沃阅读】: cookie登录失败')
             return False
 
     # 沃阅读抽奖 运行
@@ -84,6 +96,7 @@ class woread_task:
             self.doDraw('NzJBQTQxMEE2QzQwQUE2MDYxMEI5MDNGQjFEMEEzODI=')
             if drawNum == 2:
                 self.doDraw('QjRFMzZCMEM0MjJGRjZFMkQ3RUVFN0ZERTEyQUI4MTc=')
+            time.sleep(1)
             return self.luckdraw_run()
         except Exception as e:
             logging.error(f'【沃阅读】: 错误\n{e}')

@@ -29,7 +29,7 @@ class email_task:
             keepSign=0
 
         try:   
-            if keepSign > 22:
+            if keepSign > 21:
                 logging.info('【沃邮箱签到】: 连续签到天数大于21次,暂停签到')
             else:
                 url = "https://nyan.mail.wo.cn/cn/sign/user/checkin.do?rand=0.913524814493383"
@@ -82,7 +82,7 @@ class email_task:
 
         #任务签到
         try:
-            if newContinuousDay>22:
+            if newContinuousDay>21:
                 logging.info('【沃邮箱签到】: 连续签到天数大于21次,暂停签到')
             else:
                 url = 'https://club.mail.wo.cn/clubwebservice/club-user/user-sign/create?channelId='
@@ -450,15 +450,11 @@ class email_task:
         with requests.Session() as self.email:
             url="https://mail.wo.cn/coremail/s/json?func=user:login"
 
-            if womail['username']:
+            if womail['username'] and womail['woEmail_password']:
                 woEmail_uid=womail['username']+'@wo.cn'
-            else:
-                logging.error("【沃邮箱扩展任务】：未找到沃邮箱手机号")
-                return
-            if womail['woEmail_password']:
                 woEmail_password=womail['woEmail_password']
             else:
-                logging.error("【沃邮箱扩展任务】：未找到沃邮箱密码")
+                logging.error("【沃邮箱扩展任务】：未找到沃邮箱手机号或密码")
                 return
 
             self.email.headers.update({
@@ -477,5 +473,3 @@ class email_task:
                 self.dotask_3(res['var']['uid'],res['var']['sid'])
             except:
                 logging.error(f"【沃邮箱扩展任务】：登录失败，沃邮箱扩展任务跳过")
-
-
