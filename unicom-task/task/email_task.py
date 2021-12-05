@@ -240,141 +240,6 @@ class email_task:
             logging.error(f'【沃邮箱扩展任务】：电脑端沃邮箱执行任务错误\n{e}')
 
 
-    def dotask_5(self):
-        try:
-            url = f'https://nyan.mail.wo.cn/cn/puzzle2/user/overtask.do?time={random.random()}'
-            resp = self.email.get(url=url)
-            data = resp.text
-            logging.info(data)
-            logging.info(resp.json)
-            print(json.dumps(data, indent=4, ensure_ascii=False))
-            result = [item['taskName'] for item in data['result']]
-        except:
-            logging.error('获取result失败')
-            return
-
-        try:
-            for taskName in ['checkin', 'loginmail', 'viewclub']:
-                if taskName in overTaskList:
-                    continue
-                url = f'https://nyan.mail.wo.cn/cn/puzzle2/user/doTask.do'
-                params = {
-                    'taskName': task_name
-                }
-                resp = self.email.get(url=url, params=params)
-                print(resp.text)       
-        except Exception as e:
-            print(e)
-
-        url = f'https://nyan.mail.wo.cn/cn/puzzle2/index/userinfo.do?time={str(int(time.time() * 1000))}'
-        resp = self.email.post(url=url)
-        try:
-            data = resp.json()
-            print(json.dumps(data, indent=4, ensure_ascii=False))
-            puzzle=int(data['result']['puzzle'])
-        except:
-            print(resp.text)
-            puzzle=0
-
-        url = 'https://nyan.mail.wo.cn/cn/puzzle2/user/clear.do'
-        self.email.get(url=url)
-
-        if puzzle >= 6:
-            url = 'https://nyan.mail.wo.cn/cn/puzzle2/draw/draw'
-            resp = self.email.get(url=url)
-            data = resp.json()
-            print(data)
-            log = f"碎片_{self.now_time}_{data['result']['prizeTitle']}"
-            try:
-                url = f'https://nyan.mail.wo.cn/cn/puzzle2/user/prizes.do?time={self.timestamp}'
-                resp = self.email.post(url=url)
-                data = resp.json()
-                if len(data['result']) > 3:
-                    data['result'] = data['result'][:3]
-                print(json.dumps(data, indent=4, ensure_ascii=False))     
-            except Exception as e:
-                print(e)
-
-
-    def dotask_6(self):
-        url = 'https://club.mail.wo.cn/ActivityWeb/activity-detail/surplus-times'
-        data = {
-            "participateDate": time.strftime('%Y-%m-%d', time.localtime(time.time())),
-            "activityId": "387"
-        }
-        resp = self.email.post(url=url, json=data)
-        try:
-            data = resp.json()
-            print(data)
-            data=data.get('data', 0)
-        except:
-            print(resp.text)
-            data=0
-
-        if data:
-            try:
-                print(f'--->第{2 - data + 1}次抽奖')
-                url = 'https://club.mail.wo.cn/ActivityWeb/activity-function/get-prize-index'
-                data = {
-                    "participateDate": time.strftime('%Y-%m-%d', time.localtime(time.time())),
-                    "activityId": "387"
-                }
-                resp = self.email.post(url=url, json=data)
-                try:
-                    result = resp.json()
-                    print(result)
-                    log = f"浅秋_{time.strftime('%X', time.localtime(time.time()))}_{result['description']}"
-                except:
-                    print(resp.text)
-                data = result['data']
-                if data['prizeType'] == 'THANKS_PARTICIPATE':
-                    return
-
-                url = 'https://club.mail.wo.cn/ActivityWeb/activity-function/send-prize'
-                data = {
-                    "prizeId": data['prizeId'],
-                    "recordNo": data['recordNo'],
-                    "address": "",
-                    "prizeType": data['prizeType']
-                }
-                resp = self.email.post(url=url, json=data)
-                try:
-                    print(resp.json())
-                except:
-                    print(resp.text)
-
-            except Exception as e:
-                print(e)
-
-        url = 'https://club.mail.wo.cn/ActivityWeb/activity-function/activity-record'
-        data = {
-            "activityId": "387",
-            "awarded": True
-        }
-        resp = self.email.post(url=url, json=data)
-        try:
-            result = resp.json()
-            if len(result['data']) > 3:
-                result['data'] = result['data'][:3]
-            print(json.dumps(result, indent=4, ensure_ascii=False))
-        except:
-            print(resp.text)
-
-        url = 'https://club.mail.wo.cn/ActivityWeb/activity-function/activity-record'
-        data = {
-            "activityId": "387",
-            "awarded": True
-        }
-        resp = self.email.post(url=url, json=data)
-        try:
-            result = resp.json()
-            if len(result['data']) > 3:
-                result['data'] = result['data'][:3]
-            print(json.dumps(result, indent=4, ensure_ascii=False))
-        except:
-            print(resp.text)
-
-
     def run(self,womail):
         if "woEmail" not in womail:
             return False
@@ -408,11 +273,6 @@ class email_task:
             url = 'https://nyan.mail.wo.cn/cn/sign/wap/index.html'
             self.email.get(url=url)   # 登录
             self.dotask()
-            # self.email.headers.update({
-            #     'Referer': 'https://nyan.mail.wo.cn/cn/sign/wap/index.html',
-            #     'X-Requested-With': 'com.tencent.mm',
-            # })
-            # self.dotask_4()
 
 
         with requests.Session() as self.email:
@@ -420,31 +280,6 @@ class email_task:
             url="https://club.mail.wo.cn/clubwebservice"
             self.email.get(url=url, headers=headers, params=params)  # 登录
             self.dotask_2()
-
-
-        # with requests.Session() as self.email:
-        #     self.email.headers.update(ua)
-        #     self.email.headers.update({
-        #         'Referer': 'https://nyan.mail.wo.cn/cn/puzzle2/wap/index.html',
-        #         'X-Requested-With': 'com.tencent.mm'
-        #     })
-        #     url = 'https://nyan.mail.wo.cn/cn/puzzle2/index/index'
-        #     self.email.get(url=url, params=params)      # 登录
-        #     url = 'https://nyan.mail.wo.cn/cn/puzzle2/wap/index.html'
-        #     self.email.get(url=url)
-        #     self.dotask_5()
-
-        # with requests.Session() as self.email:
-        #     self.email.headers.update(ua)
-        #     self.email.headers.update({
-        #         'Referer': 'https://club.mail.wo.cn/ActivityWeb/scratchable/wap/template/index.html?activityId=387&resourceId=wo-wx',
-        #         'X-Requested-With': 'com.tencent.mm'
-        #         })
-        #     url = f'https://club.mail.wo.cn/ActivityWeb/activity-web/index?activityId=387&typeIdentification=scratchable&resourceId=wo-wx&mobile={mobile}&userName=&openId={openId}'
-        #     self.email.get(url=url)            
-        #     url = 'https://club.mail.wo.cn/ActivityWeb/activity-web/index?activityId=387&typeIdentification=scratchable&resourceId=wo-wx'
-        #     self.email.get(url=url)
-        #     self.dotask_6()
 
 
         with requests.Session() as self.email:

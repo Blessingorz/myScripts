@@ -3,7 +3,7 @@
 # @Author  : rhming
 # 沃阅读: 每日阅读抽奖大活动
 import os,sys
-import requests,login,logging,urllib.parse,util,re,execjs,time
+import requests,login,logging,urllib.parse,util,re,execjs,time,random
 
 class woread_task:
     def run(self, client, user):
@@ -29,6 +29,7 @@ class woread_task:
                 return 
 
         self.luckdraw_run()     # 抽奖
+        self.openbook_run()     # 抽奖
 
     # 登录
     def login(self):
@@ -47,7 +48,7 @@ class woread_task:
             logging.info('【沃阅读】: 登录成功')
             return True
 
-    # 加密登陆数据
+    # 登录 加密登陆数据
     def getEncryptMobile(self):
         with open('./utils/security.js', 'r', encoding='utf8') as fr:
             securityJs = fr.read()
@@ -69,14 +70,14 @@ class woread_task:
             return
         return EncryptMobile
 
-    # 验证登录吗？
+    # 登录 验证登录吗？
     def popupListInfo(self):
         url = 'https://st.woread.com.cn/touchextenernal/read/popupListInfo.action'
         resp = self.session.post(url=url)
         try:
             resp.json()
-            login.saveData(self.user['username']+'woread_task_popupListInfo_cookies', self.session.cookies.get_dict())
             logging.info('【沃阅读】: cookie登录成功')
+            login.saveData(self.user['username']+'woread_task_popupListInfo_cookies', self.session.cookies.get_dict())
             return True
         except:
             # logging.error('【沃阅读】: cookie登录失败')
@@ -85,25 +86,32 @@ class woread_task:
     # 沃阅读抽奖 运行
     def luckdraw_run(self):
         try:
-            drawNum, currentSeevideoNum = self.seeadvertluckdraw_index()  # 获取 drawNum, currentSeevideoNum
+            drawNum,currentSeevideoNum=self.seeadvertluckdraw()   # 获取 drawNum, currentSeevideoNum
             if currentSeevideoNum == -1 and drawNum < 2:
-                self.addUserSeeVideo(str(drawNum))
-                drawNum, currentSeevideoNum = self.seeadvertluckdraw_index()  # 获取 drawNum, currentSeevideoNum
+                
+                url = f'https://st.woread.com.cn/touchextenernal/openbook/addUserSeeVideo.action?num={drawNum}&activityindex=NzJBQTQxMEE2QzQwQUE2MDYxMEI5MDNGQjFEMEEzODI='
+                resp = self.session.get(url=url)
+
+                drawNum,currentSeevideoNum=self.seeadvertluckdraw()   # 获取 drawNum, currentSeevideoNum
+
             if drawNum == 0:
                 logging.info('【沃阅读】: 抽奖次数已用完...')
                 return
             logging.info(f'【沃阅读】: 第{6 - drawNum}次抽奖...')
+            time.sleep(1.2)
             self.doDraw('NzJBQTQxMEE2QzQwQUE2MDYxMEI5MDNGQjFEMEEzODI=')
             if drawNum == 2:
+                time.sleep(1.2)
                 self.doDraw('QjRFMzZCMEM0MjJGRjZFMkQ3RUVFN0ZERTEyQUI4MTc=')
-            time.sleep(1)
+
+            time.sleep(1.2)
             return self.luckdraw_run()
+
         except Exception as e:
             logging.error(f'【沃阅读】: 错误\n{e}')
 
-
     # 沃阅读抽奖 获取 drawNum, currentSeevideoNum
-    def seeadvertluckdraw_index(self):
+    def seeadvertluckdraw(self):
         url = f'http://st.woread.com.cn/touchextenernal/seeadvertluckdraw/index.action?channelid=18000687'
         self.session.headers.update({
             'Referer': 'http://st.woread.com.cn/touchextenernal/seeadvertluckdraw/index.action?channelid=18000687',
@@ -114,13 +122,8 @@ class woread_task:
         drawNum = int(drawNum)
         currentSeevideoNum = re.findall(r'var currentSeevideoNum = (-?\d);', resp.text)[0]
         currentSeevideoNum = int(currentSeevideoNum)
-        return drawNum, currentSeevideoNum
+        return drawNum,currentSeevideoNum
 
-    # 沃阅读抽奖 ？
-    def addUserSeeVideo(self, drawNum):
-        url = f'https://st.woread.com.cn/touchextenernal/openbook/addUserSeeVideo.action?num={drawNum}&activityindex=NzJBQTQxMEE2QzQwQUE2MDYxMEI5MDNGQjFEMEEzODI='
-        resp = self.session.get(url=url)
-        # logging.info(resp.json())
 
     # 沃阅读抽奖 抽奖
     def doDraw(self, acticeindex):
@@ -136,3 +139,56 @@ class woread_task:
         resp = self.session.post(url=url, data=data)
         result = resp.json()
         logging.info(f'【沃阅读】: {result["prizedesc"]}')
+
+
+    def openbook_run(self):
+        try:
+            drawNum, currentSeevideoNum = self.openbook_index()
+            if currentSeevideoNum == -1 and drawNum < 3:
+                self.openbook_addUserSeeVideo(str(drawNum))
+                drawNum, currentSeevideoNum = self.openbook_index()
+            if drawNum == 0:
+                logging.info('【沃阅读】: 抽奖次数已用完...')
+                return
+            logging.info(f'【沃阅读】: 第{6 - drawNum}次抽奖...')
+            time.sleep(1.2)
+            self.openbook_doDraw(6 - drawNum)
+            time.sleep(1.2)
+            return self.openbook_run()
+        except Exception as e:
+            logging.error(e)        
+
+    def openbook_index(self):
+        url = 'https://st.woread.com.cn/touchextenernal/openbook/index.action?channelid=18566059'
+        resp = self.session.get(url=url)
+        resp.encoding = 'utf8'
+
+        self.categoryList = re.findall(r'cateIds.push\((\d+)\);', resp.text)
+        drawNum = re.findall(r'var drawNum = (\d);', resp.text)[0]
+        drawNum = int(drawNum)
+        currentSeevideoNum = re.findall(
+            r'var currentSeevideoNum = (-?\d);', resp.text
+        )[0]
+        currentSeevideoNum = int(currentSeevideoNum)
+        return drawNum, currentSeevideoNum
+
+
+    def openbook_addUserSeeVideo(self, drawNum):
+        url = f'https://st.woread.com.cn/touchextenernal/openbook/addUserSeeVideo.action?num={drawNum}&activityindex=RUEyODEwMzkxQ0E1RTZGQTE0NUNGNTM2Nzk1M0NCMEM='
+        resp = self.session.get(url=url)
+        logging.info(resp.json())
+
+    def openbook_doDraw(self, num):
+        category = random.choice(self.categoryList)
+        url = 'https://st.woread.com.cn/touchextenernal/openbook/doDraw.action'
+        data = {
+            'categoryId': category,
+            'currentNum': '%d' % num
+        }
+        resp = self.session.post(url=url, data=data)
+        result = resp.json()
+        result['bookInfo'] = ''
+        try:
+            logging.info(f"【沃阅读】: 抽到 {result.get('prizedesc')} {result.get('usetypename','')}")
+        except:
+            logging.error(f'{result}')

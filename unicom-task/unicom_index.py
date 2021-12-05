@@ -218,6 +218,7 @@ class sendNotice:
         url_list = [
             'https://mirror.ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py',
             'https://cdn.jsdelivr.net/gh/wuye999/myScripts@main/sendNotify.py',
+            'https://raw.fastgit.org/wuye999/myScripts/main/sendNotify.py',
             'https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py',
         ]
         for e,url in enumerate(url_list):
