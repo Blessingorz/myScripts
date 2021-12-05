@@ -39,11 +39,13 @@ def get_pin(cookie):
 def gettimestamp():
     return str(int(time.time() * 1000))
 
+## 获取通知服务
 class Msg(object):
     def getsendNotify(self):
         url_list = [
             'https://mirror.ghproxy.com/https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py',
             'https://cdn.jsdelivr.net/gh/wuye999/myScripts@main/sendNotify.py',
+            'https://raw.fastgit.org/wuye999/myScripts/main/sendNotify.py',
             'https://raw.githubusercontent.com/wuye999/myScripts/main/sendNotify.py',
         ]
         for e,url in enumerate(url_list):
@@ -54,18 +56,17 @@ class Msg(object):
                 return
             except:
                 if e >= (len(url_list)-1):
-                    print('获取通知服务失败，请检查网络连接...')
-                    
+                    print('获取通知服务失败，请检查网络连接...')               
     def main(self,f=0):
         global send,msg,initialize
         sys.path.append(os.path.abspath('.'))
-        for _ in range(3):
+        for _ in range(2):
             try:
                 from sendNotify import send,msg,initialize
                 break
             except:
                 self.getsendNotify()
-        l=['BARK','SCKEY','TG_BOT_TOKEN','TG_USER_ID','TG_API_HOST','TG_PROXY_HOST','TG_PROXY_PORT','DD_BOT_TOKEN','DD_BOT_SECRET','Q_SKEY','QQ_MODE','QYWX_AM','PUSH_PLUS_TOKEN','PUSH_PLUS_USER','FSKEY','GOBOT_URL','GOBOT_QQ','GOBOT_TOKEN']
+        l=['BARK_PUSH', 'BARK_ARCHIVE', 'BARK_GROUP', 'BARK_SOUND', 'DD_BOT_SECRET', 'DD_BOT_TOKEN', 'FSKEY', 'GOBOT_URL', 'GOBOT_QQ', 'GOBOT_TOKEN', 'GOTIFY_URL', 'GOTIFY_TOKEN', 'GOTIFY_PRIORITY', 'IGOT_PUSH_KEY', 'PUSH_KEY', 'PUSH_PLUS_TOKEN', 'PUSH_PLUS_USER', 'QMSG_KEY', 'QMSG_TYPE', 'QYWX_AM', 'QYWX_KEY', 'TG_BOT_TOKEN', 'TG_USER_ID', 'TG_API_HOST', 'TG_PROXY_AUTH', 'TG_PROXY_HOST', 'TG_PROXY_PORT']
         d={}
         for a in l:
             try:
@@ -79,7 +80,7 @@ class Msg(object):
                 f += 1
                 self.getsendNotify()
                 return self.main(f)
-Msg().main()   # 初始化通知服务     
+Msg().main()   # 初始化通知服务       
 
 ## 获取cooie
 class Judge_env(object):
