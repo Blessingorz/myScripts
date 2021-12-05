@@ -28,10 +28,9 @@ class woread_task:
             if not self.popupListInfo():    # 验证登录吗？
                 return 
 
-        # self.luckdraw_run()     # 抽奖
-        # self.openbook_run()     # 抽奖
-        # self.readluchdraw_run()
-        # self.thanksgiving_run()
+        self.luckdraw_run()     # 抽奖
+        self.openbook_run()     # 抽奖
+        self.readluchdraw_run()
         self.thanksgiving_run()
 
     # 登录
@@ -288,7 +287,7 @@ class woread_task:
                     self.thanksgiving_reportLatestRead(item)
                     time.sleep(12)
             drawNum = int(self.thanksgiving_index())
-            if drawNum and f<10:
+            if drawNum and f<5:
                 time.sleep(1.2)
                 self.thanksgiving_doDraw()
                 time.sleep(1.2)
