@@ -266,8 +266,6 @@ def author_helpcode(cookie):
                 print('获取助力码，请检查网络连接...')   
     helpcode_list=response['jd_golden_yearendBonus'] 
     for helpcode_ssssss in helpcode_list:
-        body='functionId=splitHongbao_getHomeData&body={"appId":"1EFVXxg","taskToken":"'+helpcode_ssssss+'"}&client=wh5&clientVersion=1.0.0'
-        res=taskPostUrl(body, cookie)
         try:
             msg(f"账号1助力作者 {helpcode_ssssss}")
             msg(res['data'].get('bizMsg',None))
@@ -275,6 +273,8 @@ def author_helpcode(cookie):
             msg(f"账号1助力作者 {helpcode_ssssss}")
             msg("失败") 
         body='functionId=harmony_collectScore&body={"appId":"1EFVXxg","taskToken":"'+helpcode_ssssss+'","taskId":6,"actionType":0}&client=wh5&clientVersion=1.0.0'
+        res=taskPostUrl(body, cookie)
+        body='functionId=splitHongbao_getHomeData&body={"appId":"1EFVXxg","taskToken":"'+helpcode_ssssss+'"}&client=wh5&clientVersion=1.0.0'
         res=taskPostUrl(body, cookie)
 
 
