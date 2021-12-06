@@ -234,7 +234,7 @@ class email_task:
             for key, userAction in integral_data.items():
                 url = f'https://mail.wo.cn/coremail/s/?func=club:addClubInfo&sid={sid}'
                 data = {"userAction":userAction}
-                response = requests.post(url=url,json=data).json()
+                response = self.email.post(url=url,json=data).json()
                 logging.info(f"【沃邮箱扩展任务】：{key}电脑端积分结果:{res['code']}")
         except Exception as e:
             logging.error(f'【沃邮箱扩展任务】：电脑端沃邮箱执行任务错误\n{e}')
