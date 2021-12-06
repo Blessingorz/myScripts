@@ -38,8 +38,6 @@ sys.path.append('/tmp')
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append('./utils')
-import json,time,re,traceback,random,datetime,util,sys,login,logging,importlib,urllib
-import pytz,requests,rsa     # 导入 pytz,requests,rsa 模块，出错请先安装这些模块：pip3 install xxx
 try:
     import execjs
 except Exception as e:
@@ -52,6 +50,8 @@ if not (os.path.abspath('.')=='/var/user' and os.path.exists('/tmp')):
     except Exception as e:
         print(str(e) + "\n缺少Cryptodome模块, 请执行命令：pip3 install pycryptodomex\n")
         exit()
+import json,time,re,traceback,random,datetime,util,sys,login,logging,importlib,urllib
+import pytz,requests,rsa     # 导入 pytz,requests,rsa 模块，出错请先安装这些模块：pip3 install xxx
 
 requests.packages.urllib3.disable_warnings()
 from task_list import task_list
