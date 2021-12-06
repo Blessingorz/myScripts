@@ -1,8 +1,8 @@
 '''
 cron: 5 16 * * *
 new Env('金榜年终奖');
-入口: 金榜年终奖
-功能：完成任务，互助, 抽奖
+入口: 18:/#L0UqX8PSJNouJN%ヤ﹎壹起祛【京東】，复制全部内容，打开京东App，即可为我助力，领大额红包！一起来参与领1212金榜年终奖吧！
+功能：完成任务，互助, 开红包
 账号1助力作者，其余账号按顺序内部互助
 青龙拉取命令：ql raw https://raw.githubusercontent.com/wuye999/myScripts/main/jd/jd_golden_yearendBonus.py
 2021/12/06 22:30
