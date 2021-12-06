@@ -2,7 +2,7 @@
 cron: 5 16 * * *
 new Env('金榜年终奖');
 入口: 金榜年终奖
-功能：完成任务，互助
+功能：完成任务，互助, 抽奖
 账号1助力作者，其余账号按顺序内部互助
 青龙拉取命令：ql raw https://raw.githubusercontent.com/wuye999/myScripts/main/jd/jd_golden_yearendBonus.py
 2021/12/06 22:30
@@ -113,7 +113,7 @@ Msg().main()   # 初始化通知服务
 
 
 def taskPostUrl(body, cookie):
-    url=f'https://api.m.jd.com//client.action'
+    url=f'https://api.m.jd.com/client.action'
     headers={
         'Cookie': cookie,
         "User-Agent": ua(),
@@ -162,45 +162,92 @@ def helpcode(task,cookie):
         msg('获取助力码失败')
         msg(e)
 
-
 # 完成任务
 def harmony_collectScore(task,cookie):
+    # print(task)
     taskId=task['taskId']
     taskName=task.get('taskName',None)
+    if taskName=='好友助力':
+        helpcode(task,cookie)
+        return
     shoppingActivityVos=task.get('shoppingActivityVos',None)
+    if not shoppingActivityVos: 
+        shoppingActivityVos=task.get('productInfoVos',None)
     for shoppingActivity in shoppingActivityVos:
         try:
             title=shoppingActivity.get('title',None)
-            advId=shoppingActivity['advId']
+            try:
+                advId=shoppingActivity['advId']
+            except:
+                advId=shoppingActivity['itemId']
             taskToken=shoppingActivity['taskToken']
-            body='functionId=harmony_collectScore&body={"appId":"1EFVXxg","taskToken":"'+taskToken+'","taskId":'+taskId+',"itemId":"'+advId+'","actionType":"1"}&client=wh5&clientVersion=1.0.0'
+            body='functionId=harmony_collectScore&body={"appId":"1EFVXxg","taskToken":"'+str(taskToken)+'","taskId":'+str(taskId)+',"itemId":"'+str(advId)+'","actionType":"1"}&client=wh5&clientVersion=1.0.0'
         except Exception as e:
             msg('获取任务数据失败')
             msg(e)
             continue
         msg(f'开始 {title}')
+        msg('等待3.2s')
+        res=taskPostUrl(body, cookie)
+        if res['code']==0:
+            msg(res['data'].get('bizMsg',None))
+            if res['data'].get('bizMsg',None)=='任务已完成':
+                continue
+        else:
+            msg('任务失败')
+        msg('等待3.2s')
+        time.sleep(3.2)
+        body='functionId=harmony_collectScore&body={"appId":"1EFVXxg","taskToken":"'+str(taskToken)+'","taskId":'+str(taskId)+',"itemId":"'+str(advId)+'","actionType":0}&client=wh5&clientVersion=1.0.0'
         res=taskPostUrl(body, cookie)
         if res['code']==0:
             msg(res['data'].get('bizMsg',None))
         else:
             msg('任务失败')
-        res=taskPostUrl(body, cookie)
-        if res['code']==0:
-            msg(res['data'].get('bizMsg',None))
-        else:
-            msg('任务失败')
+    splitHongbao_getLotteryResult(taskId,cookie)
+    pass
+
+
+# 开任务红包
+def splitHongbao_getLotteryResult(taskId,cookie):
+    body='functionId=splitHongbao_getLotteryResult&body={"appId":"1EFVXxg","taskId":'+str(taskId)+'}&client=wh5&clientVersion=1.0.0'
+    res=taskPostUrl(body, cookie)
+    try:
+        msg(f"获得红包 {res['data']['result']['userAwardsCacheDto']['redPacketVO']['value']}")
+    except:
+        try:
+            msg(res['data']['bizMsg'])
+        except:
+            msg(res)
+
+
+# 开助力红包
+def splitHongbao_getLotteryResult_helpcode(cookie):
+    body='functionId=splitHongbao_getLotteryResult&body={"appId":"1EFVXxg","taskId":""}&client=wh5&clientVersion=1.0.0'
+    res=taskPostUrl(body, cookie)
+    try:
+        msg(f"账号 {get_pin(cookie)} 开红包")
+        msg(f"获得红包 {res['data']['result']['userAwardsCacheDto']['redPacketVO']['value']}")
+        return splitHongbao_getLotteryResult_helpcode(cookie)
+    except:
+        try:
+            msg(res['data']['bizMsg'])
+        except:
+            msg(res)
+
 
 # 助力
 def splitHongbao_getHomeData_helpcode(cookie,inviteCode):
     body='functionId=splitHongbao_getHomeData&body={"appId":"1EFVXxg","taskToken":"'+inviteCode+'"}&client=wh5&clientVersion=1.0.0'
     res=taskPostUrl(body, cookie)
+    # print(res)
     try:
-        msg(f"{get_pin(cookie)}去助力 {res['data']['result']['guestlnfo']}")
+        msg(f"{get_pin(cookie)}去助力 {res['data']['result']['guestInfo']['nickName']}")
         msg(res['data'].get('bizMsg',None))
     except Exception as e:
         msg(f"{get_pin(cookie)}去助力 {inviteCode}")
         msg(res['data'].get('bizMsg',None))
-
+    body='functionId=harmony_collectScore&body={"appId":"1EFVXxg","taskToken":"'+inviteCode+'","taskId":6,"actionType":0}&client=wh5&clientVersion=1.0.0'
+    res=taskPostUrl(body, cookie)
 
 # 账号1助力作者
 def author_helpcode(cookie):
@@ -210,23 +257,25 @@ def author_helpcode(cookie):
         'https://raw.fastgit.org/wuye999/myScripts/main/jd/helpcode/helpcode.json',
         'https://raw.githubusercontent.com/wuye999/myScripts/main/jd/helpcode/helpcode.json',
     ]
-    for url in enumerate(url_list):
+    for e,url in enumerate(url_list):
         try:
             response = requests.get(url,timeout=10).json()
             break
         except:
             if e >= (len(url_list)-1):
                 print('获取助力码，请检查网络连接...')   
-    helpcode_list=res['jd_golden_yearendBonus'] 
+    helpcode_list=response['jd_golden_yearendBonus'] 
     for helpcode_ssssss in helpcode_list:
         body='functionId=splitHongbao_getHomeData&body={"appId":"1EFVXxg","taskToken":"'+helpcode_ssssss+'"}&client=wh5&clientVersion=1.0.0'
         res=taskPostUrl(body, cookie)
         try:
-            msg(f"{get_pin(cookie)}去助力 作者")
+            msg(f"账号1助力作者 {helpcode_ssssss}")
             msg(res['data'].get('bizMsg',None))
         except Exception as e:
-            msg(f"{get_pin(cookie)}去助力 作者")
-            msg(res['data'].get('bizMsg',None))        
+            msg(f"账号1助力作者 {helpcode_ssssss}")
+            msg("失败") 
+        body='functionId=harmony_collectScore&body={"appId":"1EFVXxg","taskToken":"'+helpcode_ssssss+'","taskId":6,"actionType":0}&client=wh5&clientVersion=1.0.0'
+        res=taskPostUrl(body, cookie)
 
 
 def main():
@@ -239,22 +288,22 @@ def main():
     for e,cookie in enumerate(cookie_list):
         msg(f'******开始【账号 {e+1}】 {get_pin(cookie)} *********\n')
         taskVos=splitHongbao_getHomeData(cookie)
+        # print(taskVos)
         if not taskVos:
             continue
         for f,task in enumerate(taskVos):
-            if f==len(taskVos)-1:
-                helpcode(task,cookie)
-                continue
+            harmony_collectScore(task,cookie)    
         if e==0:
             author_helpcode(cookie)
-        harmony_collectScore(task,cookie)    
 
     msg(f'====================内部互助=========\n')
     for e,cookie in enumerate(cookie_list):
         for inviteCode in inviteCode_list:
             splitHongbao_getHomeData_helpcode(cookie,inviteCode)
 
-
+    msg(f'====================开助力红包=========\n')
+    for e,cookie in enumerate(cookie_list):
+        splitHongbao_getLotteryResult_helpcode(cookie)
 
 if __name__ == '__main__':
     main()
