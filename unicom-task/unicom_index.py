@@ -27,13 +27,13 @@ def abspath(p=''):  # 返回项目所在目录
     if '/ql' in os.path.abspath(os.path.dirname(__file__)):
         return os.path.abspath('./unicom-task/'+p)      # 青龙
     elif os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
-        sys.path.append('./tenscf_rely')
         return os.path.abspath('./'+p)                  # 腾讯云函数
     else:
-        sys.path.append('./tenscf_rely')
         return os.path.abspath(os.path.dirname(f'{os.path.split(__file__)[0]}/{p}'))      # 其他
 os.chdir(abspath())  # 修改当前工作目录为项目目录
 
+if os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
+    sys.path.append('./tenscf_rely')
 sys.path.append('/tmp')
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
@@ -46,7 +46,7 @@ except Exception as e:
     print(str(e) + "\n缺少execjs模块, 请执行命令：pip3 install PyExecJS\n")
     exit()
 
-if not os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
+if not (os.path.abspath('.')=='/var/user' and os.path.exists('/tmp')):
     try:
         import Cryptodome
     except Exception as e:
@@ -203,7 +203,7 @@ def runTask(client, user):
     for task_name in task_list:
         if task_name=='email_task.py':
             continue
-        if os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
+        if not (os.path.abspath('.')=='/var/user' and os.path.exists('/tmp')):
             if task_name=='dailySign.py':
                 continue
         task_name=task_name[:-3]
