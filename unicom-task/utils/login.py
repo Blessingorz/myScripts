@@ -125,36 +125,39 @@ def get_loginSession(username,password,appId,imei):
         imei=imei_random()
 
     try:
+        flag=True
         login_cookies=readData(username+'login_login_cookies')      # 读取cookie
         if login_cookies:       
-            flag=True
             if username != login_cookies['username']: flag=False    # 对比账号信息是否更改
             if password != login_cookies['password']: flag=False    # 对比账号信息是否更改
             if appId != login_cookies['appId']: flag=False          # 对比账号信息是否更改
-            # if imei != login_cookies['imei']: flag=False            # 对比账号信息是否更改
-            cookies=requests.utils.cookiejar_from_dict(login_cookies['cookies'])        # 将dict形式cookies转换为RequestsCookieJar形式
-            token_online=login_cookies['token_online']
-            if not cookies: flag=False
-            if not token_online: flag=False 
+            if not login_cookies['imei']: flag=False                
+            if not requests.utils.cookiejar_from_dict(login_cookies['cookies']): flag=False
+            if not login_cookies['token_online']: flag=False 
         else:
             flag=False 
     except:
         flag=False 
 
-    # 使用cookie登录
+    # 登录
     if flag:     
-        logging.info(f'【cookie登录】 {username[:3]}******** ')
         session = onLine(username)      # cookie登录
         if session:    
             return session
-
-    # 使用cookie登录失败，进行账号密码登录
-    session=login(username,password,appId,imei)
-    return session
+        else:
+            # 使用cookie登录失败，进行账号密码登录
+            session=login(username,password,appId,imei)
+            return session
+    else:
+        # cookie不存在或格式错误，进行账号密码登录
+        session=login(username,password,appId,imei)
+        return session
 
 
 # cookie登录       
 def onLine(username):
+    logging.info(f'【cookie登录】 {username[:3]}******** ')
+
     login_cookies=readData(username+'login_login_cookies')      # 读取cookie
     username=login_cookies['username']
     password=login_cookies['password']

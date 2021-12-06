@@ -274,7 +274,7 @@ class woread_task:
             })
             drawNum = int(self.thanksgiving_index())
             # logging.info(drawNum)
-            if not drawNum and f==0:
+            if not drawNum:
                 cntindex = self.thanksgiving_getIntellectRecommend()
                 for _ in range(1, 11):
                     # cntindex = '1840947'

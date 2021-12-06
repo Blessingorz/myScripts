@@ -27,15 +27,16 @@ def abspath(p=''):  # 返回项目所在目录
     if '/ql' in os.path.abspath(os.path.dirname(__file__)):
         return os.path.abspath('./unicom-task/'+p)      # 青龙
     elif os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
+        sys.path.append('./tenscf_rely')
         return os.path.abspath('./'+p)                  # 腾讯云函数
     else:
+        sys.path.append('./tenscf_rely')
         return os.path.abspath(os.path.dirname(f'{os.path.split(__file__)[0]}/{p}'))      # 其他
 os.chdir(abspath())  # 修改当前工作目录为项目目录
 
 sys.path.append('/tmp')
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-sys.path.append('./tenscf_rely')
 sys.path.append('./utils')
 import json,time,re,traceback,random,datetime,util,sys,login,logging,importlib,urllib
 import pytz,requests,rsa     # 导入 pytz,requests,rsa 模块，出错请先安装这些模块：pip3 install xxx
@@ -44,6 +45,14 @@ try:
 except Exception as e:
     print(str(e) + "\n缺少execjs模块, 请执行命令：pip3 install PyExecJS\n")
     exit()
+
+if not os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
+    try:
+        import Cryptodome
+    except Exception as e:
+        print(str(e) + "\n缺少Cryptodome模块, 请执行命令：pip3 install pycryptodomex\n")
+        exit()
+
 requests.packages.urllib3.disable_warnings()
 from task_list import task_list
 
@@ -64,11 +73,11 @@ def log():
     logger.setLevel(logging.INFO)
 
     fh = logging.FileHandler(log_path('log.txt'), mode='a', encoding='utf-8')   # 创建一个handler，用于写入日志文件
-    fh.setFormatter(logging.Formatter("%(filename)s: %(message)s"))
+    fh.setFormatter(logging.Formatter("%(message)s"))
     logger.addHandler(fh)
 
     ch = logging.StreamHandler()
-    ch.setFormatter(logging.Formatter("%(filename)s: %(message)s"))     # 创建一个handler，输出到控制台
+    ch.setFormatter(logging.Formatter("%(funcName)s: %(message)s"))     # 创建一个handler，输出到控制台
     logger.addHandler(ch)
 log() 
 
@@ -194,6 +203,9 @@ def runTask(client, user):
     for task_name in task_list:
         if task_name=='email_task.py':
             continue
+        if os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
+            if task_name=='dailySign.py':
+                continue
         task_name=task_name[:-3]
         task_module = importlib.import_module('task.'+task_name)
         task_class = getattr(task_module, task_name)
