@@ -38,7 +38,7 @@ class TouTiao:
     def reward(self, options, retry=2):
         # 避免出现orderId相同
         orderId = md5(str(self.timestamp) + self.mobile + uuid4().hex)
-        print(orderId)
+        # print(orderId)
         media_extra = [
             options.get('ecs_token', ''),
             self.mobile,
@@ -159,10 +159,10 @@ class TouTiao:
         if data.get('message', False):
             try:
                 message = cbc_decrypt(data['message'])
-                print(message)
+                # print(message)
             except:
                 pass
-        print(data)
+        # print(data)
         if not message.get('verify', False) and retry > 0:
             self.flushTime(randint(1, 5))
             return self.reward(options, retry - 1)

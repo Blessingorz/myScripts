@@ -72,6 +72,7 @@ class blindBox:
         })
         return token
 
+
     def minusGameTimes(self, params, token={}, retry=1):
         url = 'https://m.jf.10010.com/jf-yuech/api/gameResultV2/minusGameTimes'
         data = {
@@ -80,7 +81,7 @@ class blindBox:
         resp = self.session.post(url=url, json=data)
         try:
             data = resp.json()
-            logging.info(data)
+            # logging.info(data)
             # token['activityInfos']['advertTimes'] = data['data']['advertTimes']
             # token['activityInfos']['freeTimes'] = data['data']['freeTimes']
             # self.saveCookie(f'{self.mobile}JFToken', token)
@@ -101,7 +102,8 @@ class blindBox:
         }
         resp = self.session.post(url=url, json=data)
         data = resp.json()
-        logging.info(data)
+        logging.info(f"获得 {data['data'].get('status',None)} {data['data'].get('prizeName',None)}")
+
 
     def numIntegralQuery(self):
         url = 'https://m.jf.10010.com/jf-yuech/api/integralLogs/numIntegralQuery'
