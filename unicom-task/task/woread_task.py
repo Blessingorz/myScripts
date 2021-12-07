@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2021/12/1 23:30
 # @Author  : rhming
-# 沃阅读: 每日阅读抽奖大活动
+# 沃阅读
 import os,sys
 import requests,login,logging,urllib.parse,util,re,execjs,time,random,re
 

@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+# @rhming
 import requests,logging,json,time
 from random import randint
 from utils.toutiao_reward import TouTiao
