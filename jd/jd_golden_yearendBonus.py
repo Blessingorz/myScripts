@@ -226,7 +226,7 @@ def harmony_collectScore(task,cookie):
                 msg(e)
                 continue
             msg(f'开始 {title}')
-            msg('等待3.2s')
+            # msg('等待3.2s')
             res=taskPostUrl(body, cookie)
             if res['code']==0:
                 msg(res['data'].get('bizMsg',None))
@@ -234,7 +234,7 @@ def harmony_collectScore(task,cookie):
                     continue
             else:
                 msg('任务失败')
-            msg('等待3.2s')
+            # msg('等待3.2s')
             time.sleep(3.2)
             body='functionId=harmony_collectScore&body={"appId":"1EFVXxg","taskToken":"'+str(taskToken)+'","taskId":'+str(taskId)+',"itemId":"'+str(advId)+'","actionType":0}&client=wh5&clientVersion=1.0.0'
             res=taskPostUrl(body, cookie)
