@@ -32,8 +32,8 @@ def abspath(p=''):  # 返回项目所在目录
         return os.path.abspath(os.path.dirname(f'{os.path.split(__file__)[0]}/{p}'))      # 其他
 os.chdir(abspath())  # 修改当前工作目录为项目目录
 
-if os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
-    sys.path.append('./tenscf_rely')
+# if os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
+sys.path.append('./tenscf_rely')
 sys.path.append('/tmp')
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))

@@ -1,18 +1,17 @@
 # -*- coding: utf8 -*-
-# import json
-import re,os,time
+import json
+import re,time,logging
 import requests
 import login
-from utils import jsonencode as json
+from random import randint
+# from utils import jsonencode as json
 from utils.toutiao_reward import TouTiao
-from utils.unicomLogin import UnicomClient
 from utils.jifen import encrypt_req_params, encrypt_free_login_params
 
 
-class BlindBox(UnicomClient):
+class BlindBox:
 
-    def __init__(self, mobile, password):
-        super(BlindBox, self).__init__(mobile, password)
+    def _init_(self, mobile, password):
         self.session.headers = requests.structures.CaseInsensitiveDict({
             "origin": "https://m.jf.10010.com",
             "user-agent": self.useragent,
@@ -41,7 +40,7 @@ class BlindBox(UnicomClient):
             if not self.session.cookies.get('_jf_id', ''):
                 raise Exception('未获取到_jf_id')
         except Exception as e:
-            print(e)
+            logging.info(e)
             if retry > 0:
                 time.sleep(5)
                 self.openPlatLineNew(to_url, retry - 1)
@@ -57,11 +56,11 @@ class BlindBox(UnicomClient):
             'time': self.timestamp
         }
         data = encrypt_free_login_params(data)
-        # print(data)
+        # logging.info(data)
         # return
         resp = self.session.post(url=url, json=data)
         data = resp.json()
-        # print(json.dumps(data))
+        # logging.info(json.dumps(data))
         token = data['data']['token']  # type: dict
         token.update({"t": self.now_date})
         # token.update({
@@ -81,7 +80,7 @@ class BlindBox(UnicomClient):
         resp = self.session.post(url=url, json=data)
         try:
             data = resp.json()
-            print(json.dumps(data))
+            logging.info(data)
             # token['activityInfos']['advertTimes'] = data['data']['advertTimes']
             # token['activityInfos']['freeTimes'] = data['data']['freeTimes']
             # self.saveCookie(f'{self.mobile}JFToken', token)
@@ -102,7 +101,7 @@ class BlindBox(UnicomClient):
         }
         resp = self.session.post(url=url, json=data)
         data = resp.json()
-        print(json.dumps(data))
+        logging.info(data)
 
     def numIntegralQuery(self):
         url = 'https://m.jf.10010.com/jf-yuech/api/integralLogs/numIntegralQuery'
@@ -113,30 +112,27 @@ class BlindBox(UnicomClient):
         }
         resp = self.session.get(url=url, params=params)
         data = resp.json()
-        print(json.dumps(data))
+        logging.info(data)
         return data
 
     def run(self, client, user):
-        self.client,self.user=client,user
-        self.mobile=self.user['username']
-        self.timestamp=str(int(time.time() * 1000))
+        self.session=client
+        self.mobile=user['username']
         self.version='android@8.0805'
-        self.clientVersion = self.version.split('@')[1]
-        self.session.headers = requests.structures.CaseInsensitiveDict({
-            "origin": "https://m.jf.10010.com",
-            "user-agent": 'Mozilla/5.0 (Linux; Android 9; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + self.user['username'] + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}',
-            "content-type": "application/json",
-            "accept": "*/*",
-            "referer": "https://m.jf.10010.com/cms/yuech/unicom-integral-ui/yuech-Blindbox/shake/index.html?jump=sign",
-        })
-        self.activityId = 'Ac-9b71780cb87844b9ac3ab5d34b11dd24'
+        self.timestamp=time.time() * 1000
+        self.now_date=time.strftime('%Y-%m-%d', time.localtime(self.timestamp / 1000))
+        self.saveCookie=login.saveData
+        self.readCookie=login.readData
+        self.useragent='Mozilla/5.0 (Linux; Android 9; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + str(self.mobile) + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}'
+        self._init_(user['username'], user['password'])
 
-        to_url = f"https://m.jf.10010.com/jf-order/avoidLogin/forActive/yyyqd&yw_code=&desmobile={self.mobile}&version={self.version}"
+        to_url = f'https://m.jf.10010.com/jf-order/avoidLogin/forActive/yyyqd&yw_code=&desmobile={self.mobile}&version={self.version}'
         self.openPlatLineNew(to_url)
-        token = login.readData(f'{self.mobile}JFToken')
+        token = self.readCookie(f'{self.mobile}JFToken')
         if (
-                not isinstance(token, dict)
-                or token.get('t', '') != time.strftime('%Y-%m-%d', time.localtime(time.time()))
+                token
+                or not isinstance(token, dict)
+                or token.get('t', '') != self.now_date
                 or not token.get('access_token', '')
                 # or not token.get('activityInfos', '')
         ):
@@ -151,7 +147,7 @@ class BlindBox(UnicomClient):
         }
         resultId, freeTimes, advertTimes = self.minusGameTimes(params)
         if advertTimes == 0:
-            print('机会已用完')
+            logging.info('机会已用完')
             return
         if freeTimes == 1:
             # params = {
