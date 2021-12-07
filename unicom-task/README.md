@@ -51,13 +51,10 @@ cron: 28 20 * * *
 ql repo https://ghproxy.com/https://github.com/wuye999/myScripts.git "unicom_index" "" "unicom-task"                                        
 ```
 
-搞不定，不会安装依赖的同学，**手动下载**一次 文件夹 tenscf_rely 放入 /ql/scripts/unicom-task或/ql/scripts/wuye999_myScripts/unicom-task                        
-**手动下载和青龙拉取的文件夹tenscf_rely文件夹是不一样的**                       
-青龙最新版是/ql/scripts/wuye999_myScripts/unicom-task                             
-没更新的是/ql/scripts/unicom-task                       
-**需要删除安装失败的依赖**，大部分依赖安装失败都是没升级pip,建议老实升级pip后安装依赖，免得出现各种莫名其妙的问题                                 
-升级pip: pip3 install --upgrade pip             
-安装依赖：pip3 install xxx              
+搞不定，不会安装依赖的同学，**手动下载**一次 文件夹 tenscf_rely 放入 /ql/scripts/unicom-task或/ql/scripts/wuye999_myScripts/unicom-task                                        
+**手动下载和青龙拉取的文件夹tenscf_rely文件夹是不一样的**                                 
+青龙最新版是放入/ql/scripts/wuye999_myScripts/unicom-task                                                
+没更新的是放入/ql/scripts/unicom-task                                          
 ![image](https://user-images.githubusercontent.com/79479594/144328277-b7547b28-0e6d-4058-81bc-e4d0234c2f72.png)                                
                         
 ### 云函数               
