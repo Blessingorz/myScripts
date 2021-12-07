@@ -335,8 +335,8 @@ def main():
             author_helpcode(cookie)
 
     msg(f'====================内部互助=========\n')
-    for e,cookie in enumerate(cookie_list):
-        for inviteCode in inviteCode_list:
+    for inviteCode in inviteCode_list:
+        for e,cookie in enumerate(cookie_list):
             splitHongbao_getHomeData_helpcode(cookie,inviteCode)
 
     msg(f'====================开助力红包=========\n')
