@@ -6,6 +6,7 @@ new Env('金榜年终奖');
 环境变量 jd_golden_yearendBonus_runtask，是否做任务
 export jd_golden_yearendBonus_runtask="yes"       # 是否做任务，yes则做，no则不做任务，直接助力开红包,默认yes
 账号1助力作者，其余账号按顺序内部互助
+由于每个人只有3个助力次数，所以只助力前三个助力码
 青龙拉取命令：ql raw https://raw.githubusercontent.com/wuye999/myScripts/main/jd/jd_golden_yearendBonus.py
 2021/12/06 22:30
 '''
@@ -282,8 +283,12 @@ def splitHongbao_getHomeData_helpcode(cookie,inviteCode):
         msg(f"{get_pin(cookie)}去助力 {res['data']['result']['guestInfo']['nickName']}")
         msg(res['data'].get('bizMsg',None))
     except Exception as e:
-        msg(f"{get_pin(cookie)}去助力 {inviteCode}")
-        msg(res['data'].get('bizMsg',None))
+        try:
+            msg(f"{get_pin(cookie)}去助力 {inviteCode}")
+            msg(res['data'].get('bizMsg',None))
+        except:
+            msg(f"{get_pin(cookie)}去助力 {inviteCode}")
+            msg('助力失败')
     body='functionId=harmony_collectScore&body={"appId":"1EFVXxg","taskToken":"'+inviteCode+'","taskId":6,"actionType":0}&client=wh5&clientVersion=1.0.0'
     res=taskPostUrl(body, cookie)
 
@@ -334,7 +339,10 @@ def main():
         if e==0:
             author_helpcode(cookie)
 
+
     msg(f'====================内部互助=========\n')
+    if len(inviteCode_list)>3:
+        inviteCode_list=inviteCode_list[:3]
     for inviteCode in inviteCode_list:
         for e,cookie in enumerate(cookie_list):
             splitHongbao_getHomeData_helpcode(cookie,inviteCode)
