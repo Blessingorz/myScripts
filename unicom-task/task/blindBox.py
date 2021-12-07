@@ -9,7 +9,7 @@ from utils.toutiao_reward import TouTiao
 from utils.jifen import encrypt_req_params, encrypt_free_login_params
 
 
-class BlindBox:
+class blindBox:
 
     def _init_(self, mobile, password):
         self.session.headers = requests.structures.CaseInsensitiveDict({
