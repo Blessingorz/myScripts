@@ -6,6 +6,10 @@ if [ ! -d /root/config ]; then
   exit 1
 fi
 
+if [ ! -d /root/log ]; then
+  mkdir /root/log 
+fi
+
 echo -e "\n========================1. 更新脚本源代码========================\n"
 cd /myScripts
 git pull origin ${SCRIPT_BRANCH}
