@@ -20,6 +20,7 @@ echo -e "========================2. 检测配置文件========================\n
 if [ ! -s /root/config/config.sh ]; then
   echo -e "检测到/unicom-task/config配置目录下不存在config.sh，从脚本中复制一份用于初始化...\n"
   cp -fv /myScripts/unicom-task/docker/config.sh /root/config/config.sh
+  chmod +x /root/config/config.sh
   echo
 fi
 
@@ -28,6 +29,9 @@ if [ ! -s /root/config/crontab.list ]; then
   cp -fv /myScripts/unicom-task/docker/crontab.list /root/config/crontab.list
   echo
 fi
+
+# 拷贝脚本
+cp -rf /myScripts/unicom-task/ /root/
 
 if [ -s /root/config/crontab.list ]
 then

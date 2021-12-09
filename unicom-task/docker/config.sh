@@ -7,4 +7,15 @@ export PUSH_PLUS_TOKEN="微信推送Plus+(通知服务示例，可留空或不�
 
 
 ###----------------------------------------------------------------------
+# 执行开始时间
+time=$(date "+%Y-%m-%d %H:%M:%S")
+startTime_s=`date +%s`
+echo "## 开始执行... ${time}"
+crontab /root/config/crontab.list
 cp -rf /myScripts/unicom-task/ /root/ && cd /root/unicom-task && python3 unicom_index.py
+# 执行结束时间
+time=$(date "+%Y-%m-%d %H:%M:%S")
+endTime_s=`date +%s`
+# 执行用时
+sumTime=$[ $endTime_s - $startTime_s ]
+echo "## 执行结束... ${time} 耗时 ${sumTime} 秒"
