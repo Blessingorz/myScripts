@@ -1,8 +1,10 @@
 FROM python:alpine
+ARG SCRIPT_URL=https://ghproxy.com/https://github.com/wuye999/myScripts.git
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
     LANG=zh_CN.UTF-8 \
     PS1="\u@\h:\w\$ " \
-    TZ=Asia/Shanghai \
+    SCRIPT_BRANCH=main \
+    TZ=Asia/Shanghai
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
     && apk update -f \
     && apk upgrade \
@@ -13,7 +15,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
                              gcc \
                              libxslt-dev \
                              libxml2-dev \
-    && git clone https://ghproxy.com/https://github.com/wuye999/myScripts.git \
+    && git clone ${SCRIPT_BRANCH} ${SCRIPT_URL} \
     && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo ${TZ} > /etc/timezone \
     && rm -rf /var/cache/* \

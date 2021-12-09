@@ -8,7 +8,7 @@ fi
 
 echo -e "\n========================1. 更新脚本源代码========================\n"
 cd /myScripts
-git pull origin main
+git pull origin ${SCRIPT_BRANCH}
 echo
 
 echo -e "========================2. 检测配置文件========================\n"
