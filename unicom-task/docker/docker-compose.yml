@@ -3,7 +3,6 @@ version: "3.1"
 services:
   unicom-task:
     image: srcrs/unicom-task:latest
-    working_dir: /root
     restart: always
     command:
       - /bin/bash
@@ -12,4 +11,6 @@ services:
          service cron start
          sleep infinity
     volumes:
-      - $PWD/config/config.json:/root/config.json
+      - v /unicom-task/config:/root/config
+      - v /unicom-task/log:/root/log
+      - v /unicom-task/unicom-task:/root/unicom-task
