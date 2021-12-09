@@ -1,2 +1,2 @@
-15 6,18 * * * cd /myScripts && git pull origin ${SCRIPT_BRANCH}
-35 6,18 * * * sh /root/config/config.sh cp –rf /myScripts/unicom-task /root/unicom-task && cd /root/unicom-task && python3 unicom_index.py
+15 6,18 * * * cd /myScripts && git pull origin ${SCRIPT_BRANCH} > /root/config/git.txt 2>&1
+35 6,18 * * * sh /root/config/config.sh > /root/config/log.txt 2>&1

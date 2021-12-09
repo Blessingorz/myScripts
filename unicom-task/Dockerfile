@@ -16,7 +16,11 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
                              gcc \
                              libxslt-dev \
                              libxml2-dev \
+                             nodejs \
+                             npm \
+                             vim \
     && git clone -b ${SCRIPT_BRANCH} ${SCRIPT_URL} ${SCRIPT_DIR} \
+    && pip3 install --no-cache-dir -r ${SCRIPT_DIR}/unicom-task/requirements.txt \
     && ln -sf /usr/share/zoneinfo/${TZ} /etc/localtime \
     && echo ${TZ} > /etc/timezone \
     && rm -rf /var/cache/* \
