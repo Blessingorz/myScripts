@@ -13,9 +13,9 @@ echo
 
 echo -e "========================2. 检测配置文件========================\n"
 
-if [ ! -s /root/config/config.json ]; then
+if [ ! -s /root/config/config.txt ]; then
   echo -e "检测到/unicom-task/config配置目录下不存在config.json，从脚本中复制一份用于初始化...\n"
-  cp -fv /myScripts/unicom-task/docker/config.json /root/config/config.json
+  cp -fv /myScripts/unicom-task/docker/config.txt /root/config/config.txt
   echo
 fi
 
