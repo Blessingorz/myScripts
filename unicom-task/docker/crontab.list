@@ -1,0 +1,2 @@
+35 6,18 * * * cd /myScripts/unicom-task && python3 unicom_index.py
+15 6,18 * * * cd /myScripts && git pull origin main
