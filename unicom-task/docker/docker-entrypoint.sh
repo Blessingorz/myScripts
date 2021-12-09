@@ -28,8 +28,8 @@ fi
 if [ -s /root/config/crontab.list ]
 then
   echo -e "自动导入定时任务...\n"
-  service crond start ##启动服务
   crontab /root/config/crontab.list
+  # service crond start ##启动服务
   echo -e "成功添加定时任务...\n"
 else
   echo -e "检测到/unicom-task/config配置目录下不存在crontab.list或存在但文件为空，请手动添加crontab.list\n"
