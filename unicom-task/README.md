@@ -42,7 +42,32 @@ imei: 设备ID(通常是获取手机的imei) 联通判断是否登录多台设�
                      
 ### 通知推送
 [点我查看](https://github.com/wuye999/myScripts/blob/main/send.md)          
-### 使用方法            
+### 使用方法     
+### docker                  
+为解决依赖问题，更新docker使用方式          
+```
+docker run -dit \
+  -v /unicom-task/config:/root/config \
+  -v /unicom-task/log:/root/log \
+  -v /unicom-task/unicom-task:/root/unicom-task \
+  --name unicom-task \
+  --restart always \
+  wuye9999/unicom-task
+```  
+在  /unicom-task/config/config.sh里填写环境变量：               
+```
+export unicom_config_1="手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫<<<手机的imei（可留空）"
+export unicom_config_2="手机号2<<<服务密码2<<<appId2<<<抽奖次数(0-30)中奖几率渺茫<<<手机的imei（可留空）"
+export unicom_config_3="自然数顺序类推..."
+export unicom_womail_1="沃邮箱登陆Url1<<<手机号1(可留空)<<<沃邮箱密码（可留空）"
+export unicom_womail_2="沃邮箱登陆Url2<<<手机号2(可留空)<<<沃邮箱密码（可留空）"
+export unicom_womail_3="自然数顺序类推..."
+export PUSH_PLUS_TOKEN="微信推送Plus+(通知服务示例，可留空或不填)"
+```         
+[通知推送点我查看](https://github.com/wuye999/myScripts/blob/main/send.md)                  
+
+每天6:15自动更新脚本                        
+每天6:35, 18:35 自动运行任务                            
 ### 青龙
     
 联通日常任务 青龙拉取命令                                            
@@ -50,7 +75,8 @@ imei: 设备ID(通常是获取手机的imei) 联通判断是否登录多台设�
 cron: 28 20 * * *               
 ql repo https://ghproxy.com/https://github.com/wuye999/myScripts.git "unicom_index" "" "unicom-task"                                        
 ```
-
+青龙需要安装的依赖：PyExecJS, pycryptodomex, pytz, requests, rsa                    
+安装方法：pip3 install xxx                  
 搞不定，不会安装依赖的同学，**手动下载**一次 文件夹 tenscf_rely 放入 /ql/scripts/unicom-task或/ql/scripts/wuye999_myScripts/unicom-task                                        
 **手动下载和青龙拉取的文件夹tenscf_rely文件夹是不一样的**                                 
 青龙最新版是放入/ql/scripts/wuye999_myScripts/unicom-task                                                
