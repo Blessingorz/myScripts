@@ -13,7 +13,10 @@ class womail_apsule_machine:
 
         try:
             mobile,refererurl=self.openPlatLineNew() # 登录1
+            self.lotterylogin(refererurl)
             self.callback(mobile,refererurl)    # 获取token
+            self.userInfo()
+            self.user_chance()
             self.overtask()                     # 做任务
             self.draw()                         # 抽奖
         except Exception as e:
@@ -47,10 +50,7 @@ class womail_apsule_machine:
         except Exception as e:
             logging.error(f"【沃邮箱扭蛋机】：验证登录失败\n{e}")
 
-    # 获取token
-    def callback(self,mobile,refererurl):
-        # self.session=requests.session()
-        url=f"https://activity.mail.wo.cn/cn/lottery/login/callback.do?mobile={mobile}"
+    def lotterylogin(self,url):
         self.client.headers={
             'pragma': 'no-cache',
             'cache-control': 'no-cache',
@@ -60,15 +60,31 @@ class womail_apsule_machine:
             'user-agent': self.ua,
             'sec-fetch-site': 'same-origin',
             'sec-fetch-mode': 'cors',
-            'referer': refererurl,
             'accept-encoding': 'gzip, deflate',
             'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
         }
+        self.client.get(url)
+
+    # 获取token
+    def callback(self,mobile,refererurl):
+        # self.session=requests.session()
+        url=f"https://activity.mail.wo.cn/cn/lottery/login/callback.do?mobile={mobile}"
+        self.client.headers.update({
+            'referer': refererurl
+        })
         res=self.client.get(url)
         if 'Set-Cookie' in res.headers or 'set-cookie' in res.headers:
             return True
         else:
             logging.info("【沃邮箱扭蛋机】： 获取token失败")
+
+    def userInfo(self):
+        url=f"https://activity.mail.wo.cn/cn/lottery/login/userInfo.do?t={str(int(time.time() * 1000))}"
+        res=self.client.get(url)
+
+    def user_chance(self):
+        url=f"https://activity.mail.wo.cn/cn/lottery/user/chance.do?t={str(int(time.time() * 1000))}"
+        res=self.client.get(url)
 
     # 已完成任务列表
     def overtask(self):
@@ -82,7 +98,7 @@ class womail_apsule_machine:
         res=self.client.get(url).json()
 
         for task in res['result']:
-            logging.info(task)
+            # logging.info(task)
             taskName=task.get('taskName','')
             overtask_list.append(taskName)
 
@@ -111,12 +127,3 @@ class womail_apsule_machine:
             return self.draw()
         else:
             logging.info(f"【沃邮箱扭蛋机】：{res['msg']}")
-
-
-
-
-
-
-
-
-
