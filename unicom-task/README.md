@@ -91,6 +91,10 @@ export PUSH_PLUS_TOKEN="微信推送Plus+(通知服务示例，可留空或不�
 ```         
 [通知推送点我查看](https://github.com/wuye999/myScripts/blob/main/send.md)                  
 
+**appId**：手机文件夹 unicom 里的appid文件，以文本格式打开                             
+**imei**: 设备ID(通常是获取手机的imei) 联通判断是否登录多台设备 不能多台设备同时登录 填写常用的设备ID           
+**沃邮箱登陆Url**： 微信公众号联通沃邮箱 https://nyan.mail.wo.cn/cn/sign/index/index?mobile 开头的 URL            
+
 每天6:15自动更新脚本                        
 每天6:35, 18:35 自动运行任务                            
 ### 云函数               
