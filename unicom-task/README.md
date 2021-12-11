@@ -50,12 +50,18 @@ export unicom_womail_2="沃邮箱登陆Url2<<<手机号2(可留空)<<<沃邮箱�
 export unicom_womail_3="自然数顺序类推..."
 export PUSH_PLUS_TOKEN="微信推送Plus+(通知服务示例，可留空或不填)"
 ```         
-[点我查看通知推送变量](https://github.com/wuye999/myScripts/blob/main/send.md)        
-appId：手机文件夹 unicom 里的appid文件，以文本格式打开                             
-imei: 设备ID(通常是获取手机的imei) 联通判断是否登录多台设备 不能多台设备同时登录 填写常用的设备ID           
-沃邮箱登陆Url： 微信公众号联通沃邮箱 https://nyan.mail.wo.cn/cn/sign/index/index?mobile 开头的 URL            
+[点我查看通知推送变量](https://github.com/wuye999/myScripts/blob/main/send.md)          
+
+
+**appId**：手机文件夹 unicom 里的appid文件，以文本格式打开                             
+**imei**: 设备ID(通常是获取手机的imei) 联通判断是否登录多台设备 不能多台设备同时登录 填写常用的设备ID           
+**沃邮箱登陆Url**： 微信公众号联通沃邮箱 https://nyan.mail.wo.cn/cn/sign/index/index?mobile 开头的 URL            
+
+
 青龙需要安装的依赖：PyExecJS, pycryptodomex, pytz, requests, rsa                        
 安装方法：pip3 install xxx                        
+
+
 搞不定，不会安装依赖的同学，**手动下载**一次 文件夹 tenscf_rely 放入 /ql/scripts/unicom-task或/ql/scripts/wuye999_myScripts/unicom-task                                        
 **手动下载和青龙拉取的文件夹tenscf_rely文件夹是不一样的**                                 
 青龙最新版是放入/ql/scripts/wuye999_myScripts/unicom-task                                                
