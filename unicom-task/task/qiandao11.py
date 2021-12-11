@@ -12,7 +12,7 @@ class qiandao11:
         self.ua='Mozilla/5.0 (Linux; Android 9; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + self.user.get('username') + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}'
 
         self.openPlatLineNew() # 登录1
-        self.saveQiandaoLog
+        self.saveQiandaoLog()
         self.startQiandao() # 签到
 
     # 登录1
