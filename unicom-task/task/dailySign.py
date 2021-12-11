@@ -7,7 +7,7 @@ from utils.toutiao_reward import TouTiao
 
 class dailySign:
     """
-        联通日常签到
+        联通日常签到，气泡任务，签到看视频翻倍得积分
     """
     def _init_(self, client, user):
         self.useragent='Mozilla/5.0 (Linux; Android 9; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + user.get('username') + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}'
