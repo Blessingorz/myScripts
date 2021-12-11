@@ -2,9 +2,9 @@
 \##### 在脚本内或环境变量中填写，如果是脚本内，需要去掉export 后填写   
 
 
-#### 通知环境变量
+\#### 通知环境变量
 \#### 1. Server酱
-#### https://sct.ftqq.com
+\#### https://sct.ftqq.com
 \#### 下方填写 SCHKEY 值或 SendKey 值
 export PUSH_KEY=""              
 
