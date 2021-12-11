@@ -97,38 +97,16 @@ export PUSH_PLUS_TOKEN="微信推送Plus+(通知服务示例，可留空或不�
 不再支持                                
 
 ### 常见问题
-1. **提示 Not found '_raw_ecb.so'  **                 
-
+1. **提示 Not found '_raw_ecb.so'**                 
 ![image](https://user-images.githubusercontent.com/79479594/145678061-cbddc60f-9e0b-43b0-82a8-1eade2b795bc.png)         
-
 这是因为你的环境没有pycryptodomex依赖                           
-解决方法：pip3 install pycryptodomex 或者**手动下载**一次 文件夹 tenscf_rely 放入 /ql/scripts/wuye999_myScripts/unicom-task                     
-2. **No module named 'rsa' **                      
- 
+解决方法：pip3 install pycryptodomex 或者**手动下载**一次 文件夹 tenscf_rely 放入 /ql/scripts/wuye999_myScripts/unicom-task                   
+2. **No module named 'rsa'**                      
 ![image](https://user-images.githubusercontent.com/79479594/145678361-0af0dbaf-36ff-48bd-a77c-8509f3bfa5dc.png)           
-
 缺少rsa模块                                   
 解决方法：pip3 install rsa 或者**手动下载**一次 文件夹 tenscf_rely 放入 /ql/scripts/wuye999_myScripts/unicom-task         
                                                   
                                                   
                                                   
 
-
-
-
-
-
-
-
-
-
-
-
-
-       
-
-
-![image](https://user-images.githubusercontent.com/79479594/145678251-dc9bde4a-3550-40ec-ad13-8c4796f68e47.png)                         
-          
-缺少execjs模块                
-解决方法：pip3 install PyExecJS          
+      
