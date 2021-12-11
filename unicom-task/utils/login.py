@@ -81,7 +81,7 @@ def login(username,password,appId,imei):
         }
         saveData(username+'login_login_cookies', value)   # 保存cookie
         session.headers = {
-                'User-Agent': 'Mozilla/5.0 (Linux; Android 10; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + str(username) + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}',
+                'User-Agent': "Mozilla/5.0 (Linux; Android 9; Redmi Note 7 Build/PKQ1.180904.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/80.0.3987.99 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:"+str(username)+"};devicetype{deviceBrand:Xiaomi,deviceModel:Redmi Note 7};{yw_code:}",
         }
         return session
     else:
@@ -207,7 +207,7 @@ def onLine(username):
             saveData(username+'login_login_cookies', value)   # 保存cookie
 
             session.headers = {
-                'User-Agent': 'Mozilla/5.0 (Linux; Android 9; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + str(username) + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}',
+                'User-Agent': "Mozilla/5.0 (Linux; Android 9; Redmi Note 7 Build/PKQ1.180904.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/80.0.3987.99 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:"+str(username)+"};devicetype{deviceBrand:Xiaomi,deviceModel:Redmi Note 7};{yw_code:}"
             }
             return session
         else:

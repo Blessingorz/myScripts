@@ -210,7 +210,10 @@ def runTask(client, user):
         task_module = importlib.import_module('task.'+task_name)
         task_class = getattr(task_module, task_name)
         task_obj = task_class()
-        task_obj.run(client, user)
+        try:
+            task_obj.run(client, user)
+        except Exception as e:
+            logging.error(f"任务失败 \n{e}")
 
 # 沃邮箱
 def runTas_2(womail):
@@ -221,8 +224,10 @@ def runTas_2(womail):
         task_module = importlib.import_module('task.'+task_name)
         task_class = getattr(task_module, task_name)
         task_obj = task_class()
-        task_obj.run(womail)
-
+        try:
+            task_obj.run(womail)
+        except Exception as e:
+            logging.error(f"任务失败 \n{e}")
 
 # 云函数通知服务
 class sendNotice:   
