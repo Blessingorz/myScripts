@@ -93,7 +93,7 @@ class email_task:
 
         #积分任务
         try:
-            url = 'https://club.mail.wo.cn/clubwebservice/growth/queryIntegralTask'
+            url = 'https://club.mail.wo.cn/clubwebservice/growth/queryIntegralTask?channelId=club'
             res = self.email.get(url=url).json()
             for data in res['data']:
                 if data['irid'] == None or data['irid'] == 339 or data['taskState'] == 1:

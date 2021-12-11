@@ -1,5 +1,6 @@
 import os,sys
-import base64,rsa,time,requests,logging,traceback
+import base64,time,requests,logging,traceback
+import rsa # 导入rsa 模块，出错请先安装：pip3 install rsa
 # 手机号密码加密算法
 #获取公钥的key
 def str2key(s):

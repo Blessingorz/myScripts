@@ -2,7 +2,7 @@
 # @Time    : 2021/12/4 06:00
 # @Author  : wuye9999
 import os,sys
-import base64,rsa,time,requests,logging,traceback,random,json,execjs
+import base64,time,requests,logging,traceback,random,json
 from utils.encryption import encryption
 
 # 设备ID(通常是获取手机的imei) 联通判断是否登录多台设备 不能多台设备同时登录 填写常用的设备ID
