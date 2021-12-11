@@ -204,6 +204,8 @@ def runTask(client, user):
     for task_name in task_list:
         if task_name=='email_task.py':
             continue
+        if task_name=='game_signin.py':     # 暂停游戏频道打卡
+            continue
         if not (os.path.abspath('.')=='/var/user' and os.path.exists('/tmp')):
             if task_name=='dailySign.py':
                 continue
