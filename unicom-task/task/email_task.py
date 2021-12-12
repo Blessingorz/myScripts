@@ -29,8 +29,8 @@ class email_task:
             keepSign=0
 
         try:   
-            if keepSign > 21:
-                logging.info('【沃邮箱签到】: 连续签到天数大于21次,暂停签到')
+            if keepSign >= 21:
+                logging.info('【沃邮箱签到】: 连续签到天数大于等于21天,暂停签到')
             else:
                 url = "https://nyan.mail.wo.cn/cn/sign/user/checkin.do?rand=0.913524814493383"
                 res = self.email.post(url=url).json()
@@ -82,8 +82,8 @@ class email_task:
 
         #任务签到
         try:
-            if newContinuousDay>21:
-                logging.info('【沃邮箱签到】: 连续签到天数大于21次,暂停签到')
+            if newContinuousDay >= 21:
+                logging.info('【沃邮箱签到】: 连续签到天数大于等于21天,暂停签到')
             else:
                 url = 'https://club.mail.wo.cn/clubwebservice/club-user/user-sign/create?channelId='
                 res = self.email.get(url=url).json()
