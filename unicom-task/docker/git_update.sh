@@ -1,1 +1,1 @@
-cd /myScripts && git pull --force origin ${SCRIPT_BRANCH}
+cd /myScripts && git pull --force origin main

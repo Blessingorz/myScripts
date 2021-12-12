@@ -12,6 +12,7 @@ time=$(date "+%Y-%m-%d %H:%M:%S")
 startTime_s=`date +%s`
 echo "## 开始执行... ${time}"
 crontab /root/config/crontab.list
+# cd /myScripts && git pull --force origin ${SCRIPT_BRANCH}
 cp -rf /myScripts/unicom-task/ /root/ && cd /root/unicom-task && python3 unicom_index.py
 # 执行结束时间
 time=$(date "+%Y-%m-%d %H:%M:%S")
