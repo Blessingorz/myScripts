@@ -214,6 +214,7 @@ def runTask(client, user):
         task_class = getattr(task_module, task_name)
         task_obj = task_class()
         try:
+            time.sleep(3.2)
             task_obj.run(client, user)
         except Exception as e:
             logging.error(f"任务失败 \n{e}")

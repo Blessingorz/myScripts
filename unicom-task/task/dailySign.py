@@ -30,7 +30,7 @@ class dailySign:
         paramsList = result['data']['paramsList']
         logging.info("[气泡任务]")
         for item in paramsList:
-            logging.info(f'【气泡任务】：{item["prizeName"]}: {"已完成" if int(item["accomplish"]) else "未完成"} {item.get("startTime","")} {item.get("prizePrice","")}')
+            logging.info(f'【气泡任务】: {item["prizeName"]}: {"已完成" if int(item["accomplish"]) else "未完成"} {item.get("startTime","")} {item.get("prizePrice","")}')
         return paramsList
 
     def doTask(self, item, orderId):
@@ -42,8 +42,8 @@ class dailySign:
         }
         resp = self.session.post(url=url, data=data)
         try:
-            logging.info(f"【气泡任务】：{resp['data']['prizeName']} {resp['data']['statusDesc']} {resp['data']['returnStr']}")
-            logging.info(f"【气泡任务】：{resp['data']['taskLogo']}")
+            logging.info(f"【气泡任务】: {resp['data']['prizeName']} {resp['data']['statusDesc']} {resp['data']['returnStr']}")
+            logging.info(f"【气泡任务】: {resp['data']['taskLogo']}")
         except:
             logging.info(resp.json())
 
@@ -70,25 +70,25 @@ class dailySign:
         logging.info('[签到任务]')
         if int(doubleBtn['click']) == 1:
             self.hasDouble = True
-            logging.info('【气泡任务】：红包翻倍: 未翻倍')
+            logging.info('【气泡任务】: 红包翻倍: 未翻倍')
         else:
-            logging.info('【气泡任务】：红包翻倍: 已翻倍')
+            logging.info('【气泡任务】: 红包翻倍: 已翻倍')
         if int(data['todaySigned']) == 0:
-            logging.info('【气泡任务】：每日签到: 已签到')
+            logging.info('【气泡任务】: 每日签到: 已签到')
             return True
-        logging.info('【气泡任务】：每日签到: 未签到')
+        logging.info('【气泡任务】: 每日签到: 未签到')
 
     def getGoldTotal(self):
         url = 'https://act.10010.com/SigninApp/signin/getGoldTotal'
         resp = self.session.post(url=url)
-        logging.info(f"【气泡任务】：{resp.json().get('msg',resp.text)}")
+        logging.info(f"【气泡任务】: {resp.json().get('msg',resp.text)}")
 
     def signIn(self):
         url = 'https://act.10010.com/SigninApp/signin/daySign'
         resp = self.session.post(url=url)
         resp.encoding = 'utf8'
         data = resp.json()
-        logging.info(f"【气泡任务】：{data.get('msg',data)}")
+        logging.info(f"【气泡任务】: {data.get('msg',data)}")
 
     def bannerAdPlayingLogo(self, orderId):
         # signin
@@ -97,7 +97,7 @@ class dailySign:
             "orderId": orderId
         }
         resp = self.session.post(url=url, data=data)
-        logging.info("【气泡任务】：{resp.json().get('msg',resp.text)}")
+        logging.info("【气泡任务】: {resp.json().get('msg',resp.text)}")
 
     def run(self, client, user):
         self.session=client

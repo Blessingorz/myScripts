@@ -18,7 +18,7 @@ class qiandao11:
     # 登录1
     def openPlatLineNew(self):
         url=f"https://m.client.10010.com/mobileService/openPlatform/openPlatLineNew.htm?to_url=https://m.jf.10010.com/jf-order/avoidLogin/forActive/dbeo"   
-        headers={
+        self.client.headers={
             'Connection': 'keep-alive',
             'Pragma': 'no-cache',
             'Cache-Control': 'no-cache',
@@ -29,12 +29,12 @@ class qiandao11:
             'Accept-Encoding': 'gzip, deflate',
             'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
         }  
-        res=self.client.get(url,headers=headers)
+        res=self.client.get(url)
         # logging.info(res.url)
 
     def startQiandao(self):
         url="https://m.jf.10010.com/jf-yuech/p/qiandao11/api/startQiandao"
-        headers={
+        self.client.headers={
             'content-length': '59',
             'pragma': 'no-cache',
             'cache-control': 'no-cache',
@@ -51,11 +51,11 @@ class qiandao11:
             'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
         }
         data={"activityId":"Ac-leijiqiandao3","accountId":"15555555555"}
-        res=self.client.post(url,headers=headers,json=data).json()
+        res=self.client.post(url,json=data).json()
         # logging.info(res)
     def saveQiandaoLog(self):
         url="https://m.jf.10010.com/jf-yuech/p/qiandao11/api/saveQiandaoLog"
-        headers={
+        self.client.headers={
             'content-length': '59',
             'pragma': 'no-cache',
             'cache-control': 'no-cache',
@@ -72,7 +72,7 @@ class qiandao11:
             'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
         }
         data={"activityId":"Ac-leijiqiandao3","buttonId":"主页-签到","type":1}
-        res=self.client.post(url,headers=headers,json=data).json()
+        res=self.client.post(url,json=data).json()
         if res['code']==0:
             logging.info('【百万积分-引爆1212】: 签到成功，获得积分 10')
         else:
