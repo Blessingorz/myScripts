@@ -59,16 +59,16 @@ def post_auth_register():
         '_gat': '1'
     })
 
-    email_str=''.join(random.sample(string.ascii_letters + string.digits, random.randint(7, 14)))
+    email_str=''.join(random.sample(string.ascii_letters + string.digits, random.randint(8, 16)))
     email_suffix=random.choice(
         ['hotmail.com','msn.com','yahoo.com','gmail.com','aim.com','aol.com','mail.com','walla.com','inbox.com','126.com','163.com','sina.com','21cn.com','sohu.com','yahoo.com.cn','tom.com','qq.com','etang.com','citiz.com','sogou.com','chinaren.com','x.cn','56.com','eyou.com']
     )
     email=f"{email_str}%40{email_suffix}"
     name=email_str
-    passwd=''.join(random.sample(string.ascii_letters + string.digits, random.choice(range(8,13))))
+    passwd=''.join(random.sample(string.ascii_letters + string.digits, random.randint(8, 16)))
     repasswd=passwd
     wechat=email_str
-    imtype=random.choice(range(1,5))
+    imtype=random.randint(1,4)
 
     data=f"email={email}&name={name}&passwd={passwd}&repasswd={repasswd}&wechat={wechat}&imtype={imtype}&code=0&geetest_challenge=54229abfcfa5649e7003b83dd475529432&geetest_validate=aaa9960_da9_eaadf0&geetest_seccode=aaa9960_da9_eaadf0%7Cjordan"
 
