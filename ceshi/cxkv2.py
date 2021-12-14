@@ -2,6 +2,8 @@ import os,sys
 import json,time,re,traceback,random,datetime,logging,importlib,urllib,string
 import requests
 import chardet
+import binascii
+import codecs
 
 
 def ua():
@@ -63,28 +65,15 @@ def post_auth_register():
     )
     email=f"{email_str}%40{email_suffix}"
     name=email_str
-    passwd=''.join(random.sample(string.ascii_letters + string.digits, random.choice([6, 8])))
+    passwd=''.join(random.sample(string.ascii_letters + string.digits, random.choice(range(8,13))))
     repasswd=passwd
     wechat=email_str
     imtype=random.choice(range(1,5))
 
-    data=f"email={email}&name={name}&passwd={passwd}&repasswd={repasswd}&wechat={wechat}&imtype=4&code=0&geetest_challenge=54229abfcfa5649e7003b83dd475529432&geetest_validate=aaa9960_da9_eaadf0&geetest_seccode=aaa9960_da9_eaadf0%7Cjordan"
+    data=f"email={email}&name={name}&passwd={passwd}&repasswd={repasswd}&wechat={wechat}&imtype={imtype}&code=0&geetest_challenge=54229abfcfa5649e7003b83dd475529432&geetest_validate=aaa9960_da9_eaadf0&geetest_seccode=aaa9960_da9_eaadf0%7Cjordan"
 
     res=session.post("https://www.cxkv2.xyz/auth/register",data=data)
-    # print(chardet.detect(res.content))
-    # print(res.content)
-    res.encoding = 'utf-8'
-    print(res.text)
-    # print(res.encoding)
-    # res.encoding = 'utf-8'
-    # print(res.text)
-    # if res.get('ret',False):
-    #     print('注册成功')
-    #     print(f"邮箱: {email}")
-    #     print(f"密码: {repasswd}")
-    #     return email,repasswd
-    # else:
-    #     print('注册失败')
+    
     print(f"邮箱: {re.sub(r'%40','@',email)}")
     print(f"密码: {repasswd}")
     return email,repasswd
@@ -97,14 +86,6 @@ def auth_login(email,repasswd):
     })
     data=f"email={email}&passwd={repasswd}&code="
     res=session.post("https://www.cxkv2.xyz/auth/login",data=data)
-    # print(chardet.detect(res.content))
-    # print(res.content)
-    # print(res.text)
-    # print(res.text)
-    # if res.get('ret',False):
-    #     print('登录成功')
-    # else:
-    #     print('登录失败')
 
 
 def user():
@@ -121,33 +102,21 @@ def user():
         'accept-language': 'zh-CN,zh;q=0.9',
     }
     res=session.get("https://www.cxkv2.xyz/user")
-    # print(chardet.detect(res.content))
-    # print(res.content)
-    res.encoding = 'utf-8'
-    print(res.text)
-    # subscription=re.findall(r'data-clipboard-text="(.*?mu=2)">', res.text)
-    # if subscription:
-    #     print(f"v2订阅地址: {subscription[0]}")
-    # else:
-    #     print('获取订阅地址失败')
 
 
 def main_handler(event, context):
     global session,ua
-    ua="Mozilla/5.0 (Linux; Android 9; Redmi Note 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.116 Mobile Safari/537.36 EdgA/46.01.4.5140"
+    ua=ua()
     session=requests.session()
-# try:
-    cxkv2_xyz()
-    get_auth_register()
-    email,repasswd=post_auth_register()
-    auth_login(email,repasswd)
-    user()
-# except Exception as e:
-#     print(f"错误\n{e}")
-
+    try:
+        cxkv2_xyz()
+        get_auth_register()
+        email,repasswd=post_auth_register()
+        auth_login(email,repasswd)
+        user()
+    except Exception as e:
+        print(f"错误\n{e}")
 
 
 if __name__ == '__main__':
     main_handler('','')
-
-
