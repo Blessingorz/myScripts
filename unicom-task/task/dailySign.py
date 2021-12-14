@@ -11,14 +11,14 @@ class dailySign:
     """
     def _init_(self, client, user):
         self.useragent='Mozilla/5.0 (Linux; Android 9; RMX1901 Build/QKQ1.190918.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/74.0.3729.186 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:' + user.get('username') + '};devicetype{deviceBrand:Realme,deviceModel:RMX1901};{yw_code:}'
-        self.session.headers = requests.structures.CaseInsensitiveDict({
-            "accept": "application/json, text/plain, */*",
-            "origin": "https://img.client.10010.com",
-            "user-agent": self.useragent,
-            "content-type": "application/x-www-form-urlencoded",
-            "referer": "https://img.client.10010.com/SigininApp/index.html",
-            "x-requested-with": "com.sinovatech.unicom.ui"
-        })
+        # self.session.headers = requests.structures.CaseInsensitiveDict({
+        #     "accept": "application/json, text/plain, */*",
+        #     "origin": "https://img.client.10010.com",
+        #     "user-agent": self.useragent,
+        #     "content-type": "application/x-www-form-urlencoded",
+        #     "referer": "https://img.client.10010.com/SigininApp/index.html",
+        #     "x-requested-with": "com.sinovatech.unicom.ui"
+        # })
         self.hasDouble = False
         self.toutiao = TouTiao(user.get('username'))
 

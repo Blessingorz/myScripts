@@ -25,7 +25,7 @@ class Koi_phone_bill:
     # 登录1
     def openPlatLineNew(self):
         url=f"https://m.client.10010.com/mobileService/openPlatform/openPlatLineNew.htm?to_url=https://user.mail.wo.cn/cu-email/mobile/jump11&yw_code=&desmobile={self.user['username']}&version=android@8.0805"   
-        self.client.headers={
+        headers={
             'pragma': 'no-cache',
             'cache-control': 'no-cache',
             'upgrade-insecure-requests': '1',
@@ -39,30 +39,30 @@ class Koi_phone_bill:
             'accept-encoding': 'gzip, deflate',
             'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
         }  
-        res=self.client.get(url)
+        res=self.client.get(url,headers=headers)
         logging.info(res)
-    # try:
-        mobile=re.findall(r'mobile=(.*?)&', res.url)[0]
-        mobile=re.sub(r'\+', '%2B', mobile)
-        # logging.info(mobile)
-        # logging.info(res.url)
-        return mobile,res.url
-    # except Exception as e:
-    #     logging.error(f"【锦鲤送话费】:验证登录失败\n{e}")
+        try:
+            mobile=re.findall(r'mobile=(.*?)&', res.url)[0]
+            mobile=re.sub(r'\+', '%2B', mobile)
+            # logging.info(mobile)
+            # logging.info(res.url)
+            return mobile,res.url
+        except Exception as e:
+            logging.error(f"【锦鲤送话费】:验证登录失败\n{e}")
 
     def summer1login(self,url):
-        self.client.headers={
-            'pragma': 'no-cache',
-            'cache-control': 'no-cache',
-            'accept': '*/*',
-            'sec-fetch-dest': 'empty',
-            'x-requested-with': 'XMLHttpRequest',
-            'user-agent': self.ua,
-            'sec-fetch-site': 'same-origin',
-            'sec-fetch-mode': 'cors',
-            'accept-encoding': 'gzip, deflate',
-            'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-        }
+        # self.client.headers={
+        #     'pragma': 'no-cache',
+        #     'cache-control': 'no-cache',
+        #     'accept': '*/*',
+        #     'sec-fetch-dest': 'empty',
+        #     'x-requested-with': 'XMLHttpRequest',
+        #     'user-agent': self.ua,
+        #     'sec-fetch-site': 'same-origin',
+        #     'sec-fetch-mode': 'cors',
+        #     'accept-encoding': 'gzip, deflate',
+        #     'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+        # }
         self.client.get(url)
 
     # 获取token

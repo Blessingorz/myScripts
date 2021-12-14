@@ -51,18 +51,18 @@ class womail_apsule_machine:
             logging.error(f"【沃邮箱扭蛋机】：验证登录失败\n{e}")
 
     def lotterylogin(self,url):
-        self.client.headers={
-            'pragma': 'no-cache',
-            'cache-control': 'no-cache',
-            'accept': '*/*',
-            'sec-fetch-dest': 'empty',
-            'x-requested-with': 'XMLHttpRequest',
-            'user-agent': self.ua,
-            'sec-fetch-site': 'same-origin',
-            'sec-fetch-mode': 'cors',
-            'accept-encoding': 'gzip, deflate',
-            'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-        }
+        # self.client.headers={
+        #     'pragma': 'no-cache',
+        #     'cache-control': 'no-cache',
+        #     'accept': '*/*',
+        #     'sec-fetch-dest': 'empty',
+        #     'x-requested-with': 'XMLHttpRequest',
+        #     'user-agent': self.ua,
+        #     'sec-fetch-site': 'same-origin',
+        #     'sec-fetch-mode': 'cors',
+        #     'accept-encoding': 'gzip, deflate',
+        #     'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+        # }
         self.client.get(url)
 
     # 获取token

@@ -46,6 +46,7 @@ class dailySign_2:
     def signin_daySign(self):
         res=self.client.post("https://act.10010.com/SigninApp/signin/daySign").json()
         logging.info(f"【签到任务】: {res}")
+        time.sleep(1.2)
 
     # 超简单任务列表
     def superEasy_getTask(self,f=0):
@@ -62,8 +63,9 @@ class dailySign_2:
             logging.info(f"【签到任务】: 开始任务 {title}")
             if achieve!=allocation and taskId:
                 try:
+                    time.sleep(1.2)
                     self.superEasy_accomplishDotask(taskId,title,taskType)
-                    if f<10:
+                    if f<3:
                         return self.superEasy_getTask(f+1)
                 except Exception as e:
                     logging.error(f"【签到任务】: 错误\n{e}")
@@ -83,6 +85,7 @@ class dailySign_2:
             logging.info(f"【签到任务】: 开始领取奖励 {title}")
             if int(achieve)>0 and taskId:
                 try:
+                    time.sleep(1.2)
                     self.superEasy_doTaskS(taskId,taskType)
                 except Exception as e:
                     logging.error(f"【签到任务】: 错误\n{e}")
@@ -94,10 +97,12 @@ class dailySign_2:
     def superEasy_accomplishDotask(self,taskId,title,taskType):
         url= "https://act.10010.com/SigninApp/simplyDotask/accomplishDotask"
 
+        time.sleep(1.5)
         data={"taskId":taskId,"systemCode":"QDQD","orderId":"","taskName":title,"taskType":taskType}
         res=self.client.post(url,json=data).json()
         logging.info(f"【签到任务】: {res}")
 
+        time.sleep(1.5)
         data={"taskId":taskId,"systemCode":"QDQD","orderId":"","taskName":title,"taskType":"1"}
         res=self.client.post(url,json=data).json()
         logging.info(f"【签到任务】: {res}")
@@ -106,10 +111,12 @@ class dailySign_2:
     def superEasy_doTaskS(self,taskId,taskType):
         url="https://act.10010.com/SigninApp/simplyDotask/doTaskS"
 
+        time.sleep(3)
         data=f"taskId={taskId}&taskType={taskType}"
         res=self.client.post(url,data=data).json()
         logging.info(f"【签到任务】: {res}")
 
+        time.sleep(3)
         data=f"taskId={taskId}&taskType=1"
         res=self.client.post(url,data=data).json()
         logging.info(f"【签到任务】: {res}")
@@ -128,8 +135,9 @@ class dailySign_2:
             logging.info(f"【签到任务】: 开始任务 {title}")
             if achieve!=allocation and taskId:
                 try:
+                    time.sleep(1.2)
                     self.bigRew_doTaskS(taskId)
-                    if f<10:
+                    if f<3:
                         return self.bigRew_getTask(f+1)
                 except Exception as e:
                     logging.error(f"【签到任务】: 错误\n{e}")
@@ -140,6 +148,7 @@ class dailySign_2:
     def bigRew_doTaskS(self,taskId):
         url="https://act.10010.com/SigninApp/simplyDotask/doTaskS"
 
+        time.sleep(1.5)
         data=f"taskId={taskId}"
         res=self.client.post(url,data=data).json()
         logging.info(f"【签到任务】: {res}")

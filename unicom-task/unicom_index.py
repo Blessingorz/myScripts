@@ -3,17 +3,17 @@
 '''
 cron: 16 6,16 * * *
 new Env('联通日常任务');
-变量: unicom_config_x，通知服务变量
-脚本内或环境变量填写，环境变量优先
-通知推送服务环境变量请查看：https://github.com/wuye999/myScripts/blob/main/send.md
-环境变量示例：
+变量: unicom_config_x, unicom_womail_x, 通知服务变量
+脚本内或环境变量填写, 环境变量优先
+通知推送服务环境变量请查看: https://github.com/wuye999/myScripts/blob/main/send.md
+环境变量示例: 
 export unicom_config_1="手机号1<<<服务密码1<<<appId1<<<抽奖次数(0-30)中奖几率渺茫<<<手机的imei（可留空）"
 export unicom_config_2="手机号2<<<服务密码2<<<appId2<<<抽奖次数(0-30)中奖几率渺茫<<<手机的imei（可留空）"
 export unicom_womail_1="沃邮箱登陆Url1<<<手机号1(可留空)<<<沃邮箱密码（可留空）"
 export unicom_womail_2="沃邮箱登陆Url2<<<手机号2(可留空)<<<沃邮箱密码（可留空）"
-export PUSH_PLUS_TOKEN="微信推送Plus+(通知服务示例，可留空或不填)"
+export PUSH_PLUS_TOKEN="微信推送Plus+(通知服务示例, 可留空或不填)"
 '''
-# 脚本内示例：
+# 脚本内示例: 
 unicom_config_1="18825802580<<<888888<<<appppppp8888888888iiiddd<<<0<<<860128045213200"
 unicom_womail_1="https://nyan.mail.wo.cn/cn/sign/index/index?mobile=aaa&userName=&openId=bbb"
 PUSH_PLUS_TOKEN=""
@@ -32,30 +32,28 @@ def abspath(p=''):  # 返回项目所在目录
         return os.path.abspath(os.path.dirname(f'{os.path.split(__file__)[0]}/{p}'))      # 其他
 os.chdir(abspath())  # 修改当前工作目录为项目目录
 
-# if os.path.abspath('.')=='/var/user' and os.path.exists('/tmp'):
 sys.path.append('./tenscf_rely')
 sys.path.append('/tmp')
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append('./utils')
+
 try:
     import execjs
 except Exception as e:
-    print(str(e) + "\n缺少execjs模块, 请执行命令：pip3 install PyExecJS\n")
-    exit()
+    print(str(e) + "\n缺少execjs模块, 请执行命令: pip3 install PyExecJS\n")
 
-if not (os.path.abspath('.')=='/var/user' and os.path.exists('/tmp')):
-    try:
-        import Cryptodome
-        from Cryptodome.Cipher import AES
-    except Exception as e:
-        print(str(e) + "\n缺少Cryptodome模块, 请执行命令：pip3 install pycryptodomex\n")
-        exit()
-import pytz,requests,rsa     # 导入 pytz,requests,rsa 模块，出错请先安装这些模块：pip3 install xxx
+try:
+    import Cryptodome
+    from Cryptodome.Cipher import AES
+except Exception as e:
+    print(str(e) + "\n缺少Cryptodome模块, 请执行命令: pip3 install pycryptodomex\n")
+
+import pytz,requests,rsa     # 导入 pytz,requests,rsa 模块，出错请先安装这些模块: pip3 install xxx
+
 import json,time,re,traceback,random,datetime,util,sys,login,logging,importlib,urllib
-
-requests.packages.urllib3.disable_warnings()
 from task_list import task_list
+requests.packages.urllib3.disable_warnings()
 
 
 # 腾讯云函数可写日志目录
@@ -129,7 +127,7 @@ def get_env_nofixed(env):
     
 
 #读取用户配置信息
-#错误原因有两种：格式错误、未读取到错误
+#错误原因有两种: 格式错误、未读取到错误
 def readJson():
     users=list()
     try:
@@ -146,23 +144,17 @@ def readJson():
             }
 
             if len(user_list) > 3:
-                if user_list[3] and user_list[3] != '0' and user_list[3] != ' ' :
-                    user_dict['lotteryNum']=user_list[3]
-                else:
-                    user_dict['lotteryNum']='0' 
-            else:
-                user_dict['lotteryNum']='0'  
+                if user_list[3] and user_list[3] != '0' and user_list[3] != ' ' : user_dict['lotteryNum']=user_list[3]
+                else: user_dict['lotteryNum']='0' 
+            else: user_dict['lotteryNum']='0'  
 
             if len(user_list) > 4:
-                if user_list[4] and user_list[4] != '0' and user_list[4] != ' ' :
-                    user_dict['imei']=user_list[4] 
-                else:
-                    user_dict['imei']=''
-            else:
-                user_dict['imei']=''
+                if user_list[4] and user_list[4] != '0' and user_list[4] != ' ' : user_dict['imei']=user_list[4] 
+                else: user_dict['imei']=''
+            else: user_dict['imei']=''
 
             users.append(user_dict)
-    except:
+    except: 
         logging.error('账号变量填写错误')
 
     womails=list()
@@ -177,21 +169,14 @@ def readJson():
                 "woEmail": womail_str_list[0],
             }
             if len(womail_str_list) > 1:
-                if womail_str_list[1] and womail_str_list[1] != ' ' :
-                    womail_str_dict['username']=womail_str_list[1]
-                else:
-                    womail_str_dict['username']=''
-            else:
-                womail_str_dict['username']=''
+                if womail_str_list[1] and womail_str_list[1] != ' ' : womail_str_dict['username']=womail_str_list[1]
+                else: womail_str_dict['username']=''
+            else: womail_str_dict['username']=''
 
             if len(womail_str_list) > 2:
-                if womail_str_list[2] and womail_str_list[2] != ' ' :
-                    womail_str_dict['woEmail_password']=womail_str_list[2]
-                else:
-                    womail_str_dict['woEmail_password']=''
-            else:
-                womail_str_dict['woEmail_password']=''
-
+                if womail_str_list[2] and womail_str_list[2] != ' ' : womail_str_dict['woEmail_password']=womail_str_list[2]
+                else: womail_str_dict['woEmail_password']=''
+            else: womail_str_dict['woEmail_password']=''
 
             womails.append(womail_str_dict)
     except:
@@ -206,9 +191,6 @@ def runTask(client, user):
             continue
         if task_name=='game_signin.py':     # 暂停游戏频道打卡
             continue
-        if not (os.path.abspath('.')=='/var/user' and os.path.exists('/tmp')):
-            if task_name=='dailySign.py':
-                continue
         task_name=task_name[:-3]
         task_module = importlib.import_module('task.'+task_name)
         task_class = getattr(task_module, task_name)
@@ -217,7 +199,7 @@ def runTask(client, user):
             time.sleep(3.2)
             task_obj.run(client, user)
         except Exception as e:
-            logging.error(f"任务失败 \n{e}")
+            logging.error(f"{task_name}任务失败 \n{e}")
 
 # 沃邮箱
 def runTas_2(womail):
@@ -261,10 +243,8 @@ class sendNotice:
         l=['BARK_PUSH', 'BARK_ARCHIVE', 'BARK_GROUP', 'BARK_SOUND', 'DD_BOT_SECRET', 'DD_BOT_TOKEN', 'FSKEY', 'GOBOT_URL', 'GOBOT_QQ', 'GOBOT_TOKEN', 'GOTIFY_URL', 'GOTIFY_TOKEN', 'GOTIFY_PRIORITY', 'IGOT_PUSH_KEY', 'PUSH_KEY', 'PUSH_PLUS_TOKEN', 'PUSH_PLUS_USER', 'QMSG_KEY', 'QMSG_TYPE', 'QYWX_AM', 'QYWX_KEY', 'TG_BOT_TOKEN', 'TG_USER_ID', 'TG_API_HOST', 'TG_PROXY_AUTH', 'TG_PROXY_HOST', 'TG_PROXY_PORT']
         d={}
         for a in l:
-            try:
-                d[a]=eval(a)
-            except:
-                d[a]=''
+            try: d[a]=eval(a)
+            except: d[a]=''
         try:
             initialize(d)
         except:

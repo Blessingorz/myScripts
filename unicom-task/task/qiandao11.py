@@ -18,7 +18,7 @@ class qiandao11:
     # 登录1
     def openPlatLineNew(self):
         url=f"https://m.client.10010.com/mobileService/openPlatform/openPlatLineNew.htm?to_url=https://m.jf.10010.com/jf-order/avoidLogin/forActive/dbeo"   
-        self.client.headers={
+        headers={
             'Connection': 'keep-alive',
             'Pragma': 'no-cache',
             'Cache-Control': 'no-cache',
@@ -29,20 +29,20 @@ class qiandao11:
             'Accept-Encoding': 'gzip, deflate',
             'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
         }  
-        res=self.client.get(url)
-        # logging.info(res.url)
-
+        self.client.get(url,headers=headers).text
+        
     def startQiandao(self):
         url="https://m.jf.10010.com/jf-yuech/p/qiandao11/api/startQiandao"
-        self.client.headers={
+        headers={
             'content-length': '59',
             'pragma': 'no-cache',
             'cache-control': 'no-cache',
             'accept': 'application/json, text/plain, */*',
             'origin': 'https://m.jf.10010.com',
-            'authorization': 'bearer ee52680a-0196-48de-9d12-733897160e60',
+            'authorization': 'bearer 2a4cdbd4-01a8-497e-880d-bd6d2489b22d',
             'sec-fetch-dest': 'empty',
             'user-agent': self.ua,
+            'content-type': 'application/json;charset=UTF-8',
             'x-requested-with': 'com.sinovatech.unicom.ui',
             'sec-fetch-site': 'same-origin',
             'sec-fetch-mode': 'cors',
@@ -51,19 +51,30 @@ class qiandao11:
             'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
         }
         data={"activityId":"Ac-leijiqiandao3","accountId":"15555555555"}
-        res=self.client.post(url,json=data).json()
-        # logging.info(res)
+        res=self.client.post(url,headers=headers,json=data).json()
+        # logging.info(self.client.cookies.get_dict())
+        if res['code']==0:
+            logging.info('【百万积分-引爆1212】: 签到成功，获得积分 10')
+        else:
+            logging.info(f"【百万积分-引爆1212】: {res}")
+
     def saveQiandaoLog(self):
+        self.client.cookies.update({
+            'PvSessionId': '202112141716298f7731fb065f446cbb3cfaf31b8a42da',
+            '_pk_id.1.0805': '2e70efac0ec238df.1639471920.1.1639471923.1639471922.',
+            '_pk_ses.1.0805': '1'
+        })
         url="https://m.jf.10010.com/jf-yuech/p/qiandao11/api/saveQiandaoLog"
-        self.client.headers={
+        headers={
             'content-length': '59',
             'pragma': 'no-cache',
             'cache-control': 'no-cache',
             'accept': 'application/json, text/plain, */*',
             'origin': 'https://m.jf.10010.com',
-            'authorization': 'bearer ee52680a-0196-48de-9d12-733897160e60',
+            'authorization': 'bearer 2a4cdbd4-01a8-497e-880d-bd6d2489b22d',
             'sec-fetch-dest': 'empty',
             'user-agent': self.ua,
+            'content-type': 'application/json;charset=UTF-8',
             'x-requested-with': 'com.sinovatech.unicom.ui',
             'sec-fetch-site': 'same-origin',
             'sec-fetch-mode': 'cors',
@@ -72,9 +83,5 @@ class qiandao11:
             'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
         }
         data={"activityId":"Ac-leijiqiandao3","buttonId":"主页-签到","type":1}
-        res=self.client.post(url,json=data).json()
-        if res['code']==0:
-            logging.info('【百万积分-引爆1212】: 签到成功，获得积分 10')
-        else:
-            logging.info(f"【百万积分-引爆1212】: {res}")
+        self.client.post(url,headers=headers,json=data).text
 
