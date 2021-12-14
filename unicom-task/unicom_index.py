@@ -19,7 +19,7 @@ unicom_womail_1="https://nyan.mail.wo.cn/cn/sign/index/index?mobile=aaa&userName
 PUSH_PLUS_TOKEN=""
 
 
-run_send='yes'      # yes或no,是否启用推送
+unicom_run_send='yes'      # yes或no,是否启用推送
 
 
 import os,sys
@@ -266,6 +266,7 @@ class sendNotice:
 #腾讯云函数入口
 def main_handler(event, context):
     users,womails = readJson()
+    unicom_run_send=get_env("unicom_run_send")
     for user in users:
         # 清空上一个用户的日志记录
         with open(log_path('log.txt'),mode='w',encoding='utf-8') as f:
@@ -277,7 +278,7 @@ def main_handler(event, context):
         util.getIntegral(client)
         if client != False:
             runTask(client, user)
-        if run_send=='yes':
+        if unicom_run_send=='yes':
             sendNotice().main()
 
     global womail
@@ -288,7 +289,7 @@ def main_handler(event, context):
         if womail["woEmail"]:
             logging.info('--------------账号分割线---------------')
             runTas_2(womail)
-        if run_send=='yes':
+        if unicom_run_send=='yes':
             sendNotice().main()
 
         
