@@ -19,7 +19,7 @@ unicom_womail_1="https://nyan.mail.wo.cn/cn/sign/index/index?mobile=aaa&userName
 PUSH_PLUS_TOKEN=""
 
 
-unicom_run_send='yes'      # yes或no,是否启用推送
+unicom_run_send='yes'      # yes或no,是否启用推送,环境变量unicom_run_send，环境变量优先
 
 
 import os,sys
