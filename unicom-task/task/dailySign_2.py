@@ -10,22 +10,22 @@ class dailySign_2:
         self.client=client
         self.user=user
         self.ua="Mozilla/5.0 (Linux; Android 9; Redmi Note 7 Build/PKQ1.180904.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/80.0.3987.99 Mobile Safari/537.36; unicom{version:android@8.0805,desmobile:"+self.user["username"]+"};devicetype{deviceBrand:Xiaomi,deviceModel:Redmi Note 7};{yw_code:}"
-        self.client.headers={
-            'content-length': '19',
-            'pragma': 'no-cache',
-            'cache-control': 'no-cache',
-            'accept': 'application/json, text/plain, */*',
-            'origin': 'https://img.client.10010.com',
-            'sec-fetch-dest': 'empty',
-            'user-agent': self.ua,
-            'content-type': 'application/x-www-form-urlencoded',
-            'x-requested-with': 'com.sinovatech.unicom.ui',
-            'sec-fetch-site': 'same-site',
-            'sec-fetch-mode': 'cors',
-            'referer': 'https://img.client.10010.com/SigininApp/index.html',
-            'accept-encoding': 'gzip, deflate',
-            'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-        }
+        # self.client.headers={
+        #     'content-length': '19',
+        #     'pragma': 'no-cache',
+        #     'cache-control': 'no-cache',
+        #     'accept': 'application/json, text/plain, */*',
+        #     'origin': 'https://img.client.10010.com',
+        #     'sec-fetch-dest': 'empty',
+        #     'user-agent': self.ua,
+        #     'content-type': 'application/x-www-form-urlencoded',
+        #     'x-requested-with': 'com.sinovatech.unicom.ui',
+        #     'sec-fetch-site': 'same-site',
+        #     'sec-fetch-mode': 'cors',
+        #     'referer': 'https://img.client.10010.com/SigininApp/index.html',
+        #     'accept-encoding': 'gzip, deflate',
+        #     'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+        # }
 
         try:
             self.getIntegral()  # 获取set-cookie: SigninApp

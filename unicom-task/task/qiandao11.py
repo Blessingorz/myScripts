@@ -18,40 +18,40 @@ class qiandao11:
     # 登录1
     def openPlatLineNew(self):
         url=f"https://m.client.10010.com/mobileService/openPlatform/openPlatLineNew.htm?to_url=https://m.jf.10010.com/jf-order/avoidLogin/forActive/dbeo"   
-        headers={
-            'Connection': 'keep-alive',
-            'Pragma': 'no-cache',
-            'Cache-Control': 'no-cache',
-            'Upgrade-Insecure-Requests': '1',
-            'User-Agent': self.ua,
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-            'X-Requested-With': 'com.sinovatech.unicom.ui',
-            'Accept-Encoding': 'gzip, deflate',
-            'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-        }  
-        self.client.get(url,headers=headers).text
+        # headers={
+        #     'Connection': 'keep-alive',
+        #     'Pragma': 'no-cache',
+        #     'Cache-Control': 'no-cache',
+        #     'Upgrade-Insecure-Requests': '1',
+        #     'User-Agent': self.ua,
+        #     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        #     'X-Requested-With': 'com.sinovatech.unicom.ui',
+        #     'Accept-Encoding': 'gzip, deflate',
+        #     'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+        # }  
+        self.client.get(url).text
         
     def startQiandao(self):
         url="https://m.jf.10010.com/jf-yuech/p/qiandao11/api/startQiandao"
-        headers={
-            'content-length': '59',
-            'pragma': 'no-cache',
-            'cache-control': 'no-cache',
-            'accept': 'application/json, text/plain, */*',
-            'origin': 'https://m.jf.10010.com',
-            'authorization': 'bearer 2a4cdbd4-01a8-497e-880d-bd6d2489b22d',
-            'sec-fetch-dest': 'empty',
-            'user-agent': self.ua,
-            'content-type': 'application/json;charset=UTF-8',
-            'x-requested-with': 'com.sinovatech.unicom.ui',
-            'sec-fetch-site': 'same-origin',
-            'sec-fetch-mode': 'cors',
-            'referer': 'https://m.jf.10010.com/cms/yuech/activity/dbe/index.html',
-            'accept-encoding': 'gzip, deflate',
-            'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-        }
+        # headers={
+        #     'content-length': '59',
+        #     'pragma': 'no-cache',
+        #     'cache-control': 'no-cache',
+        #     'accept': 'application/json, text/plain, */*',
+        #     'origin': 'https://m.jf.10010.com',
+        #     'authorization': 'bearer 2a4cdbd4-01a8-497e-880d-bd6d2489b22d',
+        #     'sec-fetch-dest': 'empty',
+        #     'user-agent': self.ua,
+        #     'content-type': 'application/json;charset=UTF-8',
+        #     'x-requested-with': 'com.sinovatech.unicom.ui',
+        #     'sec-fetch-site': 'same-origin',
+        #     'sec-fetch-mode': 'cors',
+        #     'referer': 'https://m.jf.10010.com/cms/yuech/activity/dbe/index.html',
+        #     'accept-encoding': 'gzip, deflate',
+        #     'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+        # }
         data={"activityId":"Ac-leijiqiandao3","accountId":"15555555555"}
-        res=self.client.post(url,headers=headers,json=data).json()
+        res=self.client.post(url,json=data).json()
         # logging.info(self.client.cookies.get_dict())
         if res['code']==0:
             logging.info('【百万积分-引爆1212】: 签到成功，获得积分 10')
@@ -65,7 +65,7 @@ class qiandao11:
             '_pk_ses.1.0805': '1'
         })
         url="https://m.jf.10010.com/jf-yuech/p/qiandao11/api/saveQiandaoLog"
-        headers={
+        self.client.headers={
             'content-length': '59',
             'pragma': 'no-cache',
             'cache-control': 'no-cache',
@@ -83,5 +83,5 @@ class qiandao11:
             'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
         }
         data={"activityId":"Ac-leijiqiandao3","buttonId":"主页-签到","type":1}
-        self.client.post(url,headers=headers,json=data).text
+        self.client.post(url,json=data).text
 

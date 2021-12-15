@@ -25,22 +25,22 @@ class Koi_phone_bill:
     # 登录1
     def openPlatLineNew(self):
         url=f"https://m.client.10010.com/mobileService/openPlatform/openPlatLineNew.htm?to_url=https://user.mail.wo.cn/cu-email/mobile/jump11&yw_code=&desmobile={self.user['username']}&version=android@8.0805"   
-        headers={
-            'pragma': 'no-cache',
-            'cache-control': 'no-cache',
-            'upgrade-insecure-requests': '1',
-            'user-agent': self.ua,
-            'sec-fetch-dest': 'document',
-            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-            'x-requested-with': 'com.sinovatech.unicom.ui',
-            'sec-fetch-site': 'none',
-            'sec-fetch-mode': 'navigate',
-            'sec-fetch-user': '?1',
-            'accept-encoding': 'gzip, deflate',
-            'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-        }  
-        res=self.client.get(url,headers=headers)
-        logging.info(res)
+        # headers={
+        #     'pragma': 'no-cache',
+        #     'cache-control': 'no-cache',
+        #     'upgrade-insecure-requests': '1',
+        #     'user-agent': self.ua,
+        #     'sec-fetch-dest': 'document',
+        #     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        #     'x-requested-with': 'com.sinovatech.unicom.ui',
+        #     'sec-fetch-site': 'none',
+        #     'sec-fetch-mode': 'navigate',
+        #     'sec-fetch-user': '?1',
+        #     'accept-encoding': 'gzip, deflate',
+        #     'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+        # }  
+        res=self.client.get(url)
+        # logging.info(res)
         try:
             mobile=re.findall(r'mobile=(.*?)&', res.url)[0]
             mobile=re.sub(r'\+', '%2B', mobile)
