@@ -16,6 +16,8 @@ class email_task:
             wxName = res.get("result").get("wxName")
             userMobile = res.get("result").get("userMobile")
             logging.info(f"【沃邮箱】: 登录账号 {wxName} ")
+            logging.info(f'【沃邮箱】: 剩余积分 {res.get("result").get("clubScore")} ')
+            logging.info(f"【沃邮箱】: 活动获得积分 {res.get('result').get('totalScore')} ")
         except Exception as e:
             logging.error("【沃邮箱】: 沃邮箱获取用户信息失败", e)
 
@@ -70,6 +72,16 @@ class email_task:
             logging.error(f"【沃邮箱】: 沃邮箱执行任务错误\n{e}")
 
     def dotask_2(self):
+        #查询成长值
+        try:
+            url = "https://club.mail.wo.cn/clubwebservice/growth/get-person-centre"
+            res = self.email.get(url=url).json()
+            memberUser=res['data']['memberUser']
+            logging.info(f'【沃邮箱】: 俱乐部会员等级 {memberUser["levelName"]}')
+            logging.info(f'【沃邮箱】: 俱乐部成长值 {memberUser["growthValue"]}')
+        except Exception as e:
+            logging.error(f'【沃邮箱】: 获取俱乐部信息失败 \n{e}')
+
         #查询签到天数
         try:
             url = "https://club.mail.wo.cn/clubwebservice/club-user/user-sign/query-continuous-sign-record"

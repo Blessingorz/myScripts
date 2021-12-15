@@ -291,8 +291,7 @@ def main_handler(event, context):
             runTas_2(womail)
         if unicom_run_send=='yes':
             sendNotice().main()
-
-        
+ 
 
 #主函数入口
 if __name__ == '__main__':
