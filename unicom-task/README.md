@@ -109,7 +109,12 @@ export PUSH_PLUS_TOKEN="微信推送Plus+(通知服务示例，可留空或不�
 2. **提示No module named 'rsa'**                                             
 ![image](https://user-images.githubusercontent.com/79479594/145678361-0af0dbaf-36ff-48bd-a77c-8509f3bfa5dc.png)           
 缺少rsa模块                                   
-解决方法：pip3 install rsa 或者**手动下载**一次 文件夹 tenscf_rely 放入 /ql/scripts/wuye999_myScripts/unicom-task         
+解决方法：pip3 install rsa 或者**手动下载**一次 文件夹 tenscf_rely 放入 /ql/scripts/wuye999_myScripts/unicom-task           
+
+3. **提示 非联通用户，用短信验证码登陆**          
+![image](https://user-images.githubusercontent.com/79479594/146112124-8320df50-ccb7-40c4-b6a2-814eb0b33364.png)                     
+appid和手机上的不一致，因此需要短信验证              
+解决方法：使用正确的appid                       
                                                   
                                                   
                                                   
