@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # @Time    : 2021/11/23 22:30
-# @Author  : wuye9999
+# @Author  : srcrs, ,wuye9999
 # 沃邮箱
 import os,sys
 import json,time,re,traceback,random,datetime,util,sys,login,logging,importlib,urllib
@@ -42,7 +42,7 @@ class email_task:
                 elif result is None:
                     logging.info("【沃邮箱签到】: 签到失败")
                 else:
-                    logging.info(f"【沃邮箱签到】: 签到成功~已签到{result}天！")
+                    logging.info(f"【沃邮箱签到】: 签到成功~已签到{result}天!")
         except Exception as e:
             logging.error(f"【沃邮箱签到】: 错误 \n{e}")
 
