@@ -20,7 +20,7 @@ import requests
 # 通知服务
 # fmt: off
 push_config = {
-    'BARK_PUSH': '',                    # bark IP 或设备码，例：https://api.day.app/DxHcxxxxxRxxxxxxcm/
+    'BARK_PUSH': '',                    # bark IP 或设备码，例: https://api.day.app/DxHcxxxxxRxxxxxxcm/
     'BARK_ARCHIVE': '',                 # bark 推送是否存档
     'BARK_GROUP': '',                   # bark 推送分组
     'BARK_SOUND': '',                   # bark 推送声音
@@ -31,8 +31,8 @@ push_config = {
     'FSKEY': '',                        # 飞书机器人的 FSKEY
 
     'GOBOT_URL': '',                    # go-cqhttp
-                                        # 推送到个人QQ：http://127.0.0.1/send_private_msg
-                                        # 群：http://127.0.0.1/send_group_msg
+                                        # 推送到个人QQ: http://127.0.0.1/send_private_msg
+                                        # 群: http://127.0.0.1/send_group_msg
     'GOBOT_QQ': '',                     # go-cqhttp 的推送群或用户
                                         # GOBOT_URL 设置 /send_private_msg 时填入 user_id=个人QQ
                                         #               /send_group_msg   时填入 group_id=QQ群
@@ -56,8 +56,8 @@ push_config = {
 
     'QYWX_KEY': '',                     # 企业微信机器人
 
-    'TG_BOT_TOKEN': '',                 # tg 机器人的 TG_BOT_TOKEN，例：1407203283:AAG9rt-6RDaaX0HBLZQq0laNOh898iFYaRQ
-    'TG_USER_ID': '',                   # tg 机器人的 TG_USER_ID，例：1434078534
+    'TG_BOT_TOKEN': '',                 # tg 机器人的 TG_BOT_TOKEN，例: 1407203283:AAG9rt-6RDaaX0HBLZQq0laNOh898iFYaRQ
+    'TG_USER_ID': '',                   # tg 机器人的 TG_USER_ID，例: 1434078534
     'TG_API_HOST': '',                  # tg 代理 api
     'TG_PROXY_AUTH': '',                # tg 代理认证参数
     'TG_PROXY_HOST': '',                # tg 机器人的 TG_PROXY_HOST
@@ -85,7 +85,7 @@ initialize(push_config)     # 初始化
 
 def msg(*args):
     global message_info
-    a=''.join([str(arg) for arg in args])
+    a=' '.join([str(arg) for arg in args])
     print(a)
     message_info = f"{message_info}\n{a}"
     sys.stdout.flush()
@@ -124,9 +124,9 @@ def bark(title: str, content: str) -> None:
     response = requests.get(url).json()
 
     if response["code"] == 200:
-        print("bark 推送成功！")
+        print("bark 推送成功!")
     else:
-        print("bark 推送失败！")
+        print("bark 推送失败!")
 
 
 # server酱
@@ -147,9 +147,9 @@ def serverJ(title: str, content: str) -> None:
     response = requests.post(url, data=data).json()
 
     if response.get("errno") == 0 or response.get("code") == 0:
-        print("serverJ 推送成功！")
+        print("serverJ 推送成功!")
     else:
-        print(f'serverJ 推送失败！错误码：{response["message"]}')
+        print(f'serverJ 推送失败!错误码: {response["message"]}')
 
 
 
@@ -194,9 +194,9 @@ def telegram_bot(title: str, content: str) -> None:
     ).json()
 
     if response["ok"]:
-        print("tg 推送成功！")
+        print("tg 推送成功!")
     else:
-        print("tg 推送失败！")
+        print("tg 推送失败!")
 
 
 def dingding_bot(title: str, content: str) -> None:
@@ -224,9 +224,9 @@ def dingding_bot(title: str, content: str) -> None:
     ).json()
 
     if not response["errcode"]:
-        print("钉钉机器人 推送成功！")
+        print("钉钉机器人 推送成功!")
     else:
-        print("钉钉机器人 推送失败！")
+        print("钉钉机器人 推送失败!")
 
 
 def qmsg_bot(title, content):
@@ -246,15 +246,15 @@ def qmsg_bot(title, content):
         try:
             datas = response.json()
             if response.get("code") == 0:
-                print("qmsg 推送成功！")
+                print("qmsg 推送成功!")
             else:
-                print(f'qmsg 推送失败！错误信息：{datas.get("reason")}')
+                print(f'qmsg 推送失败!错误信息: {datas.get("reason")}')
         except json.JSONDecodeError:
             print(f"推送返回值非 json 格式，请检查网址和账号是否填写正确。\n{response.text}")
     except requests.exceptions.RequestException:
         print(f"网络异常，请检查你的网络连接、推送服务器和代理配置。\n{traceback.format_exc()}")
     except Exception:
-        print(f"其他错误信息：\n{traceback.format_exc()}")
+        print(f"其他错误信息: \n{traceback.format_exc()}")
     
 
 # push+推送
@@ -279,7 +279,7 @@ def pushplus_bot(title: str, content: str) -> None:
     response = requests.post(url=url, data=body, headers=headers).json()
 
     if response["code"] == 200:
-        print("PUSHPLUS 推送成功！")
+        print("PUSHPLUS 推送成功!")
 
     else:
 
@@ -288,10 +288,10 @@ def pushplus_bot(title: str, content: str) -> None:
         response = requests.post(url=url_old, data=body, headers=headers).json()
 
         if response["code"] == 200:
-            print("PUSHPLUS(hxtrip) 推送成功！")
+            print("PUSHPLUS(hxtrip) 推送成功!")
 
         else:
-            print("PUSHPLUS 推送失败！")
+            print("PUSHPLUS 推送失败!")
 
 
 # 企业微信 APP 推送
@@ -325,9 +325,9 @@ def wecom_app(title: str, content: str) -> None:
         response = wx.send_mpnews(title, content, media_id, touser)
 
     if response == "ok":
-        print("企业微信推送成功！")
+        print("企业微信推送成功!")
     else:
-        print("企业微信推送失败！错误信息如下：\n", response)
+        print("企业微信推送失败!错误信息如下: \n", response)
 
 class WeCom:
     def __init__(self, corpid, corpsecret, agentid):
@@ -408,9 +408,9 @@ def wecom_bot(title: str, content: str) -> None:
     ).json()
 
     if response["errcode"] == 0:
-        print("企业微信机器人推送成功！")
+        print("企业微信机器人推送成功!")
     else:
-        print("企业微信机器人推送失败！")
+        print("企业微信机器人推送失败!")
 
 
 # 飞书机器人
@@ -430,15 +430,15 @@ def feishu_bot(title, content):
         try:
             datas = response.json()
             if datas.get("StatusCode") == 0:
-                print("飞书 推送成功！")
+                print("飞书 推送成功!")
             else:
-                print(f"飞书 推送失败！响应数据：{datas}")
+                print(f"飞书 推送失败!响应数据: {datas}")
         except json.JSONDecodeError:
             print(f"推送返回值非 json 格式，请检查网址和账号是否填写正确。\n{response.text}")
     except requests.exceptions.RequestException:
         print(f"网络异常，请检查你的网络连接、推送服务器和代理配置。\n{traceback.format_exc()}")
     except Exception:
-        print(f"其他错误信息：\n{traceback.format_exc()}")
+        print(f"其他错误信息: \n{traceback.format_exc()}")
 
 def go_cqhttp(title, content):
     """
@@ -456,15 +456,15 @@ def go_cqhttp(title, content):
         try:
             datas = response.json()
             if datas.get("status") == "ok":
-                print("go-cqhttp 推送成功！")
+                print("go-cqhttp 推送成功!")
             else:
-                print(f"go-cqhttp 推送失败！响应数据：{datas}")
+                print(f"go-cqhttp 推送失败!响应数据: {datas}")
         except json.JSONDecodeError:
             print(f"推送返回值非 json 格式，请检查网址和账号是否填写正确。\n{response.text}")
     except requests.exceptions.RequestException:
         print(f"网络异常，请检查你的网络连接、推送服务器和代理配置。\n{traceback.format_exc()}")
     except Exception:
-        print(f"其他错误信息：\n{traceback.format_exc()}")
+        print(f"其他错误信息: \n{traceback.format_exc()}")
 
 
 # gotify
@@ -482,9 +482,9 @@ def gotify(title:str,content:str)  -> None:
     response = requests.post(url,data=data).json()
 
     if response.get("id"):
-        print("gotify 推送成功！")
+        print("gotify 推送成功!")
     else:
-        print("gotify 推送失败！")
+        print("gotify 推送失败!")
 
 
 def iGot(title: str, content: str) -> None:
@@ -502,9 +502,9 @@ def iGot(title: str, content: str) -> None:
     response = requests.post(url, data=data, headers=headers).json()
 
     if response["ret"] == 0:
-        print("iGot 推送成功！")
+        print("iGot 推送成功!")
     else:
-        print(f'iGot 推送失败！{response["errMsg"]}')
+        print(f'iGot 推送失败!{response["errMsg"]}')
 
 
 def send(title,text=''):
