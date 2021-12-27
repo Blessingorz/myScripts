@@ -5,7 +5,9 @@ cron: 30 0,15 * * *
 new Env('发财挖宝内部互助');
 活动入口: 京东极速版>我的>发财挖宝
 脚本功能为: 内部互助
-由于每个号只有两次助力机会，所以只助力前两个助力码
+由于每个号1次助力机会, 30次助力之后要99人才能加一血 
+所以按ck顺序助力, 每个号最多吃30个助力
+账号1助力作者
 地址: https://raw.githubusercontent.com/wuye999/myScripts/main/jd/jd_wabao_help.py
 '''
 import os,json,random,time,re,string,functools,asyncio,hashlib,hmac
@@ -209,6 +211,7 @@ def get_h5st_url(body,typeid):
 
 # 助力
 def happyDigHelp(cookie,fcwbinviter,fcwbinviteCode,flag=False):
+    global Calculator
     if flag:
         msg(f"账号1 {get_pin(cookie)} 去助力作者")
     else:
@@ -229,6 +232,8 @@ def happyDigHelp(cookie,fcwbinviter,fcwbinviteCode,flag=False):
     }
     res=requests.get(url,headers=headers).json()
     if res['success']:
+        if not flag:
+            Calculator+=1
         print('助力成功')
     else:
         print(res['errMsg'])
@@ -250,13 +255,14 @@ def author_helpcode(cookie):
             if e >= (len(url_list)-1):
                 print('获取助力码，请检查网络连接...')   
     helpcode_list=response['jd_wabao_help']
-    for helpcode in helpcode_list:
-        fcwbinviter=helpcode.split('&&&')[0]
-        fcwbinviteCode=helpcode.split('&&&')[1]
-        happyDigHelp(cookie,fcwbinviter,fcwbinviteCode,True)
+    helpcode=random.choice(helpcode_list)
+    fcwbinviter=helpcode.split('&&&')[0]
+    fcwbinviteCode=helpcode.split('&&&')[1]
+    happyDigHelp(cookie,fcwbinviter,fcwbinviteCode,True)
 
 
 def main():
+    global cookie_list
     msg('🔔发财挖宝内部互助，开始!\n')
     msg(f'====================共{len(cookie_list)}京东个账号Cookie=========\n')
 
@@ -264,16 +270,21 @@ def main():
     global inviteCode_1_list,inviteCode_2_list
     inviteCode_1_list=list()
     inviteCode_2_list=list()
-    for cookie in cookie_list[:2]:
+    n=int(len(cookie_list)/30)+1
+    for cookie in cookie_list[:n]:
         inviteCode(cookie) 
 
     msg('\n互助\n')
-    inviteCode_2_list=inviteCode_2_list[:2]
+    global Calculator
     for e,fcwbinviter in enumerate(inviteCode_2_list):
         fcwbinviteCode=inviteCode_1_list[e]
+        Calculator=0
         for f,cookie in enumerate(cookie_list):
             if f==0:
                 author_helpcode(cookie)
+            elif Calculator>=30:
+                cookie_list=cookie_list[f-1:]
+                break
             else: 
                 happyDigHelp(cookie,fcwbinviter,fcwbinviteCode)
 
@@ -283,6 +294,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
 
 
 
