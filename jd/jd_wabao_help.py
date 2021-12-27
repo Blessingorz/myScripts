@@ -261,7 +261,7 @@ def main():
         fcwbinviteCode=inviteCode_1_list[e]
         for f,cookie in enumerate(cookie_list):
             if f==0:
-               author_helpcode(cookie)
+                author_helpcode(cookie)
             else: 
                 happyDigHelp(cookie,fcwbinviter,fcwbinviteCode)
 
