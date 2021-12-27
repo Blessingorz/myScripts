@@ -215,11 +215,23 @@ def happyDigHelp(cookie,fcwbinviter,fcwbinviteCode,flag=False):
         msg(f"账号 {get_pin(cookie)} 去助力{fcwbinviteCode}")
     body={"linkId":linkId,"inviter":fcwbinviter,"inviteCode":fcwbinviteCode}
     url=get_h5st_url(body,'happyDigHelp')
-    res=taskGetUrl(url, cookie)
+    headers={
+        'accept': 'application/json, text/plain, */*',
+        'origin': 'https://bnzf.jd.com',
+        'user-agent': ua(),
+        'sec-fetch-mode': 'cors',
+        'x-requested-with': 'com.jd.jdlite',
+        'sec-fetch-site': 'same-site',
+        'referer': 'https://bnzf.jd.com/?activityId=pTTvJeSTrpthgk9ASBVGsw&inviterId=t8WU7JDAfgD38T-JcrTPcvPU1jIG_31s6BE-7-g2tx0&inviterCode=8bcde7e9a2044250989df74454d3ff7496691640589643091&utm_user=plusmember&ad_od=share&utm_source=androidapp&utm_medium=appshare&utm_campaign=t_335139774&utm_term=QQfriends&sid=e97be74f93dda4d8c6ba6a8123b6d58w&un_area=4_134_19915_0',
+        'accept-encoding': 'gzip, deflate, br',
+        'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+        'cookie': cookie
+    }
+    res=requests.get(url,headers=headers).json()
     if res['success']:
-        msg('助力成功')
+        print('助力成功')
     else:
-        msg(res['errMsg'])
+        print(res['errMsg'])
     
 
 # 账号1助力作者
