@@ -4,7 +4,7 @@
 cron: 30 0,15 * * *
 new Env('发财挖宝');
 活动入口: 京东极速版>我的>发财挖宝
-脚本功能为: 挖宝，提现
+脚本功能为: 挖宝，提现，没有助力功能! 
 当血量剩余 1 时停止挖宝，领取奖励并提现
 11 13 12:00 添加玩一玩任务，更新linkId
 '''
@@ -207,7 +207,7 @@ def happyDigHome(cookie):
             curRound=res['data']['curRound']                        # 未知
             incep_blood=res['data']['blood']                              # 剩余血量
             roundList=res['data']['roundList']                      # 3个总池子
-            for roundList_n in roundList:                           # 迭代每个池子
+            for e,roundList_n in enumerate(roundList):                           # 迭代每个池子
                 roundid=roundList_n['round']                        # 池序号
                 state=roundList_n['state'] 
                 rows=roundList_n['rows']                            # 池规模，rows*rows
@@ -221,14 +221,16 @@ def happyDigHome(cookie):
                 msg(f'剩余血量 {a[0]}')
                 msg(f'当前池已得京东红包 {a[2]}\n当前池已得微信红包 {a[1]}\n')
                 _blood=xueliang(cookie)
-                # if _blood>1  or incep_blood>=21:
-                if _blood>1:
+                if _blood>1  or incep_blood>=21:
                     happyDigDo(cookie,roundid,0,0)
-                    for n in range(roundid+3):
-                        for i in range(roundid+3):
+                    if e==1 or e==2:
+                        roundid_n=4
+                    else:
+                        roundid_n=6
+                    for n in range(roundid_n+3):
+                        for i in range(roundid_n+3):
                             _blood=xueliang(cookie)
-                            # if _blood>1  or incep_blood>=21:
-                            if _blood>1:
+                            if _blood>1  or incep_blood>=21:
                                 msg(f'当前血量为 {_blood} 健康，继续挖宝')
                                 msg(f'本次挖取坐标为 ({n},{i})')
                                 happyDigDo(cookie,roundid,n,i)

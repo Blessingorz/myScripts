@@ -170,6 +170,7 @@ def taskGetUrl(url, cookie):
 
 # 助力码
 def inviteCode(cookie):
+    time.sleep(0.5)
     global inviteCode_1_list,inviteCode_2_list
     body={"linkId":linkId}
     url=get_h5st_url(body,'happyDigHome')
@@ -211,6 +212,7 @@ def get_h5st_url(body,typeid):
 
 # 助力
 def happyDigHelp(cookie,fcwbinviter,fcwbinviteCode,flag=False):
+    time.sleep(0.5)
     global Calculator,url
     if flag:
         msg(f"账号1 {get_pin(cookie)} 去助力作者")
@@ -240,9 +242,24 @@ def happyDigHelp(cookie,fcwbinviter,fcwbinviteCode,flag=False):
         print('助力成功')
     else:
         print(res['errMsg'])
-    
 
-# 账号1助力作者
+# 获取当前已邀请人数  
+def help_list(cookie):
+    url=f'https://api.m.jd.com/?functionId=happyDigHelpList&body=%7B%22pageNum%22%3A1%2C%22pageSize%22%3A50%2C%22linkId%22%3A%22pTTvJeSTrpthgk9ASBVGsw%22%7D&t={gettimestamp()}&appid=activities_platform&client=H5&clientVersion=1.0.0'
+    headers={
+        'accept': 'application/json, text/plain, */*',
+        'origin': 'https://bnzf.jd.com',
+        'user-agent': ua(),
+        'referer': 'https://bnzf.jd.com/?activityId=pTTvJeSTrpthgk9ASBVGsw&lng=120.840033&lat=32.045965&sid=e2da0cd9e9a5987cda11dc0f3f43ebbw&un_area=12_965_3395_56141',
+        'accept-encoding': 'gzip, deflate, br',
+        'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
+        'cookie': cookie
+    }
+    result=requests.get(url,headers=headers).json()
+    return result['data']['personNum']
+
+
+# 随机获取一个作者的助力码, 账号1助力作者
 def author_helpcode(cookie):
     url_list = [
         'https://raw.fastgit.org/wuye999/myScripts/main/jd/helpcode/helpcode.json',
@@ -256,7 +273,7 @@ def author_helpcode(cookie):
             break
         except:
             if e >= (len(url_list)-1):
-                print('获取助力码，请检查网络连接...')   
+                print('获取助力码, 请检查网络连接...')   
     helpcode_list=response['jd_wabao_help']
     helpcode=random.choice(helpcode_list)
     fcwbinviter=helpcode.split('&&&')[0]
@@ -266,7 +283,7 @@ def author_helpcode(cookie):
 
 def main():
     global cookie_list
-    msg('🔔发财挖宝内部互助，开始!\n')
+    msg('🔔发财挖宝内部互助, 开始!\n')
     msg(f'====================共{len(cookie_list)}京东个账号Cookie=========\n')
 
     msg('获取助力码\n')
@@ -275,7 +292,11 @@ def main():
     inviteCode_2_list=list()
     n=int(len(cookie_list)/30)+1
     for cookie in cookie_list[:n]:
-        inviteCode(cookie) 
+        help_num=help_list(cookie)
+        if int(help_num)>=30:
+            print(f"账号{get_pin(cookie)}已满30人，跳过")
+        else:
+            inviteCode(cookie) 
 
     msg('\n互助\n')
     global Calculator,url
@@ -288,6 +309,7 @@ def main():
                 author_helpcode(cookie)
                 url=''
             elif Calculator>=30:
+                print('当前助力码已满30人，跳过')
                 cookie_list=cookie_list[f-1:]
                 break
             else: 
@@ -299,7 +321,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
-
-
-
