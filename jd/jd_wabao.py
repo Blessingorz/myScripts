@@ -226,7 +226,7 @@ def happyDigHome(cookie):
                     if e==1 or e==2:
                         roundid_n=4
                     else:
-                        roundid_n=6
+                        roundid_n=5
                     for n in range(roundid_n):
                         for i in range(roundid_n):
                             _blood=xueliang(cookie)
