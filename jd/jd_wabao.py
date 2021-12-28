@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-cron: 30 0,15 * * *
+cron: 35 20 * * *
 new Env('发财挖宝');
 活动入口: 京东极速版>我的>发财挖宝
 脚本功能为: 挖宝，提现，没有助力功能! 
 当血量剩余 1 时停止挖宝，领取奖励并提现
-11 13 12:00 添加玩一玩任务，更新linkId
 '''
 import os,json,random,time,re,string,functools,asyncio
 import sys
