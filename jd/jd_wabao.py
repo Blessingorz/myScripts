@@ -227,8 +227,8 @@ def happyDigHome(cookie):
                         roundid_n=4
                     else:
                         roundid_n=6
-                    for n in range(roundid_n+3):
-                        for i in range(roundid_n+3):
+                    for n in range(roundid_n):
+                        for i in range(roundid_n):
                             _blood=xueliang(cookie)
                             if _blood>1  or incep_blood>=21:
                                 msg(f'当前血量为 {_blood} 健康，继续挖宝')
