@@ -211,13 +211,16 @@ def get_h5st_url(body,typeid):
 
 # 助力
 def happyDigHelp(cookie,fcwbinviter,fcwbinviteCode,flag=False):
-    global Calculator
+    global Calculator,url
     if flag:
         msg(f"账号1 {get_pin(cookie)} 去助力作者")
     else:
         msg(f"账号 {get_pin(cookie)} 去助力{fcwbinviteCode}")
     body={"linkId":linkId,"inviter":fcwbinviter,"inviteCode":fcwbinviteCode}
-    url=get_h5st_url(body,'happyDigHelp')
+    if url:
+        pass
+    else:
+        url=get_h5st_url(body,'happyDigHelp')
     headers={
         'accept': 'application/json, text/plain, */*',
         'origin': 'https://bnzf.jd.com',
@@ -275,13 +278,15 @@ def main():
         inviteCode(cookie) 
 
     msg('\n互助\n')
-    global Calculator
+    global Calculator,url
     for e,fcwbinviter in enumerate(inviteCode_2_list):
         fcwbinviteCode=inviteCode_1_list[e]
         Calculator=0
+        url=''
         for f,cookie in enumerate(cookie_list):
             if f==0:
                 author_helpcode(cookie)
+                url=''
             elif Calculator>=30:
                 cookie_list=cookie_list[f-1:]
                 break
