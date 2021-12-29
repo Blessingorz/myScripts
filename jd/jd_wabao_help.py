@@ -255,8 +255,11 @@ def help_list(cookie):
         'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
         'cookie': cookie
     }
-    result=requests.get(url,headers=headers).json()
-    return result['data']['personNum']
+    try:
+        result=requests.get(url,headers=headers).json()
+        return result['data']['personNum']
+    except:
+        return 1
 
 
 # 随机获取一个作者的助力码, 账号1助力作者
