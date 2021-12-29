@@ -222,7 +222,7 @@ def happyDigHome(cookie):
                 _blood=xueliang(cookie)
                 if _blood>1  or incep_blood>=21:
                     happyDigDo(cookie,roundid,0,0)
-                    if e==1 or e==2:
+                    if e==0 or e==1:
                         roundid_n=4
                     else:
                         roundid_n=5
