@@ -250,7 +250,10 @@ def help_list(cookie):
         'accept': 'application/json, text/plain, */*',
         'origin': 'https://bnzf.jd.com',
         'user-agent': ua(),
-        'referer': 'https://bnzf.jd.com/?activityId=pTTvJeSTrpthgk9ASBVGsw&lng=120.840033&lat=32.045965&sid=e2da0cd9e9a5987cda11dc0f3f43ebbw&un_area=12_965_3395_56141',
+        'sec-fetch-mode': 'cors',
+        'x-requested-with': 'com.jd.jdlite',
+        'sec-fetch-site': 'same-site',
+        'referer': 'https://bnzf.jd.com/?activityId=pTTvJeSTrpthgk9ASBVGsw&lng=107.649274&lat=30.282105&sid=e97be74f93dda4d8c6ba6a8123b6d58w&un_area=4_134_19915_0',
         'accept-encoding': 'gzip, deflate, br',
         'accept-language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
         'cookie': cookie
