@@ -5,6 +5,7 @@ cron: 30 0,15 * * *
 new Env('发财挖宝内部互助');
 活动入口: 京东极速版>我的>发财挖宝
 脚本功能为: 内部互助
+export wabaohelp_amount="0"     # *默认*忽略或不填或填0: 脚本自动判断; 填1:只助力第1个账号; 填3:只助力前3个账号(包含第3个)
 由于每个号1次助力机会, 30次助力之后要99人才能加一血 
 所以按ck顺序助力, 每个号最多吃30个助力
 账号1助力作者
@@ -22,6 +23,7 @@ requests.packages.urllib3.disable_warnings()
 
 run_send='no'          # yes或no, yes则启用通知推送服务
 linkId="pTTvJeSTrpthgk9ASBVGsw"
+wabaohelp_amount="0"    # 默认值不要改, 如需使用请填写环境变量
 
 
 # 获取pin
@@ -297,6 +299,11 @@ def main():
     inviteCode_1_list=list()
     inviteCode_2_list=list()
     n=int(len(cookie_list)/30)+1
+    wabaohelp_amount=int(get_env('wabaohelp_amount'))
+    if (not wabaohelp_amount) or wabaohelp_amount>n:
+        pass
+    else:
+        n=wabaohelp_amount
     for cookie in cookie_list[:n]:
         help_num=help_list(cookie)
         if int(help_num)>=30:
@@ -311,7 +318,7 @@ def main():
         Calculator=0
         url=''
         for f,cookie in enumerate(cookie_list):
-            if f==0:
+            if e==0 and f==0:
                 author_helpcode(cookie)
                 url=''
             elif Calculator>=30:
