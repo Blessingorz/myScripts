@@ -76,6 +76,9 @@ def post_auth_register():
     
     print(f"邮箱: {re.sub(r'%40','@',email)}")
     print(f"密码: {repasswd}")
+    print(res.content)       # 获得bytes对象
+    res.encoding = 'B1G5'  # 设置编码
+    print(res.text)          # 返回内容
     return email,repasswd
 
 

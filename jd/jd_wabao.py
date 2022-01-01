@@ -160,7 +160,7 @@ def taskGetUrl(functionId, body, cookie):
     }
     for n in range(3):
         try:
-            res=requests.get(url,headers=headers).json()
+            res=requests.get(url,headers=headers, timeout=10).json()
             return res
         except:
             if n==2:
@@ -386,7 +386,7 @@ def wecat(cookie,amountid,poolBaseId,prizeGroupId,prizeBaseId):
     data=f"functionId=apCashWithDraw&body={json.dumps(body)}&t=1635596380119&appid=activities_platform&client=H5&clientVersion=1.0.0"
     for n in range(3):
         try:
-            res=requests.post(url,headers=headers,data=data).json()
+            res=requests.post(url,headers=headers,data=data,timeout=10).json()
             break
         except:
             if n==2:
