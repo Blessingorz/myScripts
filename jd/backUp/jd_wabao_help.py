@@ -13,7 +13,8 @@ export wabaohelp_amount="0"     # *默认*忽略或不填或填0: 脚本自动�
 '''
 import os,json,random,time,re,string,functools,asyncio,hashlib,hmac
 import sys
-sys.path.append('../../tmp')
+import h5st_api
+from urllib.parse import unquote, quote
 try:
     import requests
 except Exception as e:
@@ -224,7 +225,10 @@ def happyDigHelp(cookie,fcwbinviter,fcwbinviteCode,flag=False):
     if url:
         pass
     else:
-        url=get_h5st_url(body,'happyDigHelp')
+        url=f'https://api.m.jd.com/?functionId=happyDigHelp&body={quote(json.dumps(body))}&t={gettimestamp()}&appid=activities_platform&client=H5&clientVersion=1.0.0&h5st=aaaaaaaaaaaaaaaaaaaaaaaaaa'
+        h5st,timestamp=h5st_api.main(url,body)
+        url=re.sub(r'h5st=.*', f'h5st={h5st}', url)
+        url=re.sub(r'&t=.*?&', f'&t={timestamp}&', url)
     headers={
         'accept': 'application/json, text/plain, */*',
         'origin': 'https://bnzf.jd.com',
