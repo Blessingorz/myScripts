@@ -358,7 +358,7 @@ def spring_reward_list(cookie):
                 poolBaseId=_items['poolBaseId']
                 prizeGroupId=_items['prizeGroupId']
                 prizeBaseId=_items['prizeBaseId']
-                if '极速版签到返红包' not in prizeDesc:
+                if '红包' not in prizeDesc:
                     msg('尝试微信提现')
                     time.sleep(3.2)
                     wecat(cookie,amountid,poolBaseId,prizeGroupId,prizeBaseId)
